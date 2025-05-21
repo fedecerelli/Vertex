@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGEC - Sistema Integral de Gestión para Comercios</title>
+    <title>Vertex - Sistema Integral de Gestión para Comercios</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -36,7 +36,7 @@
     </script>
     <style>
         /*
-        * Estilos CSS personalizados para el sistema SIGEC.
+        * Estilos CSS personalizados para el sistema VERTEX.
         * Aunque se usa Tailwind CSS para la mayoría de los estilos,
         * este bloque se reserva para ajustes finos o reglas específicas
         * que no se manejan directamente con clases de utilidad de Tailwind.
@@ -295,7 +295,7 @@
     <aside id="mainSidebar"
         class="w-64 bg-text-dark text-white flex-col p-4 shadow-xl transition-all duration-300 ease-in-out hidden md:flex">
         <div class="flex justify-between items-center mb-8">
-            <div class="text-2xl font-bold">SIGEC</div>
+            <div class="text-2xl font-bold">VERTEX</div>
             <button id="toggleMainSidebar"
                 class="p-2 rounded-full text-white hover:bg-gray-700 transition-colors duration-200">
                 <i class="fas fa-bars"></i>
@@ -1416,12 +1416,12 @@
              */
             function updateMainSidebarState() {
                 const navLinks = document.querySelectorAll('#mainSidebar nav ul li a');
-                const sigecTitle = mainSidebar.querySelector('.text-2xl.font-bold');
+                const vertexTitle = mainSidebar.querySelector('.text-2xl.font-bold');
 
                 if (isMainSidebarCollapsed) {
                     mainSidebar.classList.remove('w-64');
                     mainSidebar.classList.add('w-16'); /* Más pequeña */
-                    sigecTitle.classList.add('hidden'); // Oculta "SIGEC"
+                    vertexTitle.classList.add('hidden'); // Oculta "VERTEX"
                     companyNameDiv.classList.add('hidden'); // Oculta el nombre de la empresa
                     document.querySelector('main').style.marginLeft = '4rem'; /* w-16 = 64px = 4rem */
 
@@ -1435,7 +1435,7 @@
                 } else {
                     mainSidebar.classList.remove('w-16'); /* Más pequeña */
                     mainSidebar.classList.add('w-64');
-                    sigecTitle.classList.remove('hidden'); // Muestra "SIGEC"
+                    vertexTitle.classList.remove('hidden'); // Muestra "VERTEX"
                     companyNameDiv.classList.remove('hidden'); // Muestra el nombre de la empresa
                     document.querySelector('main').style.marginLeft = '0'; // Restablece el margen
 
@@ -1614,12 +1614,12 @@
             // --- Funcionalidad del Anotador ---
 
             saveNoteBtn.addEventListener('click', () => {
-                localStorage.setItem('sigec_notepad_note', notepad.value);
+                localStorage.setItem('VERTEX_notepad_note', notepad.value);
                 showMessageBox('Nota Guardada', 'Tu nota ha sido guardada localmente.');
             });
 
             loadNoteBtn.addEventListener('click', () => {
-                const savedNote = localStorage.getItem('sigec_notepad_note');
+                const savedNote = localStorage.getItem('VERTEX_notepad_note');
                 if (savedNote) {
                     notepad.value = savedNote;
                     showMessageBox('Nota Cargada', 'Tu nota ha sido cargada desde el almacenamiento local.');
@@ -1630,7 +1630,7 @@
 
             // --- Funcionalidad de Recordatorios de Tareas Pendientes ---
             function loadReminders() {
-                const reminders = JSON.parse(localStorage.getItem('sigec_reminders') || '[]');
+                const reminders = JSON.parse(localStorage.getItem('VERTEX_reminders') || '[]');
                 reminderList.innerHTML = '';
                 reminders.forEach((reminder, index) => {
                     const li = document.createElement('li');
@@ -1654,9 +1654,9 @@
             function addReminder() {
                 const reminderText = newReminderInput.value.trim();
                 if (reminderText) {
-                    const reminders = JSON.parse(localStorage.getItem('sigec_reminders') || '[]');
+                    const reminders = JSON.parse(localStorage.getItem('VERTEX_reminders') || '[]');
                     reminders.push(reminderText);
-                    localStorage.setItem('sigec_reminders', JSON.stringify(reminders));
+                    localStorage.setItem('VERTEX_reminders', JSON.stringify(reminders));
                     newReminderInput.value = '';
                     loadReminders();
                 } else {
@@ -1665,9 +1665,9 @@
             }
 
             function deleteReminder(index) {
-                let reminders = JSON.parse(localStorage.getItem('sigec_reminders') || '[]');
+                let reminders = JSON.parse(localStorage.getItem('VERTEX_reminders') || '[]');
                 reminders.splice(index, 1);
-                localStorage.setItem('sigec_reminders', JSON.stringify(reminders));
+                localStorage.setItem('VERTEX_reminders', JSON.stringify(reminders));
                 loadReminders();
             }
 
@@ -1936,7 +1936,7 @@
 
             // --- Lógica para recordar clientes ---
             function getClientsFromLocalStorage() {
-                const clients = localStorage.getItem('sigec_clients');
+                const clients = localStorage.getItem('VERTEX_clients');
                 return clients ? JSON.parse(clients) : [];
             }
 
@@ -1944,7 +1944,7 @@
                 let clients = getClientsFromLocalStorage();
                 if (!clients.includes(clientName)) {
                     clients.push(clientName);
-                    localStorage.setItem('sigec_clients', JSON.stringify(clients));
+                    localStorage.setItem('VERTEX_clients', JSON.stringify(clients));
                 }
             }
 
