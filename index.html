@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGEC - Sistema Integral de Gestión para Comercios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configuración de Tailwind CSS para colores personalizados (Paleta 2025)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        // Paleta Principal (Moderno 2025)
+                        'primary-accent': '#4F46E5',    // Indigo 600 - para botones principales, acentos
+                        'secondary-accent': '#10B981',  // Emerald 500 - para éxito, resaltados
+                        'bg-lightest': '#F9FAFB',       // Gray 50 - fondo más claro
+                        'bg-light': '#F3F4F6',          // Gray 100 - fondo de tarjetas, elementos
+                        'border-gray': '#E5E7EB',       // Gray 200 - bordes, separadores
+                        'text-dark': '#1F2937',         // Gray 800 - texto principal, UI oscuro
+                        'text-secondary': '#4B5563',    // Gray 600 - texto secundario, placeholders
+                        // Colores para estados (hover/active)
+                        'primary-hover': '#6366F1',     // Indigo 500 - hover de primary-accent
+                        'secondary-hover': '#059669',   // Emerald 600 - hover de secondary-accent
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /*
+        * Estilos CSS personalizados para el sistema SIGEC.
+        * Aunque se usa Tailwind CSS para la mayoría de los estilos,
+        * este bloque se reserva para ajustes finos o reglas específicas
+        * que no se manejan directamente con clases de utilidad de Tailwind.
+        */
+
+        /* Oculta todos los módulos de contenido por defecto */
+        .module-content {
+            display: none;
+        }
+
+        /* Muestra solo el módulo que tiene la clase 'active' */
+        .module-content.active {
+            display: block;
+        }
+
+        /* Estilos personalizados para la barra de desplazamiento del área de contenido principal */
+        .main-content-area::-webkit-scrollbar {
+            width: 8px;
+            /* Ancho de la barra de desplazamiento */
+        }
+
+        /* Pista de la barra de desplazamiento */
+        .main-content-area::-webkit-scrollbar-track {
+            background: #F3F4F6;
+            /* Color de fondo de la pista (bg-light) */
+            border-radius: 10px;
+            /* Bordes redondeados para la pista */
+        }
+
+        /* Pulgar (el arrastrador) de la barra de desplazamiento */
+        .main-content-area::-webkit-scrollbar-thumb {
+            background: #9CA3AF;
+            /* Un gris medio */
+            border-radius: 10px;
+            /* Bordes redondeados para el pulgar */
+        }
+
+        /* Color del pulgar al pasar el ratón por encima */
+        .main-content-area::-webkit-scrollbar-thumb:hover {
+            background: #6B7280;
+            /* Un tono más oscuro */
+        }
+
+        /* Estilo para el enlace de navegación activo en la barra lateral principal */
+        .active-link {
+            background-color: #3730A3;
+            /* Un tono de indigo más oscuro */
+            color: #FFFFFF;
+            /* Texto blanco para el enlace activo */
+        }
+
+        /* Ocultar barra de desplazamiento en la barra lateral secundaria (widget) */
+        .secondary-sidebar-scrollable {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .secondary-sidebar-scrollable::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari, Opera */
+        }
+
+        /* Estilos para impresión (oculta elementos no deseados y centra el contenido) */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                overflow: visible !important;
+                /* Permite que el contenido fluya para la impresión */
+            }
+
+            /* Oculta las barras laterales y otros elementos de navegación/interfaz */
+            #mainSidebar,
+            #secondarySidebar,
+            header,
+            .modal,
+            #messageBox,
+            .flex.justify-between.items-center.mb-4.space-y-4.md\:space-y-0.md\:space-x-4,
+            /* Controles de búsqueda/botón en módulos */
+            .flex.justify-end.space-x-4,
+            /* Botones de guardar/cancelar en modales */
+            .dashboard-export-buttons
+
+            /* Contenedor de botones de exportación en dashboard */
+                {
+                display: none !important;
+            }
+
+            /* Muestra solo el contenido principal del módulo activo */
+            main {
+                width: 100% !important;
+                margin: 0 auto !important;
+                padding: 20px !important;
+                box-shadow: none !important;
+                display: block !important;
+            }
+
+            .module-content.active {
+                display: block !important;
+                width: 100% !important;
+                box-shadow: none !important;
+            }
+
+            .module-content .bg-white.p-6.rounded-lg.shadow-sm {
+                /* Se cambió a shadow-sm, pero mantenemos esta regla para impresión */
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+            }
+
+            /* Ajusta tablas para impresión */
+            table {
+                width: 100% !important;
+                border-collapse: collapse;
+            }
+
+            th,
+            td {
+                border: 1px solid #ccc;
+                padding: 8px;
+                text-align: left;
+            }
+
+            thead {
+                background-color: #f2f2f2;
+            }
+
+            /* Oculta la columna de acciones en las tablas al imprimir */
+            table th:last-child,
+            table td:last-child {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-bg-lightest flex h-screen overflow-hidden font-inter text-text-dark">
+
+    <!-- Fija a la izquierda, con un ancho fijo y fondo oscuro.
+         Contiene el logo y los enlaces de navegación a los módulos principales.
+         Ahora con funcionalidad de colapsar/expandir y sombras mejoradas. -->
+    <aside id="mainSidebar" class="w-64 bg-text-dark text-white flex flex-col p-4 shadow-2xl transition-all duration-300 ease-in-out
+                                    fixed h-full z-50 -translate-x-full md:relative md:translate-x-0">
+        <div class="flex justify-between items-center mb-8">
+            <div class="text-2xl font-bold">SIGEC</div>
+            <button id="toggleMainSidebar"
+                class="p-2 rounded-full text-white hover:bg-gray-700 transition-colors duration-200 hidden md:block">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <nav class="flex-1" id="mainNav">
+            <ul>
+                <li class="mb-2">
+                    <a href="#" data-module="inventario"
+                        class="flex items-center p-3 rounded-xl hover:bg-gray-700 transition-colors duration-200 active-link">
+                        <i class="fas fa-box mr-3 flex-shrink-0 text-center w-6"></i> <span
+                            class="nav-text whitespace-nowrap">Inventario</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" data-module="compras"
+                        class="flex items-center p-3 rounded-xl hover:bg-gray-700 transition-colors duration-200">
+                        <i class="fas fa-shopping-cart mr-3 flex-shrink-0 text-center w-6"></i> <span
+                            class="nav-text whitespace-nowrap">Compras</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" data-module="ventas"
+                        class="flex items-center p-3 rounded-xl hover:bg-gray-700 transition-colors duration-200">
+                        <i class="fas fa-cash-register mr-3 flex-shrink-0 text-center w-6"></i> <span
+                            class="nav-text whitespace-nowrap">Ventas</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" data-module="dashboard"
+                        class="flex items-center p-3 rounded-xl hover:bg-gray-700 transition-colors duration-200">
+                        <i class="fas fa-chart-line mr-3 flex-shrink-0 text-center w-6"></i> <span
+                            class="nav-text whitespace-nowrap">Dashboard</span>
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" data-module="configuracion"
+                        class="flex items-center p-3 rounded-xl hover:bg-gray-700 transition-colors duration-200">
+                        <i class="fas fa-cog mr-3 flex-shrink-0 text-center w-6"></i> <span
+                            class="nav-text whitespace-nowrap">Configuración</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div id="companyName"
+            class="text-center mt-auto py-4 text-xs text-text-secondary whitespace-nowrap overflow-hidden">
+            Desarrollado por <br> <span class="font-semibold text-text-secondary">Plexcel.py Evolution</span>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col p-6 overflow-y-auto main-content-area transition-all duration-300 ease-in-out">
+        <header class="flex justify-between items-center pb-4 border-b border-border-gray mb-6">
+            <button id="toggleMainSidebarMobile"
+                class="p-2 rounded-full bg-bg-light text-text-dark hover:bg-border-gray transition-colors duration-200 mr-4 md:hidden">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 id="moduleTitle" class="text-3xl font-semibold text-text-dark">Inventario</h1>
+            <button id="toggleSecondarySidebar"
+                class="p-2 rounded-full bg-primary-accent text-white hover:bg-primary-hover transition-colors duration-200">
+                <i class="fas fa-bars"></i> </button>
+        </header>
+
+        <section id="inventario-module" class="module-content active">
+            <div class="bg-bg-light p-6 rounded-xl shadow-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-text-dark">Gestión de Productos</h2>
+                <div
+                    class="flex flex-col md:flex-row justify-between items-center mb-4 space-y-4 md:space-y-0 md:space-x-4">
+                    <input type="text" placeholder="Buscar producto por código, nombre o descripción..."
+                        class="p-3 border border-border-gray rounded-xl w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                    <button id="openNewProductModal"
+                        class="bg-primary-accent text-white px-5 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200 shadow-md w-full md:w-auto">
+                        <i class="fas fa-plus mr-2"></i> Nuevo Producto
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-bg-lightest border border-border-gray rounded-xl">
+                        <thead class="bg-bg-light">
+                            <tr>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Código</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Nombre</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Costo Unitario</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Precio Sugerido</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Stock</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Categoría</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody">
+                            <tr class="border-b border-border-gray hover:bg-bg-lightest">
+                                <td class="py-3 px-4">SKU-20250521-123456-ABC1</td>
+                                <td class="py-3 px-4">Laptop Gamer X1</td>
+                                <td class="py-3 px-4">$1200.00</td>
+                                <td class="py-3 px-4">$1800.00</td>
+                                <td class="py-3 px-4">15</td>
+                                <td class="py-3 px-4">Electrónica</td>
+                                <td class="py-3 px-4 flex space-x-2">
+                                    <button
+                                        class="bg-secondary-accent text-white px-3 py-1 rounded-lg text-sm hover:bg-secondary-hover transition-colors duration-200">Editar</button>
+                                    <button
+                                        class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 transition-colors duration-200">Eliminar</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-border-gray hover:bg-bg-lightest">
+                                <td class="py-3 px-4">SKU-20250521-123457-DEF2</td>
+                                <td class="py-3 px-4">Teclado Mecánico RGB</td>
+                                <td class="py-3 px-4">$50.00</td>
+                                <td class="py-3 px-4">$75.00</td>
+                                <td class="py-3 px-4">50</td>
+                                <td class="py-3 px-4">Periféricos</td>
+                                <td class="py-3 px-4 flex space-x-2">
+                                    <button
+                                        class="bg-secondary-accent text-white px-3 py-1 rounded-lg text-sm hover:bg-secondary-hover transition-colors duration-200">Editar</button>
+                                    <button
+                                        class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 transition-colors duration-200">Eliminar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="compras-module" class="module-content">
+            <div class="bg-bg-light p-6 rounded-xl shadow-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-text-dark">Gestión de Compras</h2>
+                <div
+                    class="flex flex-col md:flex-row justify-between items-center mb-4 space-y-4 md:space-y-0 md:space-x-4">
+                    <input type="text" placeholder="Buscar compra por proveedor o fecha..."
+                        class="p-3 border border-border-gray rounded-xl w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                    <button id="openNewPurchaseModal"
+                        class="bg-primary-accent text-white px-5 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200 shadow-md w-full md:w-auto">
+                        <i class="fas fa-plus mr-2"></i> Nueva Compra
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-bg-lightest border border-border-gray rounded-xl">
+                        <thead class="bg-bg-light">
+                            <tr>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Fecha</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Proveedor</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Total</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Ítems</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-border-gray hover:bg-bg-lightest">
+                                <td class="py-3 px-4">2025-05-18</td>
+                                <td class="py-3 px-4">Tech Suppliers S.A.</td>
+                                <td class="py-3 px-4">$15000.00</td>
+                                <td class="py-3 px-4">20</td>
+                                <td class="py-3 px-4">
+                                    <button
+                                        class="bg-text-secondary text-white px-3 py-1 rounded-lg text-sm hover:bg-gray-700 transition-colors duration-200">Ver
+                                        Detalle</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="ventas-module" class="module-content">
+            <div class="bg-bg-light p-6 rounded-xl shadow-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-text-dark">Gestión de Ventas</h2>
+                <div
+                    class="flex flex-col md:flex-row justify-between items-center mb-4 space-y-4 md:space-y-0 md:space-x-4">
+                    <input type="text" placeholder="Buscar venta por cliente o fecha..."
+                        class="p-3 border border-border-gray rounded-xl w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                    <button id="openNewSaleModal"
+                        class="bg-primary-accent text-white px-5 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200 shadow-md w-full md:w-auto">
+                        <i class="fas fa-plus mr-2"></i> Nueva Venta
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-bg-lightest border border-border-gray rounded-xl">
+                        <thead class="bg-bg-light">
+                            <tr>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Fecha</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Cliente</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Total</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Ítems</th>
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                    Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-border-gray hover:bg-bg-lightest">
+                                <td class="py-3 px-4">2025-05-20</td>
+                                <td class="py-3 px-4">Juan Pérez</td>
+                                <td class="py-3 px-4">$1800.00</td>
+                                <td class="py-3 px-4">1</td>
+                                <td class="py-3 px-4">
+                                    <button
+                                        class="bg-text-secondary text-white px-3 py-1 rounded-lg text-sm hover:bg-gray-700 transition-colors duration-200">Ver
+                                        Detalle</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard-module" class="module-content">
+            <div class="bg-bg-light p-6 rounded-xl shadow-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-text-dark">Dashboard</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                        <h3 class="text-lg font-medium text-text-dark">Ventas del Día</h3>
+                        <p class="text-3xl font-bold text-primary-accent">$2500.00</p>
+                    </div>
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                        <h3 class="text-lg font-medium text-text-dark">Compras del Mes</h3>
+                        <p class="text-3xl font-bold text-secondary-accent">$18000.00</p>
+                    </div>
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                        <h3 class="text-lg font-medium text-text-dark">Stock Valorizado</h3>
+                        <p class="text-3xl font-bold text-primary-accent">$50000.00</p>
+                    </div>
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                        <h3 class="text-lg font-medium text-text-dark">Margen Promedio</h3>
+                        <p class="text-3xl font-bold text-secondary-accent">35%</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                        <h3 class="text-lg font-medium text-text-dark mb-2">Gráfico de Ventas (últimos 30 días)</h3>
+                        <div class="h-64 bg-bg-light flex items-center justify-center text-text-secondary rounded-xl">
+                            [Placeholder para Gráfico de Ventas]
+                        </div>
+                    </div>
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                        <h3 class="text-lg font-medium text-text-dark mb-2">Gráfico de Compras (últimos 30 días)</h3>
+                        <div class="h-64 bg-bg-light flex items-center justify-center text-text-secondary rounded-xl">
+                            [Placeholder para Gráfico de Compras]
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                        <h3 class="text-lg font-medium text-text-dark mb-2">Productos Más Vendidos</h3>
+                        <ul class="list-disc list-inside text-text-dark">
+                            <li>Laptop Gamer X1 (100 unidades)</li>
+                            <li>Teclado Mecánico RGB (80 unidades)</li>
+                            <li>Mouse Inalámbrico (75 unidades)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                        <h3 class="text-lg font-medium text-text-dark mb-2">Productos con Bajo Stock</h3>
+                        <ul class="list-disc list-inside text-text-dark">
+                            <li>Cable HDMI (Stock: 5)</li>
+                            <li>Auriculares Gaming (Stock: 8)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-border-gray dashboard-export-buttons">
+                    <h3 class="text-xl font-semibold mb-4 text-text-dark">Reportes y Exportación</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <button id="exportInventoryCSV"
+                            class="bg-secondary-accent text-white px-5 py-3 rounded-xl hover:bg-secondary-hover transition-colors duration-200 shadow-md">
+                            <i class="fas fa-file-csv mr-2"></i> Exportar Inventario (CSV)
+                        </button>
+                        <button id="printInventory"
+                            class="bg-primary-accent text-white px-5 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200 shadow-md">
+                            <i class="fas fa-print mr-2"></i> Imprimir Inventario (A4)
+                        </button>
+                        <button id="exportPurchasesCSV"
+                            class="bg-secondary-accent text-white px-5 py-3 rounded-xl hover:bg-secondary-hover transition-colors duration-200 shadow-md">
+                            <i class="fas fa-file-csv mr-2"></i> Exportar Compras (CSV)
+                        </button>
+                        <button id="exportSalesCSV"
+                            class="bg-primary-accent text-white px-5 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200 shadow-md">
+                            <i class="fas fa-file-csv mr-2"></i> Exportar Ventas (CSV)
+                        </button>
+                        <button
+                            class="bg-text-secondary text-white px-5 py-3 rounded-xl hover:bg-gray-700 transition-colors duration-200 shadow-md"
+                            onclick="showMessageBox('Exportar Reportes', 'Esta función exportaría los reportes del dashboard (ej. Ventas por mes).')">
+                            <i class="fas fa-chart-bar mr-2"></i> Exportar Dashboard (CSV)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="configuracion-module" class="module-content">
+            <div class="bg-bg-light p-6 rounded-xl shadow-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-text-dark">Configuración del Sistema</h2>
+                <p class="text-text-dark">Aquí se gestionarán las configuraciones generales del sistema, como márgenes
+                    de ganancia por defecto, umbrales de stock, etc.</p>
+                <div class="mt-4">
+                    <label for="defaultMargin" class="block text-sm font-medium text-text-dark">Margen de Ganancia por
+                        Defecto (%):</label>
+                    <input type="number" id="defaultMargin" value="50"
+                        class="mt-1 p-2 border border-border-gray rounded-xl w-32 focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                    <button
+                        class="ml-4 bg-primary-accent text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200">Guardar</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Fija a la derecha, inicialmente oculta y se desliza para aparecer.
+         Contiene un anotador, un calendario y una calculadora rápida. -->
+    <aside id="secondarySidebar"
+        class="w-64 bg-text-dark text-white flex flex-col p-4 shadow-2xl transition-transform duration-300 ease-in-out transform translate-x-full fixed right-0 top-0 h-full z-50">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-semibold">Herramientas</h2>
+            <button id="closeSecondarySidebar"
+                class="p-2 rounded-full text-text-secondary hover:text-white transition-colors duration-200">
+                <i class="fas fa-times"></i> </button>
+        </div>
+        <div class="flex-1 overflow-y-auto secondary-sidebar-scrollable">
+            <div class="mb-6">
+                <h3 class="text-lg font-medium mb-2">Anotador Rápido</h3>
+                <textarea id="notepad"
+                    class="w-full h-32 p-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-accent"
+                    placeholder="Escribe tus notas aquí..."></textarea>
+                <div class="flex justify-end mt-2 space-x-2">
+                    <button id="saveNote"
+                        class="bg-primary-accent text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200 text-sm">Guardar</button>
+                    <button id="loadNote"
+                        class="bg-text-secondary text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition-colors duration-200 text-sm">Cargar</button>
+                </div>
+            </div>
+            <div class="mb-6">
+                <h3 class="text-lg font-medium mb-2">Calculadora Rápida</h3>
+                <div class="bg-gray-700 p-4 rounded-xl">
+                    <input type="text" id="calculatorDisplay"
+                        class="w-full p-2 mb-3 rounded-xl bg-gray-800 text-white text-right text-2xl font-bold focus:outline-none"
+                        value="0" readonly>
+                    <div class="grid grid-cols-4 gap-2">
+                        <button class="calc-btn bg-gray-600 hover:bg-gray-500 transition-colors text-white rounded-xl"
+                            data-value="C">C</button>
+                        <button class="calc-btn bg-gray-600 hover:bg-gray-500 transition-colors text-white rounded-xl"
+                            data-value="/">/</button>
+                        <button class="calc-btn bg-gray-600 hover:bg-gray-500 transition-colors text-white rounded-xl"
+                            data-value="*">*</button>
+                        <button
+                            class="calc-btn bg-primary-accent hover:bg-primary-hover transition-colors text-white rounded-xl"
+                            data-value="-">-</button>
+
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="7">7</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="8">8</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="9">9</button>
+                        <button
+                            class="calc-btn bg-primary-accent hover:bg-primary-hover transition-colors text-white rounded-xl"
+                            data-value="+">+</button>
+
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="4">4</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="5">5</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="6">6</button>
+                        <button
+                            class="calc-btn row-span-2 bg-secondary-accent hover:bg-secondary-hover transition-colors text-white rounded-xl"
+                            data-value="=">=</button>
+
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="1">1</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="2">2</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="3">3</button>
+
+                        <button
+                            class="calc-btn col-span-2 bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="0">0</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value=".">.</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-lg font-medium mb-2">Calendario</h3>
+                <div class="bg-gray-700 p-3 rounded-xl text-center">
+                    <div class="flex justify-between items-center mb-2">
+                        <button id="prevMonth"
+                            class="p-2 rounded-full text-gray-300 hover:text-white transition-colors duration-200"><i
+                                class="fas fa-chevron-left"></i></button>
+                        <span id="currentMonthYear" class="font-semibold">Mayo 2025</span>
+                        <button id="nextMonth"
+                            class="p-2 rounded-full text-gray-300 hover:text-white transition-colors duration-200"><i
+                                class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="grid grid-cols-7 gap-1 text-sm">
+                        <div class="text-gray-400">Lun</div>
+                        <div class="text-gray-400">Mar</div>
+                        <div class="text-gray-400">Mié</div>
+                        <div class="text-gray-400">Jue</div>
+                        <div class="text-gray-400">Vie</div>
+                        <div class="text-gray-400">Sáb</div>
+                        <div class="text-gray-400">Dom</div>
+                        <div class="py-1"></div>
+                        <div class="py-1"></div>
+                        <div class="py-1"></div>
+                        <div class="py-1">1</div>
+                        <div class="py-1">2</div>
+                        <div class="py-1">3</div>
+                        <div class="py-1">4</div>
+                        <div class="py-1">5</div>
+                        <div class="py-1">6</div>
+                        <div class="py-1">7</div>
+                        <div class="py-1">8</div>
+                        <div class="py-1">9</div>
+                        <div class="py-1">10</div>
+                        <div class="py-1">11</div>
+                        <div class="py-1">12</div>
+                        <div class="py-1">13</div>
+                        <div class="py-1">14</div>
+                        <div class="py-1">15</div>
+                        <div class="py-1">16</div>
+                        <div class="py-1">17</div>
+                        <div class="py-1">18</div>
+                        <div class="py-1">19</div>
+                        <div class="py-1">20</div>
+                        <div class="py-1 bg-primary-accent rounded-full text-white">21</div>
+                        <div class="py-1">22</div>
+                        <div class="py-1">23</div>
+                        <div class="py-1">24</div>
+                        <div class="py-1">25</div>
+                        <div class="py-1">26</div>
+                        <div class="py-1">27</div>
+                        <div class="py-1">28</div>
+                        <div class="py-1">29</div>
+                        <div class="py-1">30</div>
+                        <div class="py-1">31</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div id="newProductModal"
+        class="fixed inset-0 bg-text-dark bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-bg-lightest p-8 rounded-xl shadow-xl w-full max-w-2xl relative max-h-[90vh] overflow-y-auto">
+            <button class="absolute top-4 right-4 text-text-secondary hover:text-text-dark text-xl close-modal">
+                <i class="fas fa-times"></i> </button>
+            <h2 class="text-2xl font-semibold mb-6 text-text-dark">Registrar Nuevo Producto</h2>
+            <form>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="productCode" class="block text-sm font-medium text-text-dark mb-1">Código de
+                            Producto</label>
+                        <input type="text" id="productCode"
+                            class="p-3 border border-border-gray rounded-xl w-full bg-bg-light text-text-dark" readonly>
+                    </div>
+                    <div>
+                        <label for="productName" class="block text-sm font-medium text-text-dark mb-1">Nombre de
+                            Producto</label>
+                        <input type="text" id="productName"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
+                            placeholder="Ej: Laptop Gamer X1">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="productDescription"
+                        class="block text-sm font-medium text-text-dark mb-1">Descripción</label>
+                    <textarea id="productDescription" rows="3"
+                        class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
+                        placeholder="Descripción detallada del producto"></textarea>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label for="unitCost" class="block text-sm font-medium text-text-dark mb-1">Costo
+                            Unitario</label>
+                        <input type="number" id="unitCost"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
+                            placeholder="0.00">
+                    </div>
+                    <div>
+                        <label for="profitMargin" class="block text-sm font-medium text-text-dark mb-1">Margen de
+                            Ganancia (%)</label>
+                        <input type="number" id="profitMargin"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
+                            value="50">
+                    </div>
+                    <div>
+                        <label for="suggestedPrice" class="block text-sm font-medium text-text-dark mb-1">Precio de
+                            Venta Sugerido</label>
+                        <input type="text" id="suggestedPrice"
+                            class="p-3 border border-border-gray rounded-xl w-full bg-bg-light text-text-dark" readonly
+                            value="$0.00">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label for="initialStock" class="block text-sm font-medium text-text-dark mb-1">Stock
+                            Inicial</label>
+                        <input type="number" id="initialStock"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
+                            placeholder="0">
+                    </div>
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-text-dark mb-1">Categoría</label>
+                        <select id="category"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                            <option value="">Seleccione una categoría</option>
+                            <option value="electronica">Electrónica</option>
+                            <option value="perifericos">Periféricos</option>
+                            <option value="nueva-categoria">+ Nueva Categoría</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="supplier" class="block text-sm font-medium text-text-dark mb-1">Proveedor
+                            Principal</label>
+                        <select id="supplier"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                            <option value="">Seleccione un proveedor</option>
+                            <option value="tech-suppliers">Tech Suppliers S.A.</option>
+                            <option value="global-dist">Global Distribuidores</option>
+                            <option value="nuevo-proveedor">+ Nuevo Proveedor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label for="productImage" class="block text-sm font-medium text-text-dark mb-1">Imagen del
+                        Producto</label>
+                    <input type="file" id="productImage" accept="image/*"
+                        class="block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-accent file:text-white hover:file:bg-primary-hover">
+                    <div id="imagePreview"
+                        class="mt-2 w-32 h-32 bg-bg-light rounded-xl flex items-center justify-center text-text-secondary overflow-hidden">
+                        <i class="fas fa-image text-4xl"></i>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button"
+                        class="bg-text-secondary text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-colors duration-200 close-modal">Cancelar</button>
+                    <button type="submit"
+                        class="bg-primary-accent text-white px-6 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200">Guardar
+                        Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="newPurchaseModal"
+        class="fixed inset-0 bg-text-dark bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-bg-lightest p-8 rounded-xl shadow-xl w-full max-w-3xl relative max-h-[90vh] overflow-y-auto">
+            <button class="absolute top-4 right-4 text-text-secondary hover:text-text-dark text-xl close-modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-2xl font-semibold mb-6 text-text-dark">Registrar Nueva Compra</h2>
+            <form>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="purchaseDate" class="block text-sm font-medium text-text-dark mb-1">Fecha de
+                            Compra</label>
+                        <input type="date" id="purchaseDate"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                    </div>
+                    <div>
+                        <label for="purchaseSupplier"
+                            class="block text-sm font-medium text-text-dark mb-1">Proveedor</label>
+                        <select id="purchaseSupplier"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                            <option value="">Seleccione un proveedor</option>
+                            <option value="tech-suppliers">Tech Suppliers S.A.</option>
+                            <option value="global-dist">Global Distribuidores</option>
+                            <option value="nuevo-proveedor">+ Nuevo Proveedor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-medium mb-3 text-text-dark">Detalle de Productos</h3>
+                <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-4">
+                    <input type="text" id="productSearchPurchase" placeholder="Buscar producto por código o nombre..."
+                        class="p-3 border border-border-gray rounded-xl flex-1 focus:outline-none focus:ring-2 focus:ring-primary-accent w-full">
+                    <button type="button" id="addProductToPurchase"
+                        class="bg-primary-accent text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200 w-full sm:w-auto">Agregar
+                        Producto</button>
+                </div>
+
+                <div class="overflow-x-auto mb-6">
+                    <table id="purchaseProductsTable"
+                        class="min-w-full bg-bg-lightest border border-border-gray rounded-xl">
+                        <thead class="bg-bg-light">
+                            <tr>
+                                <th
+                                    class="py-2 px-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                    Nombre</th>
+                                <th
+                                    class="py-2 px-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                    Código</th>
+                                <th
+                                    class="py-2 px-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                    Cantidad</th>
+                                <th
+                                    class="py-2 px-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                    Costo Unitario</th>
+                                <th
+                                    class="py-2 px-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                    Subtotal</th>
+                                <th
+                                    class="py-2 px-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                    Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-border-gray hover:bg-bg-lightest">
+                                <td class="py-2 px-3">Laptop Gamer X1</td>
+                                <td class="py-2 px-3">SKU-20250521-123456-ABC1</td>
+                                <td class="py-2 px-3"><input type="number" value="1"
+                                        class="w-20 p-1 border border-border-gray rounded-lg"></td>
+                                <td class="py-2 px-3"><input type="number" value="1200.00"
+                                        class="w-24 p-1 border border-border-gray rounded-lg"></td>
+                                <td class="py-2 px-3">$1200.00</td>
+                                <td class="py-2 px-3"><button
+                                        class="bg-red-500 text-white px-2 py-1 rounded-lg text-xs hover:bg-red-600">Eliminar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flex justify-end items-center text-xl font-semibold text-text-dark mb-6">
+                    Total de la Compra: <span id="purchaseTotal" class="ml-2">$1200.00</span>
+                </div>
+
+                <div class="flex justify-end space-x-4">
+                    <button type="button"
+                        class="bg-text-secondary text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-colors duration-200 close-modal">Cancelar</button>
+                    <button type="submit"
+                        class="bg-primary-accent text-white px-6 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200">Guardar
+                        Compra</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="newSaleModal"
+        class="fixed inset-0 bg-text-dark bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-bg-lightest p-8 rounded-xl shadow-xl w-full max-w-3xl relative max-h-[90vh] overflow-y-auto">
+            <button class="absolute top-4 right-4 text-text-secondary hover:text-text-dark text-xl close-modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-2xl font-semibold mb-6 text-text-dark">Registrar Nueva Venta</h2>
+            <form>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="saleDate" class="block text-sm font-medium text-text-dark mb-1">Fecha de
+                            Venta</label>
+                        <input type="date" id="saleDate"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                    </div>
+                    <div>
+                        <label for="saleClient" class="block text-sm font-medium text-text-dark mb-1">Cliente
+                            (Opcional)</label>
+                        <input type="text" id="saleClient"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
+                            placeholder="Nombre del cliente">
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-medium mb-3 text-text-dark">Detalle de Productos</h3>
+                <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-4">
+                    <input type="text" id="productSearchSale" placeholder="Buscar producto por código o nombre..."
+                        class="p-3 border border-border-gray rounded-xl flex-1 focus:outline-none focus:ring-2 focus:ring-primary-accent w-full">
+                    <button type="button" id="addProductToSale"
+                        class="bg-primary-accent text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200 w-full sm:w-auto">Agregar
+                        Producto</button>
+                </div>
+
+                <div class="overflow-x-auto mb-6">
+                    <table id="saleProductsTable"
+                        class="min-w-full bg-bg-lightest border border-border-gray rounded-xl">
+                        <thead class="bg-bg-light">
+                            <tr>
+                                <th
+                                    class="py-2 px-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                    Nombre</th>
+                                <th
+                                    class="py-2 px-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                    Código</th>
+                                <th
+                                    class="py-2 px-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                    Cantidad</th>
+                                <th
+                                    class="py-2 px-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                    Precio Sugerido</th>
+                                <th
+                                    class="py-2 px-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                    Precio Final</th>
+                                <th
+                                    class="py-2 px-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                    Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-border-gray hover:bg-bg-lightest">
+                                <td class="py-2 px-3">Laptop Gamer X1</td>
+                                <td class="py-2 px-3">SKU-20250521-123456-ABC1</td>
+                                <td class="py-2 px-3"><input type="number" value="1"
+                                        class="w-20 p-1 border border-border-gray rounded-lg"></td>
+                                <td class="py-2 px-3">$1800.00</td>
+                                <td class="py-2 px-3"><input type="number" value="1800.00"
+                                        class="w-24 p-1 border border-border-gray rounded-lg"></td>
+                                <td class="py-2 px-3"><button
+                                        class="bg-red-500 text-white px-2 py-1 rounded-lg text-xs hover:bg-red-600">Eliminar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flex justify-end items-center text-xl font-semibold text-text-dark mb-6">
+                    Total de la Venta: <span id="saleTotal" class="ml-2">$1800.00</span>
+                </div>
+
+                <div class="flex justify-end space-x-4">
+                    <button type="button"
+                        class="bg-text-secondary text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-colors duration-200 close-modal">Cancelar</button>
+                    <button type="submit"
+                        class="bg-primary-accent text-white px-6 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200">Registrar
+                        Venta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="messageBox"
+        class="fixed inset-0 bg-text-dark bg-opacity-50 flex items-center justify-center z-[100] hidden">
+        <div class="bg-bg-lightest p-6 rounded-xl shadow-xl max-w-sm w-full text-center relative">
+            <h3 id="messageBoxTitle" class="text-xl font-semibold mb-3 text-text-dark"></h3>
+            <p id="messageBoxContent" class="text-text-secondary mb-6"></p>
+            <button id="messageBoxClose"
+                class="bg-primary-accent text-white px-5 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Elementos del DOM ---
+            const mainSidebar = document.getElementById('mainSidebar');
+            const toggleMainSidebarBtn = document.getElementById('toggleMainSidebar'); // Botón para desktop
+            const toggleMainSidebarMobileBtn = document.getElementById('toggleMainSidebarMobile'); // Botón para mobile
+            const mainNav = document.getElementById('mainNav'); // Contenedor para delegación de eventos
+            const navTextElements = document.querySelectorAll('.nav-text');
+            const moduleContents = document.querySelectorAll('.module-content');
+            const moduleTitle = document.getElementById('moduleTitle');
+            const toggleSecondarySidebarBtn = document.getElementById('toggleSecondarySidebar');
+            const secondarySidebar = document.getElementById('secondarySidebar');
+            const closeSecondarySidebarBtn = document.getElementById('closeSecondarySidebar');
+            const companyNameDiv = document.getElementById('companyName'); // Elemento del nombre de la empresa
+
+            const newProductModal = document.getElementById('newProductModal');
+            const openNewProductModalBtn = document.getElementById('openNewProductModal');
+            const newPurchaseModal = document.getElementById('newPurchaseModal');
+            const openNewPurchaseModalBtn = document.getElementById('openNewPurchaseModal');
+            const newSaleModal = document.getElementById('newSaleModal');
+            const openNewSaleModalBtn = document.getElementById('openNewSaleModal');
+            const closeModalBtns = document.querySelectorAll('.close-modal');
+
+            const productCodeInput = document.getElementById('productCode');
+            const unitCostInput = document.getElementById('unitCost');
+            const profitMarginInput = document.getElementById('profitMargin');
+            const suggestedPriceInput = document.getElementById('suggestedPrice');
+            const productImageInput = document.getElementById('productImage');
+            const imagePreview = document.getElementById('imagePreview');
+
+            const notepad = document.getElementById('notepad');
+            const saveNoteBtn = document.getElementById('saveNote');
+            const loadNoteBtn = document.getElementById('loadNote');
+
+            const calculatorDisplay = document.getElementById('calculatorDisplay');
+            const calculatorButtons = document.querySelectorAll('.calc-btn');
+
+            const messageBox = document.getElementById('messageBox');
+            const messageBoxTitle = document.getElementById('messageBoxTitle');
+            const messageBoxContent = document.getElementById('messageBoxContent');
+            const messageBoxClose = document.getElementById('messageBoxClose');
+
+            const exportInventoryCSVBtn = document.getElementById('exportInventoryCSV');
+            const printInventoryBtn = document.getElementById('printInventory');
+            const exportPurchasesCSVBtn = document.getElementById('exportPurchasesCSV');
+            const exportSalesCSVBtn = document.getElementById('exportSalesCSV');
+            const inventoryTableBody = document.getElementById('inventoryTableBody');
+
+            // --- Funciones de Utilidad ---
+
+            /**
+             * Muestra una caja de mensajes personalizada en lugar de alert().
+             * @param {string} title - Título del mensaje.
+             * @param {string} content - Contenido del mensaje.
+             */
+            function showMessageBox(title, content) {
+                messageBoxTitle.textContent = title;
+                messageBoxContent.textContent = content;
+                messageBox.classList.remove('hidden');
+            }
+
+            // --- Lógica de Navegación de Módulos (Delegación de Eventos) ---
+
+            mainNav.addEventListener('click', (e) => {
+                const link = e.target.closest('a'); // Usa delegación de eventos
+                if (!link) return; // Si no se hizo clic en un enlace, salir
+
+                e.preventDefault();
+                const targetModuleId = link.dataset.module + '-module';
+
+                // Remover 'active-link' de todos los enlaces y 'active' de todos los módulos
+                document.querySelectorAll('#mainSidebar nav ul li a').forEach(navLink => navLink.classList.remove('active-link'));
+                moduleContents.forEach(moduleContent => moduleContent.classList.remove('active'));
+
+                // Añadir 'active-link' al enlace clicado y 'active' al módulo objetivo
+                link.classList.add('active-link');
+                document.getElementById(targetModuleId).classList.add('active');
+                moduleTitle.textContent = link.querySelector('.nav-text').textContent; // Obtener texto del span
+
+                // Colapsar la barra lateral principal en móviles después de la selección
+                if (window.innerWidth < 768) {
+                    mainSidebar.classList.add('-translate-x-full');
+                }
+            });
+
+            // --- Lógica de Barra Lateral Principal (Colapsar/Expandir) ---
+
+            let isMainSidebarCollapsed = false;
+
+            /**
+             * Actualiza el estado visual de la barra lateral principal (ancho, texto).
+             */
+            function updateMainSidebarState() {
+                const navLinks = document.querySelectorAll('#mainSidebar nav ul li a');
+                const sigecTitle = mainSidebar.querySelector('.text-2xl.font-bold');
+
+                if (isMainSidebarCollapsed) {
+                    mainSidebar.classList.remove('w-64');
+                    mainSidebar.classList.add('w-16'); /* Más pequeña */
+                    sigecTitle.classList.add('hidden'); // Oculta "SIGEC"
+                    companyNameDiv.classList.add('hidden'); // Oculta el nombre de la empresa
+                    document.querySelector('main').style.marginLeft = '4rem'; /* w-16 = 64px = 4rem */
+
+                    navLinks.forEach(link => {
+                        link.classList.remove('justify-start');
+                        link.classList.add('justify-center'); // Centra el icono
+                        link.querySelector('.nav-text').classList.add('hidden'); // Oculta el texto
+                        link.querySelector('i').classList.remove('mr-3'); // Quita el margen del icono
+                        // No es necesario cambiar el padding aquí, el p-3 inicial ya es suficiente para el hover
+                    });
+                } else {
+                    mainSidebar.classList.remove('w-16'); /* Más pequeña */
+                    mainSidebar.classList.add('w-64');
+                    sigecTitle.classList.remove('hidden'); // Muestra "SIGEC"
+                    companyNameDiv.classList.remove('hidden'); // Muestra el nombre de la empresa
+                    document.querySelector('main').style.marginLeft = '0'; // Restablece el margen
+
+                    navLinks.forEach(link => {
+                        link.classList.remove('justify-center');
+                        link.classList.add('justify-start'); // Alinea el texto al inicio
+                        link.querySelector('.nav-text').classList.remove('hidden'); // Muestra el texto
+                        link.querySelector('i').classList.add('mr-3'); // Vuelve a poner el margen al icono
+                    });
+                }
+            }
+
+            /**
+             * Maneja la responsividad de la barra lateral principal en carga y redimensionamiento.
+             */
+            function handleMainSidebarResponsiveness() {
+                if (window.innerWidth < 768) { // Móviles
+                    mainSidebar.classList.add('fixed', 'h-full', 'z-50', '-translate-x-full');
+                    mainSidebar.classList.remove('w-64', 'w-16', 'relative', 'translate-x-0');
+                    navTextElements.forEach(span => span.classList.remove('hidden')); // Siempre muestra texto en modal de móvil
+                    mainSidebar.querySelector('.text-2xl.font-bold').classList.remove('hidden'); // Oculta el título "SIGEC" en móvil
+                    toggleMainSidebarBtn.classList.add('hidden'); // Oculta el toggle de desktop
+                    toggleMainSidebarMobileBtn.classList.remove('hidden'); // Muestra el toggle para móvil
+                    companyNameDiv.classList.remove('hidden'); // Siempre visible en el modal móvil
+                    document.querySelector('main').style.marginLeft = '0'; // Asegura que el main no tenga margen fijo
+
+                    // Asegurarse de que los enlaces estén en el estado "expandido" para móviles
+                    document.querySelectorAll('#mainSidebar nav ul li a').forEach(link => {
+                        link.classList.remove('justify-center');
+                        link.classList.add('justify-start');
+                        link.querySelector('.nav-text').classList.remove('hidden');
+                        link.querySelector('i').classList.add('mr-3');
+                    });
+
+                } else { // Tablets y PCs
+                    mainSidebar.classList.remove('fixed', 'h-full', 'z-50', '-translate-x-full');
+                    mainSidebar.classList.add('relative', 'translate-x-0');
+                    toggleMainSidebarBtn.classList.remove('hidden'); // Muestra el toggle de desktop
+                    toggleMainSidebarMobileBtn.classList.add('hidden'); // Oculta el toggle para móvil
+                    updateMainSidebarState(); // Aplica el estado colapsado/expandido
+                }
+            }
+
+            // Listeners para los botones de toggle de la barra principal
+            toggleMainSidebarBtn.addEventListener('click', () => {
+                isMainSidebarCollapsed = !isMainSidebarCollapsed;
+                updateMainSidebarState();
+            });
+
+            toggleMainSidebarMobileBtn.addEventListener('click', () => {
+                mainSidebar.classList.remove('-translate-x-full'); // Muestra la barra lateral en móvil
+            });
+
+            // Inicializar y escuchar cambios de tamaño de ventana
+            handleMainSidebarResponsiveness();
+            window.addEventListener('resize', handleMainSidebarResponsiveness);
+
+            // --- Lógica de Barra Lateral Secundaria (Herramientas) ---
+
+            toggleSecondarySidebarBtn.addEventListener('click', () => {
+                secondarySidebar.classList.remove('translate-x-full');
+            });
+
+            closeSecondarySidebarBtn.addEventListener('click', () => {
+                secondarySidebar.classList.add('translate-x-full');
+            });
+
+            // --- Lógica de Modales ---
+
+            openNewProductModalBtn.addEventListener('click', () => {
+                newProductModal.classList.remove('hidden');
+                // Generar código de producto automático (SKU-YYYYMMDD-HHMMSS-RANDOM)
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                const randomChars = Math.random().toString(36).substring(2, 6).toUpperCase(); // 4 caracteres alfanuméricos
+                productCodeInput.value = `SKU-${year}${month}${day}-${hours}${minutes}${seconds}-${randomChars}`;
+            });
+
+            openNewPurchaseModalBtn.addEventListener('click', () => {
+                newPurchaseModal.classList.remove('hidden');
+                document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
+            });
+
+            openNewSaleModalBtn.addEventListener('click', () => {
+                newSaleModal.classList.remove('hidden');
+                document.getElementById('saleDate').value = new Date().toISOString().split('T')[0];
+            });
+
+            closeModalBtns.forEach(button => {
+                button.addEventListener('click', () => {
+                    newProductModal.classList.add('hidden');
+                    newPurchaseModal.classList.add('hidden');
+                    newSaleModal.classList.add('hidden');
+                });
+            });
+
+            // --- Simulación de Envío de Formularios (Lógica de Negocio) ---
+
+            newProductModal.querySelector('form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                showMessageBox('Producto Guardado', 'El producto ha sido guardado exitosamente (simulado).');
+                newProductModal.classList.add('hidden');
+                // Lógica de Negocio (Backend - Google Apps Script):
+                // 1. Enviar datos del nuevo producto a Google Apps Script.
+                // 2. GAS procesaría los datos y los guardaría en la hoja de Google Sheets 'Productos'.
+                //    El margen de ganancia se almacena como parte de la definición del producto.
+            });
+
+            newPurchaseModal.querySelector('form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                showMessageBox('Compra Registrada', 'La compra ha sido registrada exitosamente (simulado).');
+                newPurchaseModal.classList.add('hidden');
+                // Lógica de Negocio (Backend - Google Apps Script):
+                // 1. Cuando se adquieren nuevos productos, se registran en el sistema (aquí, la compra).
+                // 2. GAS registraría la compra en la hoja 'Compras'.
+                // 3. Automáticamente o manualmente, estos productos ingresan al inventario:
+                //    GAS actualizaría el Stock Actual de cada producto en la hoja 'Inventario'.
+                //    GAS recalcularía el Costo Unitario del producto en el inventario (ej. promedio ponderado o último costo).
+            });
+
+            newSaleModal.querySelector('form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                showMessageBox('Venta Registrada', 'La venta ha sido registrada exitosamente (simulado).');
+                newSaleModal.classList.add('hidden');
+                // Lógica de Negocio (Backend - Google Apps Script):
+                // 1. A medida que los productos se venden o se utilizan (aquí, la venta).
+                // 2. GAS registraría la venta en la hoja 'Ventas'.
+                // 3. Se descuenta automáticamente del inventario:
+                //    GAS reduciría el Stock Actual de cada producto en la hoja 'Inventario'.
+                // 4. Reposición: Cuando el stock llega a cierto nivel mínimo, el sistema puede generar alertas o pedidos de compra automáticos.
+                //    Esto se implementaría en GAS, verificando el stock después de cada venta y activando notificaciones.
+            });
+
+            // --- Cálculo del Precio de Venta Sugerido ---
+
+            function calculateSuggestedPrice() {
+                const cost = parseFloat(unitCostInput.value);
+                const margin = parseFloat(profitMarginInput.value);
+                // Usar isFinite para validar que sean números finitos
+                if (isFinite(cost) && isFinite(margin) && cost >= 0 && margin >= 0) {
+                    const suggestedPrice = cost * (1 + margin / 100);
+                    suggestedPriceInput.value = `$${suggestedPrice.toFixed(2)}`;
+                } else {
+                    suggestedPriceInput.value = '$0.00';
+                }
+            }
+            unitCostInput.addEventListener('input', calculateSuggestedPrice);
+            profitMarginInput.addEventListener('input', calculateSuggestedPrice);
+            calculateSuggestedPrice(); // Realiza el cálculo inicial al cargar el modal
+
+            // --- Vista previa de la imagen del producto ---
+
+            productImageInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Product Image" class="w-full h-full object-cover rounded-xl">`;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreview.innerHTML = `<i class="fas fa-image text-4xl"></i>`;
+                }
+            });
+
+            // --- Funcionalidad del Anotador ---
+
+            saveNoteBtn.addEventListener('click', () => {
+                localStorage.setItem('sigec_notepad_note', notepad.value);
+                showMessageBox('Nota Guardada', 'Tu nota ha sido guardada localmente.');
+            });
+
+            loadNoteBtn.addEventListener('click', () => {
+                const savedNote = localStorage.getItem('sigec_notepad_note');
+                if (savedNote) {
+                    notepad.value = savedNote;
+                    showMessageBox('Nota Cargada', 'Tu nota ha sido cargada desde el almacenamiento local.');
+                } else {
+                    showMessageBox('Sin Notas', 'No hay notas guardadas.');
+                }
+            });
+
+            // --- Funcionalidad de la Calculadora Rápida ---
+
+            let currentInput = '0';
+            let operator = null;
+            let firstOperand = null;
+            let waitingForSecondOperand = false;
+
+            function updateDisplay() {
+                calculatorDisplay.value = currentInput;
+            }
+
+            calculatorButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const value = e.target.dataset.value;
+
+                    if (value === 'C') {
+                        currentInput = '0';
+                        operator = null;
+                        firstOperand = null;
+                        waitingForSecondOperand = false;
+                    } else if (value === '=') {
+                        if (operator && firstOperand !== null) {
+                            const secondOperand = parseFloat(currentInput);
+                            let result;
+                            try {
+                                switch (operator) {
+                                    case '+': result = firstOperand + secondOperand; break;
+                                    case '-': result = firstOperand - secondOperand; break;
+                                    case '*': result = firstOperand * secondOperand; break;
+                                    case '/':
+                                        if (secondOperand === 0) {
+                                            showMessageBox('Error de Cálculo', 'No se puede dividir por cero.');
+                                            currentInput = 'Error';
+                                            return;
+                                        }
+                                        result = firstOperand / secondOperand;
+                                        break;
+                                }
+                                currentInput = String(result);
+                            } catch (error) {
+                                showMessageBox('Error de Cálculo', 'Ha ocurrido un error en la operación.');
+                                currentInput = 'Error';
+                            }
+                            firstOperand = null;
+                            operator = null;
+                            waitingForSecondOperand = false;
+                        }
+                    } else if (['+', '-', '*', '/'].includes(value)) {
+                        if (firstOperand === null) {
+                            firstOperand = parseFloat(currentInput);
+                        } else if (operator) {
+                            const secondOperand = parseFloat(currentInput);
+                            let result;
+                            try {
+                                switch (operator) {
+                                    case '+': result = firstOperand + secondOperand; break;
+                                    case '-': result = firstOperand - secondOperand; break;
+                                    case '*': result = firstOperand * secondOperand; break;
+                                    case '/':
+                                        if (secondOperand === 0) {
+                                            showMessageBox('Error de Cálculo', 'No se puede dividir por cero.');
+                                            currentInput = 'Error';
+                                            return;
+                                        }
+                                        result = firstOperand / secondOperand;
+                                        break;
+                                }
+                                firstOperand = result;
+                                currentInput = String(result);
+                            } catch (error) {
+                                showMessageBox('Error de Cálculo', 'Ha ocurrido un error en la operación.');
+                                currentInput = 'Error';
+                            }
+                        }
+                        operator = value;
+                        waitingForSecondOperand = true;
+                    } else if (value === '.') {
+                        if (!currentInput.includes('.')) {
+                            currentInput += '.';
+                        }
+                    } else { // Números
+                        if (waitingForSecondOperand || currentInput === '0' || currentInput === 'Error') {
+                            currentInput = value;
+                            waitingForSecondOperand = false;
+                        } else {
+                            currentInput += value;
+                        }
+                    }
+                    updateDisplay();
+                });
+            });
+            updateDisplay();
+
+            // --- Funcionalidad básica del Calendario ---
+
+            const currentMonthYearSpan = document.getElementById('currentMonthYear');
+            const prevMonthBtn = document.getElementById('prevMonth');
+            const nextMonthBtn = document.getElementById('nextMonth');
+            let currentDate = new Date();
+
+            function updateCalendarDisplay() {
+                const options = { month: 'long', year: 'numeric' };
+                currentMonthYearSpan.textContent = currentDate.toLocaleDateString('es-ES', options);
+            }
+
+            prevMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                updateCalendarDisplay();
+            });
+
+            nextMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                updateCalendarDisplay();
+            });
+
+            updateCalendarDisplay();
+
+            // --- Funcionalidad de Exportación CSV ---
+
+            function exportTableToCSV(tableId, filename) {
+                const table = document.getElementById(tableId);
+                let csv = [];
+                let headers = [];
+                table.querySelectorAll('thead th').forEach((th, index) => {
+                    if (index !== table.querySelectorAll('thead th').length - 1) { // Excluir 'Acciones'
+                        headers.push(th.textContent.trim());
+                    }
+                });
+                csv.push(headers.join(','));
+
+                table.querySelectorAll('tbody tr').forEach(row => {
+                    let rowData = [];
+                    row.querySelectorAll('td').forEach((td, index) => {
+                        if (index !== row.querySelectorAll('td').length - 1) { // Excluir 'Acciones'
+                            let cellText = td.querySelector('input') ? td.querySelector('input').value : td.textContent.trim();
+                            rowData.push(`"${cellText.replace(/"/g, '""')}"`);
+                        }
+                    });
+                    csv.push(rowData.join(','));
+                });
+
+                const csvFile = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+                const downloadLink = document.createElement('a');
+                downloadLink.href = URL.createObjectURL(csvFile);
+                downloadLink.download = filename;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                showMessageBox('Exportación Completa', `Los datos de la tabla han sido exportados a ${filename}.`);
+            }
+
+            exportInventoryCSVBtn.addEventListener('click', () => {
+                exportTableToCSV('inventoryTableBody', 'inventario.csv');
+            });
+
+            exportPurchasesCSVBtn.addEventListener('click', () => {
+                showMessageBox('Exportar Compras', 'Esta función exportaría los datos de compras a CSV. (Simulado)');
+            });
+
+            exportSalesCSVBtn.addEventListener('click', () => {
+                showMessageBox('Exportar Ventas', 'Esta función exportaría los datos de ventas a CSV. (Simulado)');
+            });
+
+            // --- Funcionalidad de Impresión ---
+
+            printInventoryBtn.addEventListener('click', () => {
+                window.print();
+            });
+
+            // --- Listener para cerrar la caja de mensajes ---
+            messageBoxClose.addEventListener('click', () => {
+                messageBox.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+
+</html>
