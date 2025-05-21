@@ -824,24 +824,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-b border-border-gray hover:bg-bg-lightest">
-                                <td class="py-2 px-3">Laptop Gamer X1</td>
-                                <td class="py-2 px-3">SKU-20250521-123456-ABC1</td>
-                                <td class="py-2 px-3"><input type="number" value="1"
-                                        class="w-20 p-1 border border-border-gray rounded-lg"></td>
-                                <td class="py-2 px-3"><input type="number" value="1200.00"
-                                        class="w-24 p-1 border border-border-gray rounded-lg"></td>
-                                <td class="py-2 px-3">$1200.00</td>
-                                <td class="py-2 px-3"><button
-                                        class="bg-red-500 text-white px-2 py-1 rounded-lg text-xs hover:bg-red-600">Eliminar</button>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="flex justify-end items-center text-xl font-semibold text-text-dark mb-6">
-                    Total de la Compra: <span id="purchaseTotal" class="ml-2">$1200.00</span>
+                    Total de la Compra: <span id="purchaseTotal" class="ml-2">$0.00</span>
                 </div>
 
                 <div class="flex justify-end space-x-4">
@@ -914,24 +902,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-b border-border-gray hover:bg-bg-lightest">
-                                <td class="py-2 px-3">Laptop Gamer X1</td>
-                                <td class="py-2 px-3">SKU-20250521-123456-ABC1</td>
-                                <td class="py-2 px-3"><input type="number" value="1"
-                                        class="w-20 p-1 border border-border-gray rounded-lg"></td>
-                                <td class="py-2 px-3">$1800.00</td>
-                                <td class="py-2 px-3"><input type="number" value="1800.00"
-                                        class="w-24 p-1 border border-border-gray rounded-lg"></td>
-                                <td class="py-2 px-3"><button
-                                        class="bg-red-500 text-white px-2 py-1 rounded-lg text-xs hover:bg-red-600">Eliminar</button>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="flex justify-end items-center text-xl font-semibold text-text-dark mb-6">
-                    Total de la Venta: <span id="saleTotal" class="ml-2">$1800.00</span>
+                    Total de la Venta: <span id="saleTotal" class="ml-2">$0.00</span>
                 </div>
 
                 <div class="flex justify-end space-x-4">
@@ -1002,6 +978,11 @@
             const exportPurchasesCSVBtn = document.getElementById('exportPurchasesCSV');
             const exportSalesCSVBtn = document.getElementById('exportSalesCSV');
             const inventoryTableBody = document.getElementById('inventoryTableBody');
+
+            const addProductToSaleBtn = document.getElementById('addProductToSale');
+            const productSearchSaleInput = document.getElementById('productSearchSale');
+            const saleProductsTableBody = document.querySelector('#saleProductsTable tbody');
+            const saleTotalSpan = document.getElementById('saleTotal');
 
             // --- Funciones de Utilidad ---
 
@@ -1142,7 +1123,7 @@
                 newProductModal.classList.remove('hidden');
                 // Generar código de producto automático (SKU-YYYYMMDD-HHMMSS-RANDOM)
                 const now = new Date();
-                const year = now.getFullYear();
+                const year = String(now.getFullYear()).slice(-2); // Últimos 2 dígitos del año
                 const month = String(now.getMonth() + 1).padStart(2, '0');
                 const day = String(now.getDate()).padStart(2, '0');
                 const hours = String(now.getHours()).padStart(2, '0');
@@ -1160,6 +1141,9 @@
             openNewSaleModalBtn.addEventListener('click', () => {
                 newSaleModal.classList.remove('hidden');
                 document.getElementById('saleDate').value = new Date().toISOString().split('T')[0];
+                // Limpiar la tabla de ventas al abrir el modal
+                saleProductsTableBody.innerHTML = '';
+                updateSaleTotal();
             });
 
             closeModalBtns.forEach(button => {
@@ -1429,6 +1413,73 @@
             messageBoxClose.addEventListener('click', () => {
                 messageBox.classList.add('hidden');
             });
+
+            // --- Lógica de Adición de Productos a la Venta (Dinámico) ---
+            addProductToSaleBtn.addEventListener('click', () => {
+                // Simulación: Obtener un producto de ejemplo o buscarlo
+                const productName = productSearchSaleInput.value.trim();
+                if (!productName) {
+                    showMessageBox('Error', 'Por favor, ingrese un nombre o código de producto para agregar.');
+                    return;
+                }
+
+                // Aquí deberías buscar el producto en tu base de datos/inventario real
+                // Por ahora, simulamos un producto con datos fijos para demostración
+                const productCode = `SKU-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+                const suggestedPrice = 100.00 + Math.floor(Math.random() * 50); // Precio aleatorio
+                const quantity = 1; // Cantidad inicial
+
+                const newRow = document.createElement('tr');
+                newRow.classList.add('border-b', 'border-border-gray', 'hover:bg-bg-lightest');
+                newRow.innerHTML = `
+                    <td class="py-2 px-3">${productName}</td>
+                    <td class="py-2 px-3">${productCode}</td>
+                    <td class="py-2 px-3">
+                        <input type="number" value="${quantity}" min="1" class="w-20 p-1 border border-border-gray rounded-lg quantity-input">
+                    </td>
+                    <td class="py-2 px-3 sale-suggested-price">$${suggestedPrice.toFixed(2)}</td>
+                    <td class="py-2 px-3">
+                        <input type="number" value="${suggestedPrice.toFixed(2)}" class="w-24 p-1 border border-border-gray rounded-lg final-price-input">
+                    </td>
+                    <td class="py-2 px-3">
+                        <button class="bg-red-500 text-white px-2 py-1 rounded-lg text-xs hover:bg-red-600 remove-sale-item">Eliminar</button>
+                    </td>
+                `;
+                saleProductsTableBody.appendChild(newRow);
+
+                // Limpiar el campo de búsqueda después de añadir
+                productSearchSaleInput.value = '';
+
+                // Añadir listeners a los nuevos inputs y botones de eliminar
+                const quantityInput = newRow.querySelector('.quantity-input');
+                const finalPriceInput = newRow.querySelector('.final-price-input');
+                const removeButton = newRow.querySelector('.remove-sale-item');
+
+                quantityInput.addEventListener('input', updateSaleTotal);
+                finalPriceInput.addEventListener('input', updateSaleTotal);
+                removeButton.addEventListener('click', (e) => {
+                    e.target.closest('tr').remove();
+                    updateSaleTotal();
+                });
+
+                updateSaleTotal(); // Actualizar el total de la venta
+            });
+
+            /**
+             * Calcula y actualiza el total de la venta.
+             */
+            function updateSaleTotal() {
+                let total = 0;
+                saleProductsTableBody.querySelectorAll('tr').forEach(row => {
+                    const quantity = parseFloat(row.querySelector('.quantity-input').value) || 0;
+                    const finalPrice = parseFloat(row.querySelector('.final-price-input').value) || 0;
+                    total += (quantity * finalPrice);
+                });
+                saleTotalSpan.textContent = `$${total.toFixed(2)}`;
+            }
+
+            // Inicializar el total de la venta al cargar el modal
+            updateSaleTotal();
         });
     </script>
 </body>
