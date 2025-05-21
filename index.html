@@ -180,6 +180,113 @@
                 display: none;
             }
         }
+
+        /* Responsive Table Layout for Mobile (Inventario Module) */
+        @media (max-width: 767px) {
+
+            /* Small screens (mobile) */
+            #inventario-module table,
+            #inventario-module thead,
+            #inventario-module tbody,
+            #inventario-module th,
+            #inventario-module td,
+            #inventario-module tr {
+                display: block;
+            }
+
+            #inventario-module thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            #inventario-module tr {
+                border: 1px solid #C0C7D1;
+                /* border-gray */
+                margin-bottom: 1rem;
+                /* Adds space between "cards" */
+                border-radius: 0.75rem;
+                /* rounded-xl */
+                overflow: hidden;
+                /* Ensures rounded corners apply */
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+                /* shadow-sm */
+            }
+
+            #inventario-module td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                /* Make space for the label */
+                text-align: right;
+                padding-top: 0.75rem;
+                /* py-3 */
+                padding-bottom: 0.75rem;
+                /* py-3 */
+                padding-right: 1rem;
+                /* px-4 */
+                font-size: 0.875rem;
+                /* text-sm */
+            }
+
+            #inventario-module td:before {
+                position: absolute;
+                left: 0;
+                width: 45%;
+                /* Adjust width for label */
+                padding-left: 1rem;
+                /* px-4 */
+                white-space: nowrap;
+                text-align: left;
+                font-weight: 600;
+                /* font-semibold */
+                color: #7F8C8D;
+                /* text-secondary */
+                content: attr(data-label);
+                /* Use data-label attribute for content */
+            }
+
+            /* Specific labels for each column in the Inventory table */
+            #inventoryTableBody td:nth-of-type(1):before {
+                content: "Código:";
+            }
+
+            #inventoryTableBody td:nth-of-type(2):before {
+                content: "Nombre:";
+            }
+
+            #inventoryTableBody td:nth-of-type(3):before {
+                content: "Costo Unitario:";
+            }
+
+            #inventoryTableBody td:nth-of-type(4):before {
+                content: "Precio Sugerido:";
+            }
+
+            #inventoryTableBody td:nth-of-type(5):before {
+                content: "Stock:";
+            }
+
+            #inventoryTableBody td:nth-of-type(6):before {
+                content: "Categoría:";
+            }
+
+            #inventoryTableBody td:nth-of-type(7):before {
+                content: "Acciones:";
+            }
+
+            /* Adjust actions column for mobile to center buttons */
+            #inventoryTableBody td:nth-of-type(7) {
+                text-align: center;
+                padding-left: 1rem;
+                /* Reset padding for actions */
+            }
+
+            #inventoryTableBody td:nth-of-type(7) .flex {
+                justify-content: center;
+                /* Center buttons */
+            }
+        }
     </style>
 </head>
 
@@ -327,13 +434,13 @@
                         </thead>
                         <tbody id="inventoryTableBody">
                             <tr class="border-b border-border-gray hover:bg-bg-lightest">
-                                <td class="py-3 px-4">SKU-20250521-123456-ABC1</td>
-                                <td class="py-3 px-4">Laptop Gamer X1</td>
-                                <td class="py-3 px-4">$1200.00</td>
-                                <td class="py-3 px-4">$1800.00</td>
-                                <td class="py-3 px-4 text-red-500 font-bold">5</td>
-                                <td class="py-3 px-4">Electrónica</td>
-                                <td class="py-3 px-4 flex space-x-2">
+                                <td class="py-3 px-4" data-label="Código:">SKU-20250521-123456-ABC1</td>
+                                <td class="py-3 px-4" data-label="Nombre:">Laptop Gamer X1</td>
+                                <td class="py-3 px-4" data-label="Costo Unitario:">$1200.00</td>
+                                <td class="py-3 px-4" data-label="Precio Sugerido:">$1800.00</td>
+                                <td class="py-3 px-4 text-red-500 font-bold" data-label="Stock:">5</td>
+                                <td class="py-3 px-4" data-label="Categoría:">Electrónica</td>
+                                <td class="py-3 px-4 flex space-x-2" data-label="Acciones:">
                                     <button
                                         class="bg-secondary-accent text-white px-3 py-1 rounded-lg text-sm hover:bg-secondary-hover transition-colors duration-200">Editar</button>
                                     <button
@@ -341,13 +448,13 @@
                                 </td>
                             </tr>
                             <tr class="border-b border-border-gray hover:bg-bg-lightest">
-                                <td class="py-3 px-4">SKU-20250521-123457-DEF2</td>
-                                <td class="py-3 px-4">Teclado Mecánico RGB</td>
-                                <td class="py-3 px-4">$50.00</td>
-                                <td class="py-3 px-4">$75.00</td>
-                                <td class="py-3 px-4">50</td>
-                                <td class="py-3 px-4">Periféricos</td>
-                                <td class="py-3 px-4 flex space-x-2">
+                                <td class="py-3 px-4" data-label="Código:">SKU-20250521-123457-DEF2</td>
+                                <td class="py-3 px-4" data-label="Nombre:">Teclado Mecánico RGB</td>
+                                <td class="py-3 px-4" data-label="Costo Unitario:">$50.00</td>
+                                <td class="py-3 px-4" data-label="Precio Sugerido:">$75.00</td>
+                                <td class="py-3 px-4" data-label="Stock:">50</td>
+                                <td class="py-3 px-4" data-label="Categoría:">Periféricos</td>
+                                <td class="py-3 px-4 flex space-x-2" data-label="Acciones:">
                                     <button
                                         class="bg-secondary-accent text-white px-3 py-1 rounded-lg text-sm hover:bg-secondary-hover transition-colors duration-200">Editar</button>
                                     <button
@@ -355,13 +462,13 @@
                                 </td>
                             </tr>
                             <tr class="border-b border-border-gray hover:bg-bg-lightest">
-                                <td class="py-3 px-4">SKU-20250521-123458-GHI3</td>
-                                <td class="py-3 px-4">Mouse Inalámbrico</td>
-                                <td class="py-3 px-4">$20.00</td>
-                                <td class="py-3 px-4">$35.00</td>
-                                <td class="py-3 px-4 text-red-500 font-bold">10</td>
-                                <td class="py-3 px-4">Periféricos</td>
-                                <td class="py-3 px-4 flex space-x-2">
+                                <td class="py-3 px-4" data-label="Código:">SKU-20250521-123458-GHI3</td>
+                                <td class="py-3 px-4" data-label="Nombre:">Mouse Inalámbrico</td>
+                                <td class="py-3 px-4" data-label="Costo Unitario:">$20.00</td>
+                                <td class="py-3 px-4" data-label="Precio Sugerido:">$35.00</td>
+                                <td class="py-3 px-4 text-red-500 font-bold" data-label="Stock:">10</td>
+                                <td class="py-3 px-4" data-label="Categoría:">Periféricos</td>
+                                <td class="py-3 px-4 flex space-x-2" data-label="Acciones:">
                                     <button
                                         class="bg-secondary-accent text-white px-3 py-1 rounded-lg text-sm hover:bg-secondary-hover transition-colors duration-200">Editar</button>
                                     <button
