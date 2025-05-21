@@ -10,7 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Configuración de Tailwind CSS para colores personalizados (Paleta 2025)
+        // Configuración de Tailwind CSS para colores personalizados (Paleta "Aqua & Coral")
         tailwind.config = {
             theme: {
                 extend: {
@@ -18,17 +18,17 @@
                         inter: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        // Paleta Principal (Moderno 2025)
-                        'primary-accent': '#4F46E5',    // Indigo 600 - para botones principales, acentos
-                        'secondary-accent': '#10B981',  // Emerald 500 - para éxito, resaltados
-                        'bg-lightest': '#F9FAFB',       // Gray 50 - fondo más claro
-                        'bg-light': '#F3F4F6',          // Gray 100 - fondo de tarjetas, elementos
-                        'border-gray': '#E5E7EB',       // Gray 200 - bordes, separadores
-                        'text-dark': '#1F2937',         // Gray 800 - texto principal, UI oscuro
-                        'text-secondary': '#4B5563',    // Gray 600 - texto secundario, placeholders
+                        // Nueva Paleta: Aqua & Coral (Minimalista, Profesional, Tendencias 2025)
+                        'primary-accent': '#28A796',    // Un teal/azul-verde sofisticado
+                        'secondary-accent': '#FF7F50',  // Un coral suave y cálido
+                        'bg-lightest': '#F8F9FA',       // Blanco roto muy claro
+                        'bg-light': '#E9ECEF',          // Gris muy claro para tarjetas
+                        'border-gray': '#CED4DA',       // Gris sutil para bordes
+                        'text-dark': '#212529',         // Negro casi puro para texto principal
+                        'text-secondary': '#6C757D',    // Gris oscuro para texto secundario
                         // Colores para estados (hover/active)
-                        'primary-hover': '#6366F1',     // Indigo 500 - hover de primary-accent
-                        'secondary-hover': '#059669',   // Emerald 600 - hover de secondary-accent
+                        'primary-hover': '#208D7F',     // Tono más oscuro de primary-accent
+                        'secondary-hover': '#E6673E',   // Tono más oscuro de secondary-accent
                     }
                 }
             }
@@ -82,10 +82,17 @@
 
         /* Estilo para el enlace de navegación activo en la barra lateral principal */
         .active-link {
-            background-color: #3730A3;
-            /* Un tono de indigo más oscuro */
+            background-color: #1F8074;
+            /* Un tono de primary-accent más oscuro para el estado activo */
             color: #FFFFFF;
             /* Texto blanco para el enlace activo */
+        }
+
+        /* Estilo para el enlace activo en la barra de navegación móvil */
+        .active-mobile-link {
+            background-color: #1F8074;
+            /* Tono más oscuro de primary-accent para el estado activo */
+            color: #FFFFFF;
         }
 
         /* Ocultar barra de desplazamiento en la barra lateral secundaria (widget) */
@@ -116,6 +123,7 @@
             header,
             .modal,
             #messageBox,
+            #mobileNavBar,
             .flex.justify-between.items-center.mb-4.space-y-4.md\:space-y-0.md\:space-x-4,
             /* Controles de búsqueda/botón en módulos */
             .flex.justify-end.space-x-4,
@@ -177,15 +185,12 @@
 
 <body class="bg-bg-lightest flex h-screen overflow-hidden font-inter text-text-dark">
 
-    <!-- Fija a la izquierda, con un ancho fijo y fondo oscuro.
-         Contiene el logo y los enlaces de navegación a los módulos principales.
-         Ahora con funcionalidad de colapsar/expandir y sombras mejoradas. -->
-    <aside id="mainSidebar" class="w-64 bg-text-dark text-white flex flex-col p-4 shadow-2xl transition-all duration-300 ease-in-out
-                                    fixed h-full z-50 -translate-x-full md:relative md:translate-x-0">
+    <aside id="mainSidebar"
+        class="w-64 bg-text-dark text-white flex-col p-4 shadow-2xl transition-all duration-300 ease-in-out hidden md:flex">
         <div class="flex justify-between items-center mb-8">
             <div class="text-2xl font-bold">SIGEC</div>
             <button id="toggleMainSidebar"
-                class="p-2 rounded-full text-white hover:bg-gray-700 transition-colors duration-200 hidden md:block">
+                class="p-2 rounded-full text-white hover:bg-gray-700 transition-colors duration-200">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -236,10 +241,6 @@
 
     <main class="flex-1 flex flex-col p-6 overflow-y-auto main-content-area transition-all duration-300 ease-in-out">
         <header class="flex justify-between items-center pb-4 border-b border-border-gray mb-6">
-            <button id="toggleMainSidebarMobile"
-                class="p-2 rounded-full bg-bg-light text-text-dark hover:bg-border-gray transition-colors duration-200 mr-4 md:hidden">
-                <i class="fas fa-bars"></i>
-            </button>
             <h1 id="moduleTitle" class="text-3xl font-semibold text-text-dark">Inventario</h1>
             <button id="toggleSecondarySidebar"
                 class="p-2 rounded-full bg-primary-accent text-white hover:bg-primary-hover transition-colors duration-200">
@@ -563,8 +564,6 @@
 
     </main>
 
-    <!-- Fija a la derecha, inicialmente oculta y se desliza para aparecer.
-         Contiene un anotador, un calendario y una calculadora rápida. -->
     <aside id="secondarySidebar"
         class="w-64 bg-text-dark text-white flex flex-col p-4 shadow-2xl transition-transform duration-300 ease-in-out transform translate-x-full fixed right-0 top-0 h-full z-50">
         <div class="flex justify-between items-center mb-6">
@@ -575,7 +574,6 @@
         </div>
         <div class="flex-1 overflow-y-auto secondary-sidebar-scrollable">
             <div class="mb-6">
-                <h3 class="text-lg font-medium mb-2">Calendario</h3>
                 <div class="bg-gray-700 p-3 rounded-xl text-center">
                     <div class="flex justify-between items-center mb-2">
                         <button id="prevMonth"
@@ -632,7 +630,6 @@
                 </div>
             </div>
             <div class="mb-6">
-                <h3 class="text-lg font-medium mb-2">Calculadora Rápida</h3>
                 <div class="bg-gray-700 p-4 rounded-xl">
                     <input type="text" id="calculatorDisplay"
                         class="w-full p-2 mb-3 rounded-xl bg-gray-800 text-white text-right text-2xl font-bold focus:outline-none"
@@ -684,19 +681,19 @@
                 </div>
             </div>
             <div class="mb-6">
-                <h3 class="text-lg font-medium mb-2">Anotador Rápido</h3>
-                <textarea id="notepad"
-                    class="w-full h-32 p-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-accent"
-                    placeholder="Escribe tus notas aquí..."></textarea>
-                <div class="flex justify-end mt-2 space-x-2">
-                    <button id="saveNote"
-                        class="bg-primary-accent text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200 text-sm">Guardar</button>
-                    <button id="loadNote"
-                        class="bg-text-secondary text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition-colors duration-200 text-sm">Cargar</button>
+                <div class="bg-gray-700 p-3 rounded-xl">
+                    <textarea id="notepad"
+                        class="w-full h-32 p-3 rounded-xl bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-accent"
+                        placeholder="Escribe tus notas aquí..."></textarea>
+                    <div class="flex justify-end mt-2 space-x-2">
+                        <button id="saveNote"
+                            class="bg-primary-accent text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200 text-sm">Guardar</button>
+                        <button id="loadNote"
+                            class="bg-text-secondary text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition-colors duration-200 text-sm">Cargar</button>
+                    </div>
                 </div>
             </div>
             <div class="grid grid-cols-1 gap-4">
-                <h3 class="text-lg font-medium mb-2">Información Rápida</h3>
                 <div class="bg-gray-700 p-4 rounded-xl text-white">
                     <h4 class="font-semibold mb-2">Últimas Ventas</h4>
                     <ul class="text-sm">
@@ -721,6 +718,30 @@
             </div>
         </div>
     </aside>
+
+    <nav id="mobileNavBar"
+        class="fixed bottom-0 left-0 w-full bg-text-dark text-white h-16 flex justify-around items-center z-50 md:hidden shadow-lg">
+        <a href="#" data-module="inventario"
+            class="flex flex-col items-center justify-center p-2 rounded-lg text-white hover:bg-gray-700 transition-colors duration-200 w-1/5 active-mobile-link">
+            <i class="fas fa-box text-xl"></i>
+        </a>
+        <a href="#" data-module="compras"
+            class="flex flex-col items-center justify-center p-2 rounded-lg text-white hover:bg-gray-700 transition-colors duration-200 w-1/5">
+            <i class="fas fa-shopping-cart text-xl"></i>
+        </a>
+        <a href="#" data-module="ventas"
+            class="flex flex-col items-center justify-center p-2 rounded-lg text-white hover:bg-gray-700 transition-colors duration-200 w-1/5">
+            <i class="fas fa-cash-register text-xl"></i>
+        </a>
+        <a href="#" data-module="dashboard"
+            class="flex flex-col items-center justify-center p-2 rounded-lg text-white hover:bg-gray-700 transition-colors duration-200 w-1/5">
+            <i class="fas fa-chart-line text-xl"></i>
+        </a>
+        <a href="#" data-module="configuracion"
+            class="flex flex-col items-center justify-center p-2 rounded-lg text-white hover:bg-gray-700 transition-colors duration-200 w-1/5">
+            <i class="fas fa-cog text-xl"></i>
+        </a>
+    </nav>
 
     <div id="newProductModal"
         class="fixed inset-0 bg-text-dark bg-opacity-50 flex items-center justify-center z-50 hidden">
@@ -1033,7 +1054,6 @@
             // --- Elementos del DOM ---
             const mainSidebar = document.getElementById('mainSidebar');
             const toggleMainSidebarBtn = document.getElementById('toggleMainSidebar'); // Botón para desktop
-            const toggleMainSidebarMobileBtn = document.getElementById('toggleMainSidebarMobile'); // Botón para mobile
             const mainNav = document.getElementById('mainNav'); // Contenedor para delegación de eventos
             const navTextElements = document.querySelectorAll('.nav-text');
             const moduleContents = document.querySelectorAll('.module-content');
@@ -1042,6 +1062,7 @@
             const secondarySidebar = document.getElementById('secondarySidebar');
             const closeSecondarySidebarBtn = document.getElementById('closeSecondarySidebar');
             const companyNameDiv = document.getElementById('companyName'); // Elemento del nombre de la empresa
+            const mobileNavBar = document.getElementById('mobileNavBar'); // Nueva barra de navegación móvil
 
             const newProductModal = document.getElementById('newProductModal');
             const openNewProductModalBtn = document.getElementById('openNewProductModal');
@@ -1109,27 +1130,58 @@
 
             // --- Lógica de Navegación de Módulos (Delegación de Eventos) ---
 
+            // Función para cambiar el módulo activo
+            function switchModule(moduleName) {
+                const targetModuleId = moduleName + '-module';
+
+                // Remover 'active-link' de todos los enlaces de la barra lateral principal
+                document.querySelectorAll('#mainSidebar nav ul li a').forEach(navLink => navLink.classList.remove('active-link'));
+                // Remover 'active-mobile-link' de todos los enlaces de la barra de navegación móvil
+                document.querySelectorAll('#mobileNavBar a').forEach(navLink => navLink.classList.remove('active-mobile-link'));
+
+                // Remover 'active' de todos los módulos de contenido
+                moduleContents.forEach(moduleContent => moduleContent.classList.remove('active'));
+
+                // Añadir 'active' al módulo objetivo
+                document.getElementById(targetModuleId).classList.add('active');
+                moduleTitle.textContent = moduleName.charAt(0).toUpperCase() + moduleName.slice(1); // Capitalizar el nombre del módulo
+
+                // Resaltar el enlace activo en la barra lateral principal (si está visible)
+                const mainSidebarLink = document.querySelector(`#mainSidebar a[data-module="${moduleName}"]`);
+                if (mainSidebarLink) {
+                    mainSidebarLink.classList.add('active-link');
+                }
+
+                // Resaltar el enlace activo en la barra de navegación móvil (si está visible)
+                const mobileNavBarLink = document.querySelector(`#mobileNavBar a[data-module="${moduleName}"]`);
+                if (mobileNavBarLink) {
+                    mobileNavBarLink.classList.add('active-mobile-link');
+                }
+            }
+
+
             mainNav.addEventListener('click', (e) => {
                 const link = e.target.closest('a'); // Usa delegación de eventos
                 if (!link) return; // Si no se hizo clic en un enlace, salir
 
                 e.preventDefault();
-                const targetModuleId = link.dataset.module + '-module';
-
-                // Remover 'active-link' de todos los enlaces y 'active' de todos los módulos
-                document.querySelectorAll('#mainSidebar nav ul li a').forEach(navLink => navLink.classList.remove('active-link'));
-                moduleContents.forEach(moduleContent => moduleContent.classList.remove('active'));
-
-                // Añadir 'active-link' al enlace clicado y 'active' al módulo objetivo
-                link.classList.add('active-link');
-                document.getElementById(targetModuleId).classList.add('active');
-                moduleTitle.textContent = link.querySelector('.nav-text').textContent; // Obtener texto del span
+                switchModule(link.dataset.module);
 
                 // Colapsar la barra lateral principal en móviles después de la selección
                 if (window.innerWidth < 768) {
-                    mainSidebar.classList.add('-translate-x-full');
+                    mainSidebar.classList.add('hidden'); // Ocultar completamente en móvil
                 }
             });
+
+            // Listener para la nueva barra de navegación móvil
+            mobileNavBar.addEventListener('click', (e) => {
+                const link = e.target.closest('a');
+                if (!link) return;
+
+                e.preventDefault();
+                switchModule(link.dataset.module);
+            });
+
 
             // --- Lógica de Barra Lateral Principal (Colapsar/Expandir) ---
 
@@ -1173,33 +1225,18 @@
             }
 
             /**
-             * Maneja la responsividad de la barra lateral principal en carga y redimensionamiento.
+             * Maneja la responsividad de las barras de navegación en carga y redimensionamiento.
              */
-            function handleMainSidebarResponsiveness() {
+            function handleNavigationResponsiveness() {
                 if (window.innerWidth < 768) { // Móviles
-                    mainSidebar.classList.add('fixed', 'h-full', 'z-50', '-translate-x-full');
-                    mainSidebar.classList.remove('w-64', 'w-16', 'relative', 'translate-x-0');
-                    navTextElements.forEach(span => span.classList.remove('hidden')); // Siempre muestra texto en modal de móvil
-                    mainSidebar.querySelector('.text-2xl.font-bold').classList.remove('hidden'); // Oculta el título "SIGEC" en móvil
-                    toggleMainSidebarBtn.classList.add('hidden'); // Oculta el toggle de desktop
-                    toggleMainSidebarMobileBtn.classList.remove('hidden'); // Muestra el toggle para móvil
-                    companyNameDiv.classList.remove('hidden'); // Siempre visible en el modal móvil
-                    document.querySelector('main').style.marginLeft = '0'; // Asegura que el main no tenga margen fijo
-
-                    // Asegurarse de que los enlaces estén en el estado "expandido" para móviles
-                    document.querySelectorAll('#mainSidebar nav ul li a').forEach(link => {
-                        link.classList.remove('justify-center');
-                        link.classList.add('justify-start');
-                        link.querySelector('.nav-text').classList.remove('hidden');
-                        link.querySelector('i').classList.add('mr-3');
-                    });
-
+                    mainSidebar.classList.add('hidden'); // Oculta la barra lateral principal
+                    mobileNavBar.classList.remove('hidden'); // Muestra la barra de navegación móvil
+                    document.querySelector('main').style.paddingBottom = '4rem'; // Añade padding para la barra inferior
                 } else { // Tablets y PCs
-                    mainSidebar.classList.remove('fixed', 'h-full', 'z-50', '-translate-x-full');
-                    mainSidebar.classList.add('relative', 'translate-x-0');
-                    toggleMainSidebarBtn.classList.remove('hidden'); // Muestra el toggle de desktop
-                    toggleMainSidebarMobileBtn.classList.add('hidden'); // Oculta el toggle para móvil
-                    updateMainSidebarState(); // Aplica el estado colapsado/expandido
+                    mainSidebar.classList.remove('hidden'); // Muestra la barra lateral principal
+                    mobileNavBar.classList.add('hidden'); // Oculta la barra de navegación móvil
+                    document.querySelector('main').style.paddingBottom = '1.5rem'; // Restaura padding normal
+                    updateMainSidebarState(); // Asegura el estado correcto de la barra lateral de escritorio
                 }
             }
 
@@ -1209,13 +1246,9 @@
                 updateMainSidebarState();
             });
 
-            toggleMainSidebarMobileBtn.addEventListener('click', () => {
-                mainSidebar.classList.remove('-translate-x-full'); // Muestra la barra lateral en móvil
-            });
-
             // Inicializar y escuchar cambios de tamaño de ventana
-            handleMainSidebarResponsiveness();
-            window.addEventListener('resize', handleMainSidebarResponsiveness);
+            handleNavigationResponsiveness();
+            window.addEventListener('resize', handleNavigationResponsiveness);
 
             // --- Lógica de Barra Lateral Secundaria (Herramientas) ---
 
@@ -1686,8 +1719,8 @@
                     datasets: [{
                         label: 'Ventas Mensuales ($)',
                         data: [12000, 19000, 3000, 5000, 20000, 30000], // Datos de ejemplo
-                        backgroundColor: 'rgba(79, 70, 229, 0.8)', // primary-accent con opacidad
-                        borderColor: '#4F46E5', // primary-accent
+                        backgroundColor: 'rgba(40, 167, 150, 0.8)', // primary-accent con opacidad
+                        borderColor: '#28A796', // primary-accent
                         borderWidth: 1,
                         borderRadius: 8, // Esquinas redondeadas para las barras
                     }]
@@ -1699,7 +1732,7 @@
                         legend: {
                             display: true,
                             labels: {
-                                color: '#1F2937' // text-dark
+                                color: '#212529' // text-dark
                             }
                         },
                         title: {
@@ -1711,15 +1744,15 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                color: '#4B5563' // text-secondary
+                                color: '#6C757D' // text-secondary
                             },
                             grid: {
-                                color: '#E5E7EB' // border-gray
+                                color: '#CED4DA' // border-gray
                             }
                         },
                         x: {
                             ticks: {
-                                color: '#4B5563' // text-secondary
+                                color: '#6C757D' // text-secondary
                             },
                             grid: {
                                 display: false
@@ -1756,6 +1789,7 @@
             // Inicializar el total de la venta al cargar el modal
             updateSaleTotal();
             loadClientsFromLocalStorage(); // Cargar clientes al inicio
+            switchModule('inventario'); // Asegurarse de que Inventario sea el módulo activo al cargar
         });
     </script>
 </body>
