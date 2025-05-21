@@ -535,70 +535,6 @@
         </div>
         <div class="flex-1 overflow-y-auto secondary-sidebar-scrollable">
             <div class="mb-6">
-                <h3 class="text-lg font-medium mb-2">Anotador Rápido</h3>
-                <textarea id="notepad"
-                    class="w-full h-32 p-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-accent"
-                    placeholder="Escribe tus notas aquí..."></textarea>
-                <div class="flex justify-end mt-2 space-x-2">
-                    <button id="saveNote"
-                        class="bg-primary-accent text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200 text-sm">Guardar</button>
-                    <button id="loadNote"
-                        class="bg-text-secondary text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition-colors duration-200 text-sm">Cargar</button>
-                </div>
-            </div>
-            <div class="mb-6">
-                <h3 class="text-lg font-medium mb-2">Calculadora Rápida</h3>
-                <div class="bg-gray-700 p-4 rounded-xl">
-                    <input type="text" id="calculatorDisplay"
-                        class="w-full p-2 mb-3 rounded-xl bg-gray-800 text-white text-right text-2xl font-bold focus:outline-none"
-                        value="0" readonly>
-                    <div class="grid grid-cols-4 gap-2">
-                        <button class="calc-btn bg-gray-600 hover:bg-gray-500 transition-colors text-white rounded-xl"
-                            data-value="C">C</button>
-                        <button class="calc-btn bg-gray-600 hover:bg-gray-500 transition-colors text-white rounded-xl"
-                            data-value="/">/</button>
-                        <button class="calc-btn bg-gray-600 hover:bg-gray-500 transition-colors text-white rounded-xl"
-                            data-value="*">*</button>
-                        <button
-                            class="calc-btn bg-primary-accent hover:bg-primary-hover transition-colors text-white rounded-xl"
-                            data-value="-">-</button>
-
-                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
-                            data-value="7">7</button>
-                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
-                            data-value="8">8</button>
-                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
-                            data-value="9">9</button>
-                        <button
-                            class="calc-btn bg-primary-accent hover:bg-primary-hover transition-colors text-white rounded-xl"
-                            data-value="+">+</button>
-
-                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
-                            data-value="4">4</button>
-                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
-                            data-value="5">5</button>
-                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
-                            data-value="6">6</button>
-                        <button
-                            class="calc-btn row-span-2 bg-secondary-accent hover:bg-secondary-hover transition-colors text-white rounded-xl"
-                            data-value="=">=</button>
-
-                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
-                            data-value="1">1</button>
-                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
-                            data-value="2">2</button>
-                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
-                            data-value="3">3</button>
-
-                        <button
-                            class="calc-btn col-span-2 bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
-                            data-value="0">0</button>
-                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
-                            data-value=".">.</button>
-                    </div>
-                </div>
-            </div>
-            <div>
                 <h3 class="text-lg font-medium mb-2">Calendario</h3>
                 <div class="bg-gray-700 p-3 rounded-xl text-center">
                     <div class="flex justify-between items-center mb-2">
@@ -653,6 +589,94 @@
                         <div class="py-1">30</div>
                         <div class="py-1">31</div>
                     </div>
+                </div>
+            </div>
+            <div class="mb-6">
+                <h3 class="text-lg font-medium mb-2">Calculadora Rápida</h3>
+                <div class="bg-gray-700 p-4 rounded-xl">
+                    <input type="text" id="calculatorDisplay"
+                        class="w-full p-2 mb-3 rounded-xl bg-gray-800 text-white text-right text-2xl font-bold focus:outline-none"
+                        value="0" readonly>
+                    <div class="grid grid-cols-4 gap-2">
+                        <button class="calc-btn bg-gray-600 hover:bg-gray-500 transition-colors text-white rounded-xl"
+                            data-value="C">C</button>
+                        <button class="calc-btn bg-gray-600 hover:bg-gray-500 transition-colors text-white rounded-xl"
+                            data-value="/">/</button>
+                        <button class="calc-btn bg-gray-600 hover:bg-gray-500 transition-colors text-white rounded-xl"
+                            data-value="*">*</button>
+                        <button
+                            class="calc-btn bg-primary-accent hover:bg-primary-hover transition-colors text-white rounded-xl"
+                            data-value="-">-</button>
+
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="7">7</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="8">8</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="9">9</button>
+                        <button
+                            class="calc-btn bg-primary-accent hover:bg-primary-hover transition-colors text-white rounded-xl"
+                            data-value="+">+</button>
+
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="4">4</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="5">5</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="6">6</button>
+                        <button
+                            class="calc-btn row-span-2 bg-secondary-accent hover:bg-secondary-hover transition-colors text-white rounded-xl"
+                            data-value="=">=</button>
+
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="1">1</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="2">2</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="3">3</button>
+
+                        <button
+                            class="calc-btn col-span-2 bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value="0">0</button>
+                        <button class="calc-btn bg-gray-700 hover:bg-gray-600 transition-colors text-white rounded-xl"
+                            data-value=".">.</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-6">
+                <h3 class="text-lg font-medium mb-2">Anotador Rápido</h3>
+                <textarea id="notepad"
+                    class="w-full h-32 p-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-accent"
+                    placeholder="Escribe tus notas aquí..."></textarea>
+                <div class="flex justify-end mt-2 space-x-2">
+                    <button id="saveNote"
+                        class="bg-primary-accent text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200 text-sm">Guardar</button>
+                    <button id="loadNote"
+                        class="bg-text-secondary text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition-colors duration-200 text-sm">Cargar</button>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 gap-4">
+                <h3 class="text-lg font-medium mb-2">Información Rápida</h3>
+                <div class="bg-gray-700 p-4 rounded-xl text-white">
+                    <h4 class="font-semibold mb-2">Últimas Ventas</h4>
+                    <ul class="text-sm">
+                        <li>Venta #1234: $1800.00 (Juan Pérez)</li>
+                        <li>Venta #1233: $500.00 (Cliente Anónimo)</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-700 p-4 rounded-xl text-white">
+                    <h4 class="font-semibold mb-2">Productos con Bajo Stock</h4>
+                    <ul class="text-sm">
+                        <li>Cable HDMI: 5 unidades</li>
+                        <li>Auriculares Gaming: 8 unidades</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-700 p-4 rounded-xl text-white">
+                    <h4 class="font-semibold mb-2">Compras Recientes</h4>
+                    <ul class="text-sm">
+                        <li>Compra a Tech Suppliers (2025-05-18)</li>
+                        <li>Compra a Global Distribuidores (2025-05-10)</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -861,9 +885,26 @@
                     <div>
                         <label for="saleClient" class="block text-sm font-medium text-text-dark mb-1">Cliente
                             (Opcional)</label>
-                        <input type="text" id="saleClient"
+                        <input type="text" id="saleClient" list="clientList"
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             placeholder="Nombre del cliente">
+                        <datalist id="clientList"></datalist>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="paymentMethod" class="block text-sm font-medium text-text-dark mb-1">Método de
+                        Pago</label>
+                    <div class="flex items-center space-x-2">
+                        <select id="paymentMethod"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Mercado Pago">Mercado Pago</option>
+                            <option value="Cuenta DNI">Cuenta DNI</option>
+                            <option value="Transferencia">Transferencia</option>
+                            <option value="Debe">Debe</option>
+                        </select>
+                        <span id="debeIndicator" class="text-red-500 font-semibold text-sm hidden">¡Debe!</span>
                     </div>
                 </div>
 
@@ -983,6 +1024,11 @@
             const productSearchSaleInput = document.getElementById('productSearchSale');
             const saleProductsTableBody = document.querySelector('#saleProductsTable tbody');
             const saleTotalSpan = document.getElementById('saleTotal');
+            const paymentMethodSelect = document.getElementById('paymentMethod');
+            const debeIndicator = document.getElementById('debeIndicator');
+            const saleClientInput = document.getElementById('saleClient');
+            const clientDatalist = document.getElementById('clientList');
+
 
             // --- Funciones de Utilidad ---
 
@@ -1144,6 +1190,8 @@
                 // Limpiar la tabla de ventas al abrir el modal
                 saleProductsTableBody.innerHTML = '';
                 updateSaleTotal();
+                loadClientsFromLocalStorage(); // Cargar clientes al abrir el modal de ventas
+                updateDebeIndicator(); // Actualizar el indicador de "Debe" al abrir
             });
 
             closeModalBtns.forEach(button => {
@@ -1180,6 +1228,10 @@
 
             newSaleModal.querySelector('form').addEventListener('submit', (e) => {
                 e.preventDefault();
+                const clientName = saleClientInput.value.trim();
+                if (clientName) {
+                    saveClientToLocalStorage(clientName); // Guardar cliente si se ingresó uno
+                }
                 showMessageBox('Venta Registrada', 'La venta ha sido registrada exitosamente (simulado).');
                 newSaleModal.classList.add('hidden');
                 // Lógica de Negocio (Backend - Google Apps Script):
@@ -1426,7 +1478,7 @@
                 // Aquí deberías buscar el producto en tu base de datos/inventario real
                 // Por ahora, simulamos un producto con datos fijos para demostración
                 const productCode = `SKU-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-                const suggestedPrice = 100.00 + Math.floor(Math.random() * 50); // Precio aleatorio
+                const suggestedPrice = (100.00 + Math.floor(Math.random() * 50)).toFixed(2); // Precio aleatorio
                 const quantity = 1; // Cantidad inicial
 
                 const newRow = document.createElement('tr');
@@ -1437,9 +1489,9 @@
                     <td class="py-2 px-3">
                         <input type="number" value="${quantity}" min="1" class="w-20 p-1 border border-border-gray rounded-lg quantity-input">
                     </td>
-                    <td class="py-2 px-3 sale-suggested-price">$${suggestedPrice.toFixed(2)}</td>
+                    <td class="py-2 px-3 sale-suggested-price">$${suggestedPrice}</td>
                     <td class="py-2 px-3">
-                        <input type="number" value="${suggestedPrice.toFixed(2)}" class="w-24 p-1 border border-border-gray rounded-lg final-price-input">
+                        <input type="number" value="${suggestedPrice}" class="w-24 p-1 border border-border-gray rounded-lg final-price-input">
                     </td>
                     <td class="py-2 px-3">
                         <button class="bg-red-500 text-white px-2 py-1 rounded-lg text-xs hover:bg-red-600 remove-sale-item">Eliminar</button>
@@ -1478,8 +1530,44 @@
                 saleTotalSpan.textContent = `$${total.toFixed(2)}`;
             }
 
+            // --- Lógica para el método de pago "Debe" ---
+            function updateDebeIndicator() {
+                if (paymentMethodSelect.value === 'Debe') {
+                    debeIndicator.classList.remove('hidden');
+                } else {
+                    debeIndicator.classList.add('hidden');
+                }
+            }
+            paymentMethodSelect.addEventListener('change', updateDebeIndicator);
+            updateDebeIndicator(); // Llamar al cargar para establecer el estado inicial
+
+            // --- Lógica para recordar clientes ---
+            function getClientsFromLocalStorage() {
+                const clients = localStorage.getItem('sigec_clients');
+                return clients ? JSON.parse(clients) : [];
+            }
+
+            function saveClientToLocalStorage(clientName) {
+                let clients = getClientsFromLocalStorage();
+                if (!clients.includes(clientName)) {
+                    clients.push(clientName);
+                    localStorage.setItem('sigec_clients', JSON.stringify(clients));
+                }
+            }
+
+            function loadClientsFromLocalStorage() {
+                const clients = getClientsFromLocalStorage();
+                clientDatalist.innerHTML = ''; // Limpiar opciones anteriores
+                clients.forEach(client => {
+                    const option = document.createElement('option');
+                    option.value = client;
+                    clientDatalist.appendChild(option);
+                });
+            }
+
             // Inicializar el total de la venta al cargar el modal
             updateSaleTotal();
+            loadClientsFromLocalStorage(); // Cargar clientes al inicio
         });
     </script>
 </body>
