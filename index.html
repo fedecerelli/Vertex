@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Configuración de Tailwind CSS para colores personalizados (Paleta 2025)
         tailwind.config = {
@@ -252,10 +253,22 @@
                     class="flex flex-col md:flex-row justify-between items-center mb-4 space-y-4 md:space-y-0 md:space-x-4">
                     <input type="text" placeholder="Buscar producto por código, nombre o descripción..."
                         class="p-3 border border-border-gray rounded-xl w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-primary-accent">
-                    <button id="openNewProductModal"
-                        class="bg-primary-accent text-white px-5 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200 shadow-md w-full md:w-auto">
-                        <i class="fas fa-plus mr-2"></i> Nuevo Producto
-                    </button>
+                    <div class="flex space-x-2 w-full md:w-auto">
+                        <button id="openNewProductModal"
+                            class="bg-primary-accent text-white px-5 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200 shadow-md flex-1 md:flex-none">
+                            <i class="fas fa-plus mr-2"></i> Nuevo Producto
+                        </button>
+                        <button id="customizeColumnsBtn"
+                            class="bg-text-secondary text-white px-3 py-3 rounded-xl hover:bg-gray-700 transition-colors duration-200 shadow-md"
+                            title="Personalizar Columnas">
+                            <i class="fas fa-columns"></i>
+                        </button>
+                        <button id="printLabelsBtn"
+                            class="bg-secondary-accent text-white px-3 py-3 rounded-xl hover:bg-secondary-hover transition-colors duration-200 shadow-md"
+                            title="Imprimir Etiquetas">
+                            <i class="fas fa-tags"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-bg-lightest border border-border-gray rounded-xl">
@@ -290,7 +303,7 @@
                                 <td class="py-3 px-4">Laptop Gamer X1</td>
                                 <td class="py-3 px-4">$1200.00</td>
                                 <td class="py-3 px-4">$1800.00</td>
-                                <td class="py-3 px-4">15</td>
+                                <td class="py-3 px-4 text-red-500 font-bold">5</td>
                                 <td class="py-3 px-4">Electrónica</td>
                                 <td class="py-3 px-4 flex space-x-2">
                                     <button
@@ -305,6 +318,20 @@
                                 <td class="py-3 px-4">$50.00</td>
                                 <td class="py-3 px-4">$75.00</td>
                                 <td class="py-3 px-4">50</td>
+                                <td class="py-3 px-4">Periféricos</td>
+                                <td class="py-3 px-4 flex space-x-2">
+                                    <button
+                                        class="bg-secondary-accent text-white px-3 py-1 rounded-lg text-sm hover:bg-secondary-hover transition-colors duration-200">Editar</button>
+                                    <button
+                                        class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 transition-colors duration-200">Eliminar</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-border-gray hover:bg-bg-lightest">
+                                <td class="py-3 px-4">SKU-20250521-123458-GHI3</td>
+                                <td class="py-3 px-4">Mouse Inalámbrico</td>
+                                <td class="py-3 px-4">$20.00</td>
+                                <td class="py-3 px-4">$35.00</td>
+                                <td class="py-3 px-4 text-red-500 font-bold">10</td>
                                 <td class="py-3 px-4">Periféricos</td>
                                 <td class="py-3 px-4 flex space-x-2">
                                     <button
@@ -445,13 +472,13 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                     <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
-                        <h3 class="text-lg font-medium text-text-dark mb-2">Gráfico de Ventas (últimos 30 días)</h3>
-                        <div class="h-64 bg-bg-light flex items-center justify-center text-text-secondary rounded-xl">
-                            [Placeholder para Gráfico de Ventas]
+                        <h3 class="text-lg font-medium text-text-dark mb-2">Gráfico de Ventas (últimos 6 meses)</h3>
+                        <div class="h-64">
+                            <canvas id="salesChart"></canvas>
                         </div>
                     </div>
                     <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
-                        <h3 class="text-lg font-medium text-text-dark mb-2">Gráfico de Compras (últimos 30 días)</h3>
+                        <h3 class="text-lg font-medium text-text-dark mb-2">Gráfico de Compras (últimos 6 meses)</h3>
                         <div class="h-64 bg-bg-light flex items-center justify-center text-text-secondary rounded-xl">
                             [Placeholder para Gráfico de Compras]
                         </div>
@@ -500,6 +527,11 @@
                             onclick="showMessageBox('Exportar Reportes', 'Esta función exportaría los reportes del dashboard (ej. Ventas por mes).')">
                             <i class="fas fa-chart-bar mr-2"></i> Exportar Dashboard (CSV)
                         </button>
+                        <button
+                            class="bg-blue-500 text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-colors duration-200 shadow-md"
+                            onclick="showMessageBox('Forecasting', 'Esta sección mostraría proyecciones de ventas y necesidades de inventario basadas en datos históricos.')">
+                            <i class="fas fa-chart-line mr-2"></i> Forecasting
+                        </button>
                     </div>
                 </div>
             </div>
@@ -514,6 +546,14 @@
                     <label for="defaultMargin" class="block text-sm font-medium text-text-dark">Margen de Ganancia por
                         Defecto (%):</label>
                     <input type="number" id="defaultMargin" value="50"
+                        class="mt-1 p-2 border border-border-gray rounded-xl w-32 focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                    <button
+                        class="ml-4 bg-primary-accent text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200">Guardar</button>
+                </div>
+                <div class="mt-4">
+                    <label for="minStockThreshold" class="block text-sm font-medium text-text-dark">Umbral de Stock
+                        Mínimo para Alerta:</label>
+                    <input type="number" id="minStockThreshold" value="10"
                         class="mt-1 p-2 border border-border-gray rounded-xl w-32 focus:outline-none focus:ring-2 focus:ring-primary-accent">
                     <button
                         class="ml-4 bg-primary-accent text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200">Guardar</button>
@@ -749,6 +789,8 @@
                             <option value="">Seleccione una categoría</option>
                             <option value="electronica">Electrónica</option>
                             <option value="perifericos">Periféricos</option>
+                            <option value="accesorios">Accesorios</option>
+                            <option value="software">Software</option>
                             <option value="nueva-categoria">+ Nueva Categoría</option>
                         </select>
                     </div>
@@ -916,6 +958,20 @@
                         class="bg-primary-accent text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200 w-full sm:w-auto">Agregar
                         Producto</button>
                 </div>
+                <div class="mb-4 p-3 bg-bg-light rounded-xl border border-border-gray">
+                    <h4 class="text-sm font-semibold text-text-dark mb-2">Sugerencias de Productos Frecuentes:</h4>
+                    <div id="frequentProductsSuggestions" class="flex flex-wrap gap-2">
+                        <span data-product="Laptop Gamer X1" data-price="1800.00"
+                            class="cursor-pointer bg-primary-accent text-white px-3 py-1 rounded-full text-xs hover:bg-primary-hover transition-colors duration-200">Laptop
+                            Gamer X1</span>
+                        <span data-product="Teclado Mecánico RGB" data-price="75.00"
+                            class="cursor-pointer bg-primary-accent text-white px-3 py-1 rounded-full text-xs hover:bg-primary-hover transition-colors duration-200">Teclado
+                            Mecánico RGB</span>
+                        <span data-product="Mouse Inalámbrico" data-price="35.00"
+                            class="cursor-pointer bg-primary-accent text-white px-3 py-1 rounded-full text-xs hover:bg-primary-hover transition-colors duration-200">Mouse
+                            Inalámbrico</span>
+                    </div>
+                </div>
 
                 <div class="overflow-x-auto mb-6">
                     <table id="saleProductsTable"
@@ -1019,6 +1075,10 @@
             const exportPurchasesCSVBtn = document.getElementById('exportPurchasesCSV');
             const exportSalesCSVBtn = document.getElementById('exportSalesCSV');
             const inventoryTableBody = document.getElementById('inventoryTableBody');
+            const customizeColumnsBtn = document.getElementById('customizeColumnsBtn');
+            const printLabelsBtn = document.getElementById('printLabelsBtn');
+            const minStockThresholdInput = document.getElementById('minStockThreshold');
+
 
             const addProductToSaleBtn = document.getElementById('addProductToSale');
             const productSearchSaleInput = document.getElementById('productSearchSale');
@@ -1028,6 +1088,10 @@
             const debeIndicator = document.getElementById('debeIndicator');
             const saleClientInput = document.getElementById('saleClient');
             const clientDatalist = document.getElementById('clientList');
+            const frequentProductsSuggestions = document.getElementById('frequentProductsSuggestions');
+
+            // --- Variables de Configuración ---
+            let minStockThreshold = parseInt(localStorage.getItem('minStockThreshold') || '10');
 
 
             // --- Funciones de Utilidad ---
@@ -1481,6 +1545,14 @@
                 const suggestedPrice = (100.00 + Math.floor(Math.random() * 50)).toFixed(2); // Precio aleatorio
                 const quantity = 1; // Cantidad inicial
 
+                addProductRowToSale(productName, productCode, suggestedPrice, quantity);
+
+                // Limpiar el campo de búsqueda después de añadir
+                productSearchSaleInput.value = '';
+            });
+
+            // --- Lógica para añadir filas de producto a la venta ---
+            function addProductRowToSale(productName, productCode, suggestedPrice, quantity) {
                 const newRow = document.createElement('tr');
                 newRow.classList.add('border-b', 'border-border-gray', 'hover:bg-bg-lightest');
                 newRow.innerHTML = `
@@ -1499,9 +1571,6 @@
                 `;
                 saleProductsTableBody.appendChild(newRow);
 
-                // Limpiar el campo de búsqueda después de añadir
-                productSearchSaleInput.value = '';
-
                 // Añadir listeners a los nuevos inputs y botones de eliminar
                 const quantityInput = newRow.querySelector('.quantity-input');
                 const finalPriceInput = newRow.querySelector('.final-price-input');
@@ -1515,7 +1584,7 @@
                 });
 
                 updateSaleTotal(); // Actualizar el total de la venta
-            });
+            }
 
             /**
              * Calcula y actualiza el total de la venta.
@@ -1564,6 +1633,125 @@
                     clientDatalist.appendChild(option);
                 });
             }
+
+            // --- Lógica de Sugerencias Inteligentes (Productos Frecuentes) ---
+            frequentProductsSuggestions.addEventListener('click', (e) => {
+                const span = e.target.closest('span');
+                if (span && span.dataset.product) {
+                    const productName = span.dataset.product;
+                    const productPrice = span.dataset.price;
+                    addProductRowToSale(productName, `SKU-${Math.random().toString(36).substring(2, 8).toUpperCase()}`, productPrice, 1);
+                }
+            });
+
+
+            // --- Lógica de Control de Stock Mínimo/Máximo con Alertas Visuales ---
+            // Función para aplicar estilos de alerta de stock
+            function applyStockAlerts() {
+                const inventoryRows = inventoryTableBody.querySelectorAll('tr');
+                inventoryRows.forEach(row => {
+                    const stockCell = row.children[4]; // La quinta columna es el stock
+                    const stockValue = parseInt(stockCell.textContent);
+                    if (stockValue <= minStockThreshold) {
+                        stockCell.classList.add('text-red-500', 'font-bold');
+                    } else {
+                        stockCell.classList.remove('text-red-500', 'font-bold');
+                    }
+                });
+            }
+
+            // Guardar umbral de stock mínimo en localStorage
+            minStockThresholdInput.addEventListener('change', () => {
+                const newThreshold = parseInt(minStockThresholdInput.value);
+                if (!isNaN(newThreshold) && newThreshold >= 0) {
+                    minStockThreshold = newThreshold;
+                    localStorage.setItem('minStockThreshold', minStockThreshold);
+                    applyStockAlerts(); // Reaplicar alertas con el nuevo umbral
+                    showMessageBox('Configuración Guardada', `Umbral de stock mínimo actualizado a ${minStockThreshold}.`);
+                } else {
+                    showMessageBox('Error', 'Por favor, ingrese un número válido para el umbral de stock.');
+                }
+            });
+
+            // Inicializar alertas de stock al cargar la página
+            applyStockAlerts();
+
+
+            // --- Lógica de Dashboard con Chart.js ---
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            const salesChart = new Chart(salesCtx, {
+                type: 'bar', // Puedes cambiar a 'line', 'pie', etc.
+                data: {
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Ventas Mensuales ($)',
+                        data: [12000, 19000, 3000, 5000, 20000, 30000], // Datos de ejemplo
+                        backgroundColor: 'rgba(79, 70, 229, 0.8)', // primary-accent con opacidad
+                        borderColor: '#4F46E5', // primary-accent
+                        borderWidth: 1,
+                        borderRadius: 8, // Esquinas redondeadas para las barras
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#1F2937' // text-dark
+                            }
+                        },
+                        title: {
+                            display: false,
+                            text: 'Ventas Mensuales'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#4B5563' // text-secondary
+                            },
+                            grid: {
+                                color: '#E5E7EB' // border-gray
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#4B5563' // text-secondary
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // --- Lógica para Personalización de Columnas en Tablas (Simulado) ---
+            customizeColumnsBtn.addEventListener('click', () => {
+                showMessageBox('Personalizar Columnas', 'Aquí se podría implementar una interfaz para seleccionar qué columnas mostrar/ocultar y su orden.');
+            });
+
+            // --- Lógica para Etiquetas Personalizables para Impresión (Simulado) ---
+            printLabelsBtn.addEventListener('click', () => {
+                showMessageBox('Imprimir Etiquetas', 'Esta función generaría etiquetas de productos personalizables para impresión (ej. códigos de barra, precios, nombres).');
+            });
+
+            // --- Atajos de Teclado ---
+            document.addEventListener('keydown', (e) => {
+                // Ctrl + N para Nueva Venta
+                if (e.ctrlKey && e.key === 'n') {
+                    e.preventDefault(); // Prevenir el comportamiento por defecto del navegador
+                    openNewSaleModalBtn.click();
+                }
+                // Ctrl + I para Inventario
+                if (e.ctrlKey && e.key === 'i') {
+                    e.preventDefault(); // Prevenir el comportamiento por defecto del navegador
+                    document.querySelector('a[data-module="inventario"]').click();
+                }
+            });
 
             // Inicializar el total de la venta al cargar el modal
             updateSaleTotal();
