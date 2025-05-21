@@ -10,7 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Configuración de Tailwind CSS para colores personalizados (Paleta "Aqua & Coral")
+        // Configuración de Tailwind CSS para colores personalizados (Paleta "Deep Ocean & Aqua")
         tailwind.config = {
             theme: {
                 extend: {
@@ -18,17 +18,17 @@
                         inter: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        // Nueva Paleta: Aqua & Coral (Minimalista, Profesional, Tendencias 2025)
-                        'primary-accent': '#28A796',    // Un teal/azul-verde sofisticado
-                        'secondary-accent': '#FF7F50',  // Un coral suave y cálido
-                        'bg-lightest': '#F8F9FA',       // Blanco roto muy claro
-                        'bg-light': '#E9ECEF',          // Gris muy claro para tarjetas
-                        'border-gray': '#CED4DA',       // Gris sutil para bordes
-                        'text-dark': '#212529',         // Negro casi puro para texto principal
-                        'text-secondary': '#6C757D',    // Gris oscuro para texto secundario
+                        // Nueva Paleta: Deep Ocean & Aqua (Minimalista, Profesional, Tendencias 2025)
+                        'primary-accent': '#4A47A3',    // Un azul-púrpura profundo y rico
+                        'secondary-accent': '#00C4B4',  // Un aqua brillante y vibrante
+                        'bg-lightest': '#F5F7FA',       // Off-white muy claro
+                        'bg-light': '#E0E6EF',          // Gris-azul claro para tarjetas
+                        'border-gray': '#C0C7D1',       // Gris-azul sutil para bordes
+                        'text-dark': '#2C3E50',         // Carbón azul oscuro para texto principal
+                        'text-secondary': '#7F8C8D',    // Gris medio para texto secundario
                         // Colores para estados (hover/active)
-                        'primary-hover': '#208D7F',     // Tono más oscuro de primary-accent
-                        'secondary-hover': '#E6673E',   // Tono más oscuro de secondary-accent
+                        'primary-hover': '#3B388E',     // Tono más oscuro de primary-accent
+                        'secondary-hover': '#00A59B',   // Tono más oscuro de secondary-accent
                     }
                 }
             }
@@ -82,7 +82,7 @@
 
         /* Estilo para el enlace de navegación activo en la barra lateral principal */
         .active-link {
-            background-color: #1F8074;
+            background-color: #3B388E;
             /* Un tono de primary-accent más oscuro para el estado activo */
             color: #FFFFFF;
             /* Texto blanco para el enlace activo */
@@ -90,7 +90,7 @@
 
         /* Estilo para el enlace activo en la barra de navegación móvil */
         .active-mobile-link {
-            background-color: #1F8074;
+            background-color: #3B388E;
             /* Tono más oscuro de primary-accent para el estado activo */
             color: #FFFFFF;
         }
@@ -186,7 +186,7 @@
 <body class="bg-bg-lightest flex h-screen overflow-hidden font-inter text-text-dark">
 
     <aside id="mainSidebar"
-        class="w-64 bg-text-dark text-white flex-col p-4 shadow-2xl transition-all duration-300 ease-in-out hidden md:flex">
+        class="w-64 bg-text-dark text-white flex-col p-4 shadow-xl transition-all duration-300 ease-in-out hidden md:flex">
         <div class="flex justify-between items-center mb-8">
             <div class="text-2xl font-bold">SIGEC</div>
             <button id="toggleMainSidebar"
@@ -248,7 +248,7 @@
         </header>
 
         <section id="inventario-module" class="module-content active">
-            <div class="bg-bg-light p-6 rounded-xl shadow-sm">
+            <div class="bg-bg-light p-6 rounded-xl shadow-lg">
                 <h2 class="text-2xl font-semibold mb-4 text-text-dark">Gestión de Productos</h2>
                 <div
                     class="flex flex-col md:flex-row justify-between items-center mb-4 space-y-4 md:space-y-0 md:space-x-4">
@@ -269,6 +269,33 @@
                             title="Imprimir Etiquetas">
                             <i class="fas fa-tags"></i>
                         </button>
+                    </div>
+                </div>
+                <div
+                    class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 p-4 bg-bg-lightest rounded-xl border border-border-gray shadow-sm">
+                    <div>
+                        <label for="filterCategory"
+                            class="block text-sm font-medium text-text-dark mb-1">Categoría:</label>
+                        <select id="filterCategory"
+                            class="p-2 border border-border-gray rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                            <option value="">Todas</option>
+                            <option value="electronica">Electrónica</option>
+                            <option value="perifericos">Periféricos</option>
+                            <option value="accesorios">Accesorios</option>
+                            <option value="software">Software</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="filterPriceMin" class="block text-sm font-medium text-text-dark mb-1">Precio
+                            Mínimo:</label>
+                        <input type="number" id="filterPriceMin" placeholder="0.00"
+                            class="p-2 border border-border-gray rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                    </div>
+                    <div>
+                        <label for="filterPriceMax" class="block text-sm font-medium text-text-dark mb-1">Precio
+                            Máximo:</label>
+                        <input type="number" id="filterPriceMax" placeholder="9999.99"
+                            class="p-2 border border-border-gray rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-primary-accent">
                     </div>
                 </div>
                 <div class="overflow-x-auto">
@@ -348,7 +375,7 @@
         </section>
 
         <section id="compras-module" class="module-content">
-            <div class="bg-bg-light p-6 rounded-xl shadow-sm">
+            <div class="bg-bg-light p-6 rounded-xl shadow-lg">
                 <h2 class="text-2xl font-semibold mb-4 text-text-dark">Gestión de Compras</h2>
                 <div
                     class="flex flex-col md:flex-row justify-between items-center mb-4 space-y-4 md:space-y-0 md:space-x-4">
@@ -399,16 +426,22 @@
         </section>
 
         <section id="ventas-module" class="module-content">
-            <div class="bg-bg-light p-6 rounded-xl shadow-sm">
+            <div class="bg-bg-light p-6 rounded-xl shadow-lg">
                 <h2 class="text-2xl font-semibold mb-4 text-text-dark">Gestión de Ventas</h2>
                 <div
                     class="flex flex-col md:flex-row justify-between items-center mb-4 space-y-4 md:space-y-0 md:space-x-4">
                     <input type="text" placeholder="Buscar venta por cliente o fecha..."
                         class="p-3 border border-border-gray rounded-xl w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-primary-accent">
-                    <button id="openNewSaleModal"
-                        class="bg-primary-accent text-white px-5 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200 shadow-md w-full md:w-auto">
-                        <i class="fas fa-plus mr-2"></i> Nueva Venta
-                    </button>
+                    <div class="flex space-x-2 w-full md:w-auto">
+                        <button id="openNewSaleModal"
+                            class="bg-primary-accent text-white px-5 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200 shadow-md flex-1 md:flex-none">
+                            <i class="fas fa-plus mr-2"></i> Nueva Venta
+                        </button>
+                        <button id="openNewReturnModal"
+                            class="bg-secondary-accent text-white px-5 py-3 rounded-xl hover:bg-secondary-hover transition-colors duration-200 shadow-md flex-1 md:flex-none">
+                            <i class="fas fa-undo mr-2"></i> Nueva Devolución
+                        </button>
+                    </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-bg-lightest border border-border-gray rounded-xl">
@@ -450,44 +483,50 @@
         </section>
 
         <section id="dashboard-module" class="module-content">
-            <div class="bg-bg-light p-6 rounded-xl shadow-sm">
+            <div class="bg-bg-light p-6 rounded-xl shadow-lg">
                 <h2 class="text-2xl font-semibold mb-4 text-text-dark">Dashboard</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-md border border-border-gray">
                         <h3 class="text-lg font-medium text-text-dark">Ventas del Día</h3>
                         <p class="text-3xl font-bold text-primary-accent">$2500.00</p>
+                        <div class="flex items-center text-sm text-secondary-accent">
+                            <i class="fas fa-arrow-up mr-1"></i> 5% vs ayer
+                        </div>
                     </div>
-                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-md border border-border-gray">
                         <h3 class="text-lg font-medium text-text-dark">Compras del Mes</h3>
                         <p class="text-3xl font-bold text-secondary-accent">$18000.00</p>
+                        <div class="flex items-center text-sm text-red-500">
+                            <i class="fas fa-arrow-down mr-1"></i> 2% vs mes anterior
+                        </div>
                     </div>
-                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-md border border-border-gray">
                         <h3 class="text-lg font-medium text-text-dark">Stock Valorizado</h3>
                         <p class="text-3xl font-bold text-primary-accent">$50000.00</p>
                     </div>
-                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-md border border-border-gray">
                         <h3 class="text-lg font-medium text-text-dark">Margen Promedio</h3>
                         <p class="text-3xl font-bold text-secondary-accent">35%</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-md border border-border-gray">
                         <h3 class="text-lg font-medium text-text-dark mb-2">Gráfico de Ventas (últimos 6 meses)</h3>
                         <div class="h-64">
                             <canvas id="salesChart"></canvas>
                         </div>
                     </div>
-                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
-                        <h3 class="text-lg font-medium text-text-dark mb-2">Gráfico de Compras (últimos 6 meses)</h3>
-                        <div class="h-64 bg-bg-light flex items-center justify-center text-text-secondary rounded-xl">
-                            [Placeholder para Gráfico de Compras]
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-md border border-border-gray">
+                        <h3 class="text-lg font-medium text-text-dark mb-2">Ventas por Categoría de Producto</h3>
+                        <div class="h-64 flex items-center justify-center">
+                            <canvas id="categorySalesChart"></canvas>
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-md border border-border-gray">
                         <h3 class="text-lg font-medium text-text-dark mb-2">Productos Más Vendidos</h3>
                         <ul class="list-disc list-inside text-text-dark">
                             <li>Laptop Gamer X1 (100 unidades)</li>
@@ -495,7 +534,7 @@
                             <li>Mouse Inalámbrico (75 unidades)</li>
                         </ul>
                     </div>
-                    <div class="bg-bg-lightest p-4 rounded-xl shadow-sm border border-border-gray">
+                    <div class="bg-bg-lightest p-4 rounded-xl shadow-md border border-border-gray">
                         <h3 class="text-lg font-medium text-text-dark mb-2">Productos con Bajo Stock</h3>
                         <ul class="list-disc list-inside text-text-dark">
                             <li>Cable HDMI (Stock: 5)</li>
@@ -505,8 +544,23 @@
                 </div>
 
                 <div class="mt-8 pt-6 border-t border-border-gray dashboard-export-buttons">
-                    <h3 class="text-xl font-semibold mb-4 text-text-dark">Reportes y Exportación</h3>
+                    <h3 class="text-xl font-semibold mb-4 text-text-dark">Análisis y Reportes</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <button
+                            class="bg-blue-500 text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-colors duration-200 shadow-md"
+                            onclick="showMessageBox('Análisis de Rentabilidad', 'Esta sección mostraría un análisis detallado de la rentabilidad por producto y categoría.')">
+                            <i class="fas fa-chart-pie mr-2"></i> Análisis de Rentabilidad
+                        </button>
+                        <button
+                            class="bg-blue-500 text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-colors duration-200 shadow-md"
+                            onclick="showMessageBox('Alertas de Stock', 'Aquí se mostraría una lista detallada de todos los productos con stock bajo o sobrestock.')">
+                            <i class="fas fa-exclamation-triangle mr-2"></i> Alertas de Stock
+                        </button>
+                        <button
+                            class="bg-blue-500 text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-colors duration-200 shadow-md"
+                            onclick="showMessageBox('Forecasting', 'Esta sección mostraría proyecciones de ventas y necesidades de inventario basadas en datos históricos.')">
+                            <i class="fas fa-chart-line mr-2"></i> Forecasting
+                        </button>
                         <button id="exportInventoryCSV"
                             class="bg-secondary-accent text-white px-5 py-3 rounded-xl hover:bg-secondary-hover transition-colors duration-200 shadow-md">
                             <i class="fas fa-file-csv mr-2"></i> Exportar Inventario (CSV)
@@ -515,23 +569,9 @@
                             class="bg-primary-accent text-white px-5 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200 shadow-md">
                             <i class="fas fa-print mr-2"></i> Imprimir Inventario (A4)
                         </button>
-                        <button id="exportPurchasesCSV"
-                            class="bg-secondary-accent text-white px-5 py-3 rounded-xl hover:bg-secondary-hover transition-colors duration-200 shadow-md">
-                            <i class="fas fa-file-csv mr-2"></i> Exportar Compras (CSV)
-                        </button>
                         <button id="exportSalesCSV"
                             class="bg-primary-accent text-white px-5 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200 shadow-md">
                             <i class="fas fa-file-csv mr-2"></i> Exportar Ventas (CSV)
-                        </button>
-                        <button
-                            class="bg-text-secondary text-white px-5 py-3 rounded-xl hover:bg-gray-700 transition-colors duration-200 shadow-md"
-                            onclick="showMessageBox('Exportar Reportes', 'Esta función exportaría los reportes del dashboard (ej. Ventas por mes).')">
-                            <i class="fas fa-chart-bar mr-2"></i> Exportar Dashboard (CSV)
-                        </button>
-                        <button
-                            class="bg-blue-500 text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-colors duration-200 shadow-md"
-                            onclick="showMessageBox('Forecasting', 'Esta sección mostraría proyecciones de ventas y necesidades de inventario basadas en datos históricos.')">
-                            <i class="fas fa-chart-line mr-2"></i> Forecasting
                         </button>
                     </div>
                 </div>
@@ -539,7 +579,7 @@
         </section>
 
         <section id="configuracion-module" class="module-content">
-            <div class="bg-bg-light p-6 rounded-xl shadow-sm">
+            <div class="bg-bg-light p-6 rounded-xl shadow-lg">
                 <h2 class="text-2xl font-semibold mb-4 text-text-dark">Configuración del Sistema</h2>
                 <p class="text-text-dark">Aquí se gestionarán las configuraciones generales del sistema, como márgenes
                     de ganancia por defecto, umbrales de stock, etc.</p>
@@ -565,7 +605,7 @@
     </main>
 
     <aside id="secondarySidebar"
-        class="w-64 bg-text-dark text-white flex flex-col p-4 shadow-2xl transition-transform duration-300 ease-in-out transform translate-x-full fixed right-0 top-0 h-full z-50">
+        class="w-64 bg-text-dark text-white flex flex-col p-4 shadow-xl transition-transform duration-300 ease-in-out transform translate-x-full fixed right-0 top-0 h-full z-50">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-semibold">Herramientas</h2>
             <button id="closeSecondarySidebar"
@@ -591,7 +631,7 @@
                         <div class="text-gray-400">Jue</div>
                         <div class="text-gray-400">Vie</div>
                         <div class="text-gray-400">Sáb</div>
-                        <div class="text-gray-400">Dom</div>
+                        <div class="py-1">Dom</div>
                         <div class="py-1"></div>
                         <div class="py-1"></div>
                         <div class="py-1"></div>
@@ -691,6 +731,18 @@
                         <button id="loadNote"
                             class="bg-text-secondary text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition-colors duration-200 text-sm">Cargar</button>
                     </div>
+                </div>
+            </div>
+            <div class="mb-6">
+                <div class="bg-gray-700 p-3 rounded-xl">
+                    <h4 class="font-semibold mb-2 text-white">Recordatorios</h4>
+                    <input type="text" id="newReminderInput" placeholder="Añadir nueva tarea..."
+                        class="w-full p-2 mb-2 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                    <button id="addReminderBtn"
+                        class="bg-primary-accent text-white px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors duration-200 text-sm w-full">Añadir
+                        Recordatorio</button>
+                    <ul id="reminderList" class="mt-3 space-y-2">
+                    </ul>
                 </div>
             </div>
             <div class="grid grid-cols-1 gap-4">
@@ -1039,6 +1091,65 @@
         </div>
     </div>
 
+    <div id="newReturnModal"
+        class="fixed inset-0 bg-text-dark bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-bg-lightest p-8 rounded-xl shadow-xl w-full max-w-2xl relative max-h-[90vh] overflow-y-auto">
+            <button class="absolute top-4 right-4 text-text-secondary hover:text-text-dark text-xl close-modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-2xl font-semibold mb-6 text-text-dark">Registrar Nueva Devolución</h2>
+            <form>
+                <div class="mb-4">
+                    <label for="returnSaleId" class="block text-sm font-medium text-text-dark mb-1">ID de Venta
+                        (Opcional)</label>
+                    <input type="text" id="returnSaleId"
+                        class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
+                        placeholder="Ej: VENTA-20250521-123">
+                </div>
+                <div class="mb-4">
+                    <label for="returnProductName" class="block text-sm font-medium text-text-dark mb-1">Producto a
+                        Devolver</label>
+                    <input type="text" id="returnProductName"
+                        class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
+                        placeholder="Nombre del producto">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="returnQuantity"
+                            class="block text-sm font-medium text-text-dark mb-1">Cantidad</label>
+                        <input type="number" id="returnQuantity" min="1" value="1"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                    </div>
+                    <div>
+                        <label for="returnRefundAmount" class="block text-sm font-medium text-text-dark mb-1">Monto a
+                            Reembolsar</label>
+                        <input type="number" id="returnRefundAmount" placeholder="0.00"
+                            class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label for="returnReason" class="block text-sm font-medium text-text-dark mb-1">Motivo de la
+                        Devolución</label>
+                    <select id="returnReason"
+                        class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                        <option value="">Seleccione un motivo</option>
+                        <option value="defective">Producto defectuoso</option>
+                        <option value="change_mind">Cambio de opinión</option>
+                        <option value="wrong_size_color">Talla/Color incorrecto</option>
+                        <option value="other">Otro</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button"
+                        class="bg-text-secondary text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-colors duration-200 close-modal">Cancelar</button>
+                    <button type="submit"
+                        class="bg-primary-accent text-white px-6 py-3 rounded-xl hover:bg-primary-hover transition-colors duration-200">Registrar
+                        Devolución</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="messageBox"
         class="fixed inset-0 bg-text-dark bg-opacity-50 flex items-center justify-center z-[100] hidden">
         <div class="bg-bg-lightest p-6 rounded-xl shadow-xl max-w-sm w-full text-center relative">
@@ -1070,6 +1181,8 @@
             const openNewPurchaseModalBtn = document.getElementById('openNewPurchaseModal');
             const newSaleModal = document.getElementById('newSaleModal');
             const openNewSaleModalBtn = document.getElementById('openNewSaleModal');
+            const newReturnModal = document.getElementById('newReturnModal');
+            const openNewReturnModalBtn = document.getElementById('openNewReturnModal');
             const closeModalBtns = document.querySelectorAll('.close-modal');
 
             const productCodeInput = document.getElementById('productCode');
@@ -1082,6 +1195,10 @@
             const notepad = document.getElementById('notepad');
             const saveNoteBtn = document.getElementById('saveNote');
             const loadNoteBtn = document.getElementById('loadNote');
+            const newReminderInput = document.getElementById('newReminderInput');
+            const addReminderBtn = document.getElementById('addReminderBtn');
+            const reminderList = document.getElementById('reminderList');
+
 
             const calculatorDisplay = document.getElementById('calculatorDisplay');
             const calculatorButtons = document.querySelectorAll('.calc-btn');
@@ -1291,11 +1408,16 @@
                 updateDebeIndicator(); // Actualizar el indicador de "Debe" al abrir
             });
 
+            openNewReturnModalBtn.addEventListener('click', () => {
+                newReturnModal.classList.remove('hidden');
+            });
+
             closeModalBtns.forEach(button => {
                 button.addEventListener('click', () => {
                     newProductModal.classList.add('hidden');
                     newPurchaseModal.classList.add('hidden');
                     newSaleModal.classList.add('hidden');
+                    newReturnModal.classList.add('hidden');
                 });
             });
 
@@ -1338,6 +1460,16 @@
                 //    GAS reduciría el Stock Actual de cada producto en la hoja 'Inventario'.
                 // 4. Reposición: Cuando el stock llega a cierto nivel mínimo, el sistema puede generar alertas o pedidos de compra automáticos.
                 //    Esto se implementaría en GAS, verificando el stock después de cada venta y activando notificaciones.
+            });
+
+            newReturnModal.querySelector('form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                showMessageBox('Devolución Registrada', 'La devolución ha sido registrada exitosamente (simulado).');
+                newReturnModal.classList.add('hidden');
+                // Lógica de Negocio (Backend - Google Apps Script):
+                // 1. Registrar la devolución en una hoja 'Devoluciones'.
+                // 2. Reingresar el producto al inventario: GAS actualizaría el Stock Actual del producto.
+                // 3. Procesar el reembolso al cliente.
             });
 
             // --- Cálculo del Precio de Venta Sugerido ---
@@ -1388,6 +1520,58 @@
                     showMessageBox('Sin Notas', 'No hay notas guardadas.');
                 }
             });
+
+            // --- Funcionalidad de Recordatorios de Tareas Pendientes ---
+            function loadReminders() {
+                const reminders = JSON.parse(localStorage.getItem('sigec_reminders') || '[]');
+                reminderList.innerHTML = '';
+                reminders.forEach((reminder, index) => {
+                    const li = document.createElement('li');
+                    li.classList.add('flex', 'items-center', 'justify-between', 'bg-gray-800', 'p-2', 'rounded-lg', 'text-white', 'text-sm');
+                    li.innerHTML = `
+                        <span>${reminder}</span>
+                        <button class="text-red-400 hover:text-red-600 ml-2 delete-reminder" data-index="${index}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    reminderList.appendChild(li);
+                });
+                document.querySelectorAll('.delete-reminder').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const indexToDelete = parseInt(e.target.closest('button').dataset.index);
+                        deleteReminder(indexToDelete);
+                    });
+                });
+            }
+
+            function addReminder() {
+                const reminderText = newReminderInput.value.trim();
+                if (reminderText) {
+                    const reminders = JSON.parse(localStorage.getItem('sigec_reminders') || '[]');
+                    reminders.push(reminderText);
+                    localStorage.setItem('sigec_reminders', JSON.stringify(reminders));
+                    newReminderInput.value = '';
+                    loadReminders();
+                } else {
+                    showMessageBox('Error', 'Por favor, escribe un recordatorio.');
+                }
+            }
+
+            function deleteReminder(index) {
+                let reminders = JSON.parse(localStorage.getItem('sigec_reminders') || '[]');
+                reminders.splice(index, 1);
+                localStorage.setItem('sigec_reminders', JSON.stringify(reminders));
+                loadReminders();
+            }
+
+            addReminderBtn.addEventListener('click', addReminder);
+            newReminderInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addReminder();
+                }
+            });
+            loadReminders();
+
 
             // --- Funcionalidad de la Calculadora Rápida ---
 
@@ -1711,18 +1895,19 @@
 
 
             // --- Lógica de Dashboard con Chart.js ---
+            // Gráfico de Ventas Mensuales
             const salesCtx = document.getElementById('salesChart').getContext('2d');
             const salesChart = new Chart(salesCtx, {
-                type: 'bar', // Puedes cambiar a 'line', 'pie', etc.
+                type: 'bar',
                 data: {
                     labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
                     datasets: [{
                         label: 'Ventas Mensuales ($)',
                         data: [12000, 19000, 3000, 5000, 20000, 30000], // Datos de ejemplo
-                        backgroundColor: 'rgba(40, 167, 150, 0.8)', // primary-accent con opacidad
-                        borderColor: '#28A796', // primary-accent
+                        backgroundColor: 'rgba(74, 71, 163, 0.8)', // primary-accent con opacidad
+                        borderColor: '#4A47A3', // primary-accent
                         borderWidth: 1,
-                        borderRadius: 8, // Esquinas redondeadas para las barras
+                        borderRadius: 8,
                     }]
                 },
                 options: {
@@ -1732,7 +1917,7 @@
                         legend: {
                             display: true,
                             labels: {
-                                color: '#212529' // text-dark
+                                color: '#2C3E50' // text-dark
                             }
                         },
                         title: {
@@ -1744,19 +1929,54 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                color: '#6C757D' // text-secondary
+                                color: '#7F8C8D' // text-secondary
                             },
                             grid: {
-                                color: '#CED4DA' // border-gray
+                                color: '#C0C7D1' // border-gray
                             }
                         },
                         x: {
                             ticks: {
-                                color: '#6C757D' // text-secondary
+                                color: '#7F8C8D' // text-secondary
                             },
                             grid: {
                                 display: false
                             }
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de Ventas por Categoría de Producto
+            const categorySalesCtx = document.getElementById('categorySalesChart').getContext('2d');
+            const categorySalesChart = new Chart(categorySalesCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Electrónica', 'Periféricos', 'Accesorios', 'Software'],
+                    datasets: [{
+                        data: [30000, 15000, 8000, 2000], // Datos de ejemplo
+                        backgroundColor: [
+                            '#4A47A3', // primary-accent
+                            '#00C4B4', // secondary-accent
+                            '#FF7F50', // un color complementario
+                            '#A34A47'  // otro color
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#2C3E50' // text-dark
+                            }
+                        },
+                        title: {
+                            display: false,
+                            text: 'Ventas por Categoría'
                         }
                     }
                 }
