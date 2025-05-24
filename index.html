@@ -5,21 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vertex - Sistema Integral de Gestión para Comercios</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, query, onSnapshot, doc, addDoc, setDoc, updateDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, query, onSnapshot, doc, addDoc, setDoc, updateDoc, deleteDoc, getDocs, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global Firebase variables (will be initialized in DOMContentLoaded)
+        // Variables globales de Firebase (se inicializarán en DOMContentLoaded)
         window.firebaseApp = null;
         window.db = null;
         window.auth = null;
         window.userId = null;
-        window.appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'; // Provided by Canvas environment
+        window.appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'; // Proporcionado por el entorno Canvas
 
         document.addEventListener('DOMContentLoaded', async () => {
             try {
@@ -28,39 +29,39 @@
                 window.db = getFirestore(window.firebaseApp);
                 window.auth = getAuth(window.firebaseApp);
 
-                // Authenticate user
+                // Autenticar usuario
                 if (typeof __initial_auth_token !== 'undefined') {
                     await signInWithCustomToken(window.auth, __initial_auth_token);
                 } else {
                     await signInAnonymously(window.auth);
                 }
 
-                // Listen for auth state changes to set userId and start data listeners
+                // Escuchar cambios en el estado de autenticación para establecer userId e iniciar listeners de datos
                 onAuthStateChanged(window.auth, (user) => {
                     if (user) {
                         window.userId = user.uid;
-                        console.log("Firebase authenticated. User ID:", window.userId);
-                        // Now that user is authenticated, set up Firestore listeners
+                        console.log("Firebase autenticado. ID de usuario:", window.userId);
+                        // Ahora que el usuario está autenticado, configurar los listeners de Firestore
                         setupFirestoreListeners();
-                        // Initial data load and UI updates
+                        // Carga inicial de datos y actualizaciones de la interfaz de usuario
                         initApp();
                     } else {
                         window.userId = null;
-                        console.log("Firebase: No user is signed in.");
-                        // Handle logged out state, e.g., clear data, show login
-                        // For this app, we'll just continue with empty data if no user
+                        console.log("Firebase: Ningún usuario ha iniciado sesión.");
+                        // Manejar el estado de cierre de sesión, por ejemplo, limpiar datos, mostrar inicio de sesión
+                        // Para esta aplicación, continuaremos con datos vacíos si no hay usuario
                         initApp();
                     }
                 });
 
             } catch (error) {
-                console.error("Error initializing Firebase:", error);
-                // Fallback to local storage if Firebase fails to initialize
+                console.error("Error al inicializar Firebase:", error);
+                // Fallback a almacenamiento local si Firebase falla al inicializar
                 window.db = null;
                 window.auth = null;
-                window.userId = 'local-user'; // Simulate a local user ID for localStorage fallback
-                console.warn("Firebase initialization failed, falling back to localStorage for data persistence.");
-                initApp(); // Proceed with app initialization using localStorage
+                window.userId = 'local-user'; // Simular un ID de usuario local para el fallback de localStorage
+                console.warn("La inicialización de Firebase falló, recurriendo al almacenamiento local para la persistencia de datos.");
+                initApp(); // Continuar con la inicialización de la aplicación usando localStorage
             }
         });
     </script>
@@ -93,12 +94,67 @@
         }
     </script>
     <style>
-        /*
-        * Estilos CSS personalizados para el sistema VERTEX.
-        * Aunque se usa Tailwind CSS para la mayoría de los estilos,
-        * este bloque se reserva para ajustes finos o reglas específicas
-        * que no se manejan directamente con clases de utilidad de Tailwind.
-        */
+        /* Reset de estilos para asegurar consistencia en todos los navegadores */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Definición de variables CSS para colores, sombras, transiciones y efectos */
+        :root {
+            /* Colores adaptados de la paleta "Deep Ocean & Aqua" */
+            --primary: #4A47A3;
+            /* primary-accent */
+            --surface: rgba(255, 255, 255, 0.08);
+            /* Superficie translúcida */
+            --surface-hover: rgba(255, 255, 255, 0.12);
+            /* Superficie translúcida al pasar el ratón */
+            --glass: rgba(74, 71, 163, 0.6);
+            /* primary-accent con opacidad para glassmorphism */
+            --glass-border: rgba(255, 255, 255, 0.2);
+            /* Borde translúcido para el efecto glassmorphism */
+            --text: #2C3E50;
+            /* text-dark */
+            --text-light: #ffffff;
+            /* Color de texto claro */
+            --text-secondary: #7F8C8D;
+            /* text-secondary */
+            --accent: #00C4B4;
+            /* secondary-accent */
+            --success: #28A745;
+            /* success-green */
+            --warning: #F59E0B;
+            /* Tailwind orange-500 */
+            --danger: #DC3545;
+            /* error-red */
+            --purple: #8B5CF6;
+            /* Tailwind purple-500 */
+            --pink: #EC4899;
+            /* Tailwind pink-500 */
+            --teal: #14B8A6;
+            /* Tailwind teal-500 */
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
+            /* Sombra estándar */
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08);
+            /* Sombra grande */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Transición suave estándar */
+            --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Curva de transición elástica */
+        }
+
+        /* Estilos generales del cuerpo de la página */
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            /* Color de texto por defecto para el cuerpo */
+            overflow-x: hidden;
+            display: flex;
+            background-color: var(--bg-lightest);
+            /* Usa el color de fondo de tu paleta */
+            position: relative;
+        }
 
         /* Oculta todos los módulos de contenido por defecto */
         .module-content {
@@ -138,25 +194,6 @@
             /* Un tono más oscuro */
         }
 
-        /* Estilo para el enlace de navegación activo en la barra lateral principal */
-        #mainSidebar .active-link {
-            background-color: #3B388E;
-            /* Un tono de primary-accent más oscuro para el estado activo */
-            color: #FFFFFF;
-            /* Texto blanco para el enlace activo */
-        }
-
-        /* Estilo para el enlace de navegación activo en la barra inferior móvil */
-        #mobileBottomNav .active-link {
-            background-color: rgba(255, 255, 255, 0.2);
-            /* Fondo ligeramente transparente para el activo */
-            color: #FFFFFF;
-            /* Texto blanco para el enlace activo */
-            border-radius: 0.5rem;
-            /* rounded-lg */
-        }
-
-
         /* Ocultar barra de desplazamiento en la barra lateral secundaria (widget) */
         .secondary-sidebar-scrollable {
             -ms-overflow-style: none;
@@ -180,7 +217,7 @@
             }
 
             /* Oculta las barras laterales y otros elementos de navegación/interfaz */
-            #mainSidebar,
+            .nav-container,
             #secondarySidebar,
             header,
             .modal,
@@ -192,9 +229,10 @@
             /* Botones de guardar/cancelar en modales */
             .dashboard-export-buttons,
             /* Contenedor de botones de exportación en dashboard */
-            .table-controls,
+            .table-controls
+
             /* Controles de tabla como paginación y ordenamiento */
-            #mobileBottomNav /* La nueva barra de navegación inferior móvil */ {
+                {
                 display: none !important;
             }
 
@@ -382,89 +420,535 @@
             }
         }
 
-        /* Layout adjustments for main sidebar collapse/expand */
+        /* Ajustes de diseño para expandir/contraer la barra lateral principal */
         @media (min-width: 768px) {
-            body.sidebar-expanded #mainSidebar {
-                width: 16rem; /* w-64 */
+            body.sidebar-expanded .nav-container {
+                width: 20rem;
+                /* Ancho expandido (320px) */
             }
+
             body.sidebar-expanded #mainContentArea {
-                width: calc(100% - 16rem); /* Full width minus sidebar width */
+                margin-left: 20rem;
+                /* Margen para el contenido principal */
             }
-            body.sidebar-collapsed #mainSidebar {
-                width: 4rem; /* w-16 */
+
+            body.sidebar-collapsed .nav-container {
+                width: 5rem;
+                /* Ancho contraído (80px) */
             }
+
             body.sidebar-collapsed #mainContentArea {
-                width: calc(100% - 4rem); /* Full width minus sidebar width */
+                margin-left: 5rem;
+                /* Margen para el contenido principal */
             }
+
             #mainContentArea {
-                /* Ensure it always takes remaining space and is flexible */
+                /* Asegura que siempre ocupe el espacio restante y sea flexible */
                 flex-grow: 1;
                 flex-shrink: 1;
-                flex-basis: 0; /* Ensures it can shrink to 0 if needed, then grow */
+                flex-basis: 0;
+                /* Permite que se encoja a 0 si es necesario, luego crezca */
+                transition: margin-left 0.3s ease-out;
+                /* Transición suave para el margen */
             }
+        }
+
+        /* Estilos de la barra de navegación */
+        .nav-container {
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            /* Alinear arriba */
+            left: 0;
+            /* Alinear a la izquierda */
+            height: 100vh;
+            /* Altura completa de la ventana */
+            padding: 1.5rem 0.5rem;
+            /* Relleno para escritorio */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 5rem;
+            /* Ancho contraído por defecto (80px) */
+            transition: width 0.3s ease-out, padding 0.3s ease-out;
+            /* Transición para el ancho */
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                bottom: 0;
+                left: 0;
+                right: 0;
+                top: auto;
+                /* Restablecer arriba para móvil */
+                height: auto;
+                /* Restablecer altura para móvil */
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+                width: 100%;
+                padding: 1rem 0.5rem;
+                border-radius: 0;
+                /* Sin bordes redondeados en la barra inferior móvil */
+                box-shadow: var(--shadow-lg);
+                /* Aplicar glassmorphism directamente al nav-container en móvil */
+                background: var(--glass);
+                backdrop-filter: blur(30px) saturate(200%);
+                border: 1px solid var(--glass-border);
+            }
+        }
+
+        .navbar {
+            /* En escritorio, el glassmorphism se aplica a .navbar */
+            background: var(--glass);
+            backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            border-radius: 40px;
+            /* Bordes redondeados para la barra lateral de escritorio */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.5rem;
+            width: 100%;
+            /* Ocupar todo el ancho de nav-container */
+            height: 100%;
+            /* Ocupar toda la altura de nav-container */
+            padding: 1.5rem 0.5rem;
+            transition: var(--transition);
+            /* Transición para el glassmorphism */
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: row;
+                width: auto;
+                height: auto;
+                border-radius: 0;
+                padding: 0;
+                background: transparent;
+                /* El fondo lo maneja nav-container en móvil */
+                backdrop-filter: none;
+                border: none;
+                box-shadow: none;
+            }
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.15) 0%,
+                    rgba(255, 255, 255, 0.05) 50%,
+                    rgba(255, 255, 255, 0.02) 100%);
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .navbar::before {
+                display: none;
+                /* Sin brillo interno en la barra inferior móvil */
+            }
+        }
+
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Centrar el icono por defecto */
+            width: 3.5rem;
+            /* Ancho fijo para el icono */
+            height: 3.5rem;
+            /* Altura fija para el icono */
+            border: none;
+            border-radius: 50%;
+            background: transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            overflow: hidden;
+            /* Ocultar el texto cuando está contraído */
+            isolation: isolate;
+            flex-shrink: 0;
+            color: var(--text-light);
+            /* Color de icono por defecto */
+        }
+
+        /* Oculta el botón de alternancia en dispositivos móviles */
+        @media (max-width: 768px) {
+            .toggle-btn {
+                display: none;
+            }
+
+            .nav-item {
+                width: 3.5rem;
+                /* Mantener el tamaño del botón en móvil */
+                height: 3.5rem;
+            }
+
+            .nav-item .nav-text {
+                display: none;
+                /* Ocultar texto en móvil */
+            }
+        }
+
+        /* Estilos de los elementos de navegación cuando la barra está expandida en escritorio */
+        body.sidebar-expanded .nav-item {
+            width: 100%;
+            /* Ocupar todo el ancho disponible */
+            justify-content: flex-start;
+            /* Alinear el contenido a la izquierda */
+            padding: 0 1rem;
+            /* Relleno para el texto */
+            border-radius: 16px;
+            /* Bordes redondeados para los elementos expandidos */
+        }
+
+        /* Pseudo-elemento para el fondo base (hover y estado normal) */
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(100% - 6px);
+            /* Ancho ajustado */
+            height: calc(100% - 6px);
+            /* Altura ajustada */
+            border-radius: 50%;
+            /* Por defecto, circular */
+            background: var(--surface);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        /* Ajuste del fondo para hover/normal cuando la barra está expandida (escritorio) */
+        body.sidebar-expanded .nav-item::before {
+            width: calc(100% - 6px);
+            height: 48px;
+            /* Altura para el fondo del elemento expandido */
+            border-radius: 13px;
+            /* Bordes redondeados para el fondo del elemento expandido */
+        }
+
+        /* Pseudo-elemento para el fondo del elemento activo */
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: calc(100% - 6px);
+            /* Ancho ajustado */
+            height: calc(100% - 6px);
+            /* Altura ajustada */
+            border-radius: 50%;
+            /* Por defecto, circular */
+            background: var(--item-color);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: -2;
+        }
+
+        /* Ajuste del fondo para el elemento activo cuando la barra está expandida (escritorio) */
+        body.sidebar-expanded .nav-item::after {
+            width: calc(100% - 6px);
+            height: 48px;
+            /* Altura para el fondo del elemento activo expandido */
+            border-radius: 13px;
+            /* Bordes redondeados para el fondo del elemento activo expandido */
+        }
+
+        /* Estilos de los iconos de Font Awesome */
+        .nav-item i {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Estilos del texto de navegación */
+        .nav-item .nav-text {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-left: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            /* Asegurar que el texto no ocupe espacio cuando está oculto */
+            position: absolute;
+            /* Usar posición absoluta para no afectar el diseño del icono */
+            left: 50%;
+            /* Centrar inicialmente */
+            transform: translateX(-50%) translateX(-10px);
+            /* Ajustar para que el texto se mueva desde el centro */
+            pointer-events: none;
+            /* No interactuable cuando está oculto */
+        }
+
+        /* Muestra el texto cuando la barra está expandida (escritorio) */
+        body.sidebar-expanded .nav-item .nav-text {
+            opacity: 1;
+            transform: translateX(0);
+            /* Mover a la posición final */
+            position: relative;
+            /* Volver a posición normal para ocupar espacio */
+            left: auto;
+            /* Restablecer left */
+            pointer-events: auto;
+            /* Hacer interactuable */
+        }
+
+        /* Colores únicos para cada elemento de navegación (usando variables CSS) */
+        /* Estos están mapeados a los colores de tu módulo */
+        .nav-item[data-section="toggle"] {
+            --item-color: var(--primary);
+        }
+
+        .nav-item[data-section="inventario"] {
+            --item-color: var(--primary-accent);
+        }
+
+        .nav-item[data-section="compras"] {
+            --item-color: var(--secondary-accent);
+        }
+
+        .nav-item[data-section="ventas"] {
+            --item-color: #FF7F50;
+            /* Color complementario */
+        }
+
+        .nav-item[data-section="dashboard"] {
+            --item-color: #A34A47;
+            /* Otro color complementario */
+        }
+
+        .nav-item[data-section="configuracion"] {
+            --item-color: #6A5ACD;
+            /* Púrpura medio */
+        }
+
+        /* Efectos al pasar el ratón (hover) */
+        .nav-item:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-item:hover::before {
+            opacity: 1;
+        }
+
+        .nav-item:hover i,
+        .nav-item:hover .nav-text {
+            color: var(--item-color);
+            transform: scale(1.05);
+        }
+
+        /* Estado activo - fondo elegante con gradiente sutil y sombra */
+        .nav-item.active::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            background: linear-gradient(135deg, var(--item-color), color-mix(in srgb, var(--item-color) 80%, white 20%));
+            box-shadow: 0 4px 12px color-mix(in srgb, var(--item-color) 40%, transparent);
+        }
+
+        .nav-item.active i,
+        .nav-item.active .nav-text {
+            color: var(--text-light);
+            transform: scale(1.05);
+            font-weight: 600;
+        }
+
+        .nav-item.active::before {
+            opacity: 0;
+        }
+
+        /* Efecto al hacer click/tocar */
+        .nav-item:active {
+            transform: scale(0.95);
+        }
+
+        /* Animación de pulso sutil en el fondo de hover */
+        .nav-item:hover::before {
+            animation: subtle-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes subtle-pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        /* Animaciones de entrada iniciales */
+        .navbar {
+            animation: navbar-enter 1.2s ease-out forwards;
+        }
+
+        .nav-item {
+            animation: item-enter 1s ease-out both;
+        }
+
+        /* Retrasos para animaciones escalonadas de los elementos de navegación */
+        .nav-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .nav-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .nav-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .nav-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .nav-item:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .nav-item:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        /* Keyframes para la animación de entrada de la barra de navegación */
+        @keyframes navbar-enter {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Keyframes para la animación de entrada de los elementos de navegación */
+        @keyframes item-enter {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Ajustes para el contenido principal */
+        #mainContentArea {
+            padding: 1.5rem;
+            /* Relleno ajustado */
+            transition: margin-left 0.3s ease-out;
+            /* Transición suave para el margen */
+            height: 100vh;
+            /* Altura completa de la ventana */
+            overflow-y: auto;
+            /* Habilitar desplazamiento para el contenido */
+        }
+
+        @media (max-width: 768px) {
+            #mainContentArea {
+                margin-left: 0 !important;
+                /* Sin margen en móvil */
+                padding-bottom: 5rem;
+                /* Espacio para la barra de navegación inferior */
+            }
+        }
+
+        /* Estilo para el encabezado principal */
+        header {
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-gray);
+            box-shadow: var(--shadow-lg);
+            /* Usar sombra grande para consistencia */
+        }
+
+        /* Estilo para la barra lateral secundaria */
+        #secondarySidebar {
+            background: linear-gradient(to bottom, var(--primary-accent), color-mix(in srgb, var(--primary-accent) 80%, black 20%));
+            /* Gradiente consistente */
+            box-shadow: var(--shadow-lg);
+            /* Usar sombra grande para consistencia */
+        }
+
+        /* Estilo para los elementos internos de la barra lateral secundaria */
+        #secondarySidebar .bg-gray-800 {
+            background-color: color-mix(in srgb, var(--primary-accent) 15%, #2C3E50 85%);
+            /* Un gris oscuro con un toque de primary-accent */
+            box-shadow: var(--shadow);
+            /* Sombra estándar para elementos internos */
+        }
+
+        #secondarySidebar .calc-btn.bg-gray-700 {
+            background-color: color-mix(in srgb, var(--primary-accent) 10%, #2C3E50 90%);
+            /* Un gris más oscuro para botones de calculadora */
+        }
+
+        #secondarySidebar .calc-btn.bg-gray-700:hover {
+            background-color: color-mix(in srgb, var(--primary-accent) 20%, #2C3E50 80%);
+        }
+
+        #secondarySidebar .bg-gray-900 {
+            background-color: color-mix(in srgb, var(--primary-accent) 5%, #2C3E50 95%);
+            /* Fondo muy oscuro para inputs en sidebar */
         }
     </style>
 </head>
 
 <body class="bg-bg-lightest flex h-screen overflow-hidden font-inter text-text-dark sidebar-expanded">
 
-    <aside id="mainSidebar"
-        class="h-screen bg-gradient-to-b from-primary-accent to-blue-950 text-white flex-col p-4 shadow-2xl transition-all duration-700 ease-in-out rounded-r-xl hidden md:flex">
-        <div class="flex justify-between items-center mb-8">
-            <div class="text-2xl font-bold">VERTEX</div>
-            <button id="toggleMainSidebar"
-                class="p-2 rounded-full text-white hover:bg-gray-700 transition-colors duration-200"
-                aria-label="Alternar barra lateral principal">
+    <div class="nav-container">
+        <nav class="navbar">
+            <button class="nav-item toggle-btn" data-section="toggle" aria-label="Alternar menú de navegación">
                 <i class="fas fa-bars"></i>
+                <span class="nav-text">Menú</span>
             </button>
-        </div>
-        <nav class="flex-1" id="mainNav">
-            <ul>
-                <li class="mb-2">
-                    <a href="#" data-module="inventario"
-                        class="flex items-center p-3 rounded-xl hover:bg-gray-700 transition-colors duration-200 active-link">
-                        <i class="fas fa-box mr-3 flex-shrink-0 text-center w-6" aria-hidden="true"></i> <span
-                            class="nav-text whitespace-nowrap">Inventario</span>
-                    </a>
-                </li>
-                <li class="mb-2">
-                    <a href="#" data-module="compras"
-                        class="flex items-center p-3 rounded-xl hover:bg-gray-700 transition-colors duration-200">
-                        <i class="fas fa-shopping-cart mr-3 flex-shrink-0 text-center w-6" aria-hidden="true"></i>
-                        <span class="nav-text whitespace-nowrap">Compras</span>
-                    </a>
-                </li>
-                <li class="mb-2">
-                    <a href="#" data-module="ventas"
-                        class="flex items-center p-3 rounded-xl hover:bg-gray-700 transition-colors duration-200">
-                        <i class="fas fa-cash-register mr-3 flex-shrink-0 text-center w-6" aria-hidden="true"></i>
-                        <span class="nav-text whitespace-nowrap">Ventas</span>
-                    </a>
-                </li>
-                <li class="mb-2">
-                    <a href="#" data-module="dashboard"
-                        class="flex items-center p-3 rounded-xl hover:bg-gray-700 transition-colors duration-200">
-                        <i class="fas fa-chart-line mr-3 flex-shrink-0 text-center w-6" aria-hidden="true"></i> <span
-                            class="nav-text whitespace-nowrap">Dashboard</span>
-                    </a>
-                </li>
-                <li class="mb-2">
-                    <a href="#" data-module="configuracion"
-                        class="flex items-center p-3 rounded-xl hover:bg-gray-700 transition-colors duration-200">
-                        <i class="fas fa-cog mr-3 flex-shrink-0 text-center w-6" aria-hidden="true"></i> <span
-                            class="nav-text whitespace-nowrap">Configuración</span>
-                    </a>
-                </li>
-            </ul>
+            <button class="nav-item active" data-section="inventario" aria-label="Ir a Inventario">
+                <i class="fas fa-box"></i>
+                <span class="nav-text">Inventario</span>
+            </button>
+            <button class="nav-item" data-section="compras" aria-label="Ir a Compras">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="nav-text">Compras</span>
+            </button>
+            <button class="nav-item" data-section="ventas" aria-label="Ir a Ventas">
+                <i class="fas fa-cash-register"></i>
+                <span class="nav-text">Ventas</span>
+            </button>
+            <button class="nav-item" data-section="dashboard" aria-label="Ir a Dashboard">
+                <i class="fas fa-chart-line"></i>
+                <span class="nav-text">Dashboard</span>
+            </button>
+            <button class="nav-item" data-section="configuracion" aria-label="Ir a Configuración">
+                <i class="fas fa-cog"></i>
+                <span class="nav-text">Configuración</span>
+            </button>
         </nav>
-        <div id="companyName"
-            class="text-center mt-auto py-4 text-xs text-text-secondary whitespace-nowrap overflow-hidden">
-            Desarrollado por <br> <span class="font-semibold text-text-secondary">Plexcel.py Evolution</span>
-        </div>
-    </aside>
+    </div>
 
-    <main id="mainContentArea" class="flex-1 flex flex-col p-6 overflow-y-auto transition-all duration-700 ease-in-out">
-        <header class="flex justify-between items-center pb-4 border-b border-border-gray mb-4 bg-bg-light rounded-xl p-4">
+    <main id="mainContentArea" class="flex-1 flex flex-col p-6 overflow-y-auto main-content-area">
+        <header
+            class="flex justify-between items-center pb-4 border-b border-border-gray mb-4 bg-bg-light rounded-xl p-4">
             <h1 id="moduleTitle" class="text-3xl font-semibold text-text-dark">Inventario</h1>
             <button id="toggleSecondarySidebar"
                 class="p-2 rounded-full bg-primary-accent text-white hover:bg-primary-hover transition-colors duration-200"
@@ -507,7 +991,7 @@
                             class="p-2 border border-border-gray rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             aria-label="Filtrar por categoría">
                             <option value="">Todas</option>
-                            </select>
+                        </select>
                     </div>
                     <div>
                         <label for="filterPriceMin" class="block text-sm font-medium text-text-dark mb-1">Precio
@@ -547,7 +1031,7 @@
                             </tr>
                         </thead>
                         <tbody id="inventoryTableBody">
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
                 <div class="flex justify-between items-center mt-4 table-controls">
@@ -587,7 +1071,8 @@
                                     data-sort="supplier">Proveedor <i class="fas fa-sort text-xs ml-1"></i></th>
                                 <th class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider cursor-pointer sortable"
                                     data-sort="total">Total <i class="fas fa-sort text-xs ml-1"></i></th>
-                                <th class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
                                     Ítems</th>
                                 <th
                                     class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
@@ -595,7 +1080,7 @@
                             </tr>
                         </thead>
                         <tbody id="purchasesTableBody">
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
                 <div class="flex justify-between items-center mt-4 table-controls">
@@ -641,7 +1126,8 @@
                                     data-sort="client">Cliente <i class="fas fa-sort text-xs ml-1"></i></th>
                                 <th class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider cursor-pointer sortable"
                                     data-sort="total">Total <i class="fas fa-sort text-xs ml-1"></i></th>
-                                <th class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
+                                <th
+                                    class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
                                     Ítems</th>
                                 <th
                                     class="py-3 px-4 text-left text-sm font-medium text-text-secondary uppercase tracking-wider">
@@ -649,7 +1135,7 @@
                             </tr>
                         </thead>
                         <tbody id="salesTableBody">
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
                 <div class="flex justify-between items-center mt-4 table-controls">
@@ -714,12 +1200,12 @@
                     <div class="bg-bg-lightest p-4 rounded-xl shadow-md border border-border-gray">
                         <h3 class="text-lg font-medium text-text-dark mb-2">Productos Más Vendidos</h3>
                         <ul id="topSellingProducts" class="list-disc list-inside text-text-dark">
-                            </ul>
+                        </ul>
                     </div>
                     <div class="bg-bg-lightest p-4 rounded-xl shadow-md border border-border-gray">
                         <h3 class="text-lg font-medium text-text-dark mb-2">Productos con Bajo Stock</h3>
                         <ul id="lowStockProducts" class="list-disc list-inside text-text-dark">
-                            </ul>
+                        </ul>
                     </div>
                 </div>
 
@@ -738,8 +1224,8 @@
                         </button>
                         <button
                             class="bg-blue-500 text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-colors duration-200 shadow-md"
-                            onclick="showMessageBox('Forecasting', 'Esta sección mostraría proyecciones de ventas y necesidades de inventario basadas en datos históricos.', 'info')">
-                            <i class="fas fa-chart-line mr-2" aria-hidden="true"></i> Forecasting
+                            onclick="showMessageBox('Previsión', 'Esta sección mostraría proyecciones de ventas y necesidades de inventario basadas en datos históricos.', 'info')">
+                            <i class="fas fa-chart-line mr-2" aria-hidden="true"></i> Previsión
                         </button>
                         <button id="exportInventoryCSV"
                             class="bg-secondary-accent text-white px-5 py-3 rounded-xl hover:bg-secondary-hover transition-colors duration-200 shadow-md">
@@ -920,8 +1406,8 @@
                         <label for="productCode" class="block text-sm font-medium text-text-dark mb-1">Código de
                             Producto</label>
                         <input type="text" id="productCode"
-                            class="p-3 border border-border-gray rounded-xl w-full bg-bg-light text-text-dark"
-                            readonly aria-label="Código de producto generado automáticamente">
+                            class="p-3 border border-border-gray rounded-xl w-full bg-bg-light text-text-dark" readonly
+                            aria-label="Código de producto generado automáticamente">
                     </div>
                     <div>
                         <label for="productName" class="block text-sm font-medium text-text-dark mb-1">Nombre de
@@ -936,7 +1422,8 @@
                         class="block text-sm font-medium text-text-dark mb-1">Descripción</label>
                     <textarea id="productDescription" rows="3"
                         class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
-                        placeholder="Descripción detallada del producto" aria-label="Descripción del producto"></textarea>
+                        placeholder="Descripción detallada del producto"
+                        aria-label="Descripción del producto"></textarea>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div>
@@ -957,8 +1444,8 @@
                         <label for="suggestedPrice" class="block text-sm font-medium text-text-dark mb-1">Precio de
                             Venta Sugerido</label>
                         <input type="text" id="suggestedPrice"
-                            class="p-3 border border-border-border-gray rounded-xl w-full bg-bg-light text-text-dark" readonly
-                            value="$0.00" aria-label="Precio de venta sugerido (calculado)">
+                            class="p-3 border border-border-border-gray rounded-xl w-full bg-bg-light text-text-dark"
+                            readonly value="$0.00" aria-label="Precio de venta sugerido (calculado)">
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -1037,9 +1524,8 @@
                             aria-required="true" aria-label="Fecha de la compra">
                     </div>
                     <div>
-                        <label for="purchaseSupplier"
-                            class="block text-sm font-medium text-text-dark mb-1">Proveedor <span
-                                class="text-red-500">*</span></label>
+                        <label for="purchaseSupplier" class="block text-sm font-medium text-text-dark mb-1">Proveedor
+                            <span class="text-red-500">*</span></label>
                         <select id="purchaseSupplier" required
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             aria-required="true" aria-label="Proveedor de la compra">
@@ -1087,7 +1573,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
 
@@ -1163,7 +1649,7 @@
                 <div class="mb-4 p-3 bg-bg-light rounded-xl border border-border-gray">
                     <h4 class="text-sm font-semibold text-text-dark mb-2">Sugerencias de Productos Frecuentes:</h4>
                     <div id="frequentProductsSuggestions" class="flex flex-wrap gap-2">
-                        </div>
+                    </div>
                 </div>
 
                 <div class="overflow-x-auto mb-6">
@@ -1192,7 +1678,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
 
@@ -1212,7 +1698,7 @@
     </div>
 
     <div id="newReturnModal"
-        class="fixed inset-0 bg-text-dark bg-opacity50 flex items-center justify-center z-50 hidden">
+        class="fixed inset-0 bg-text-dark bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-bg-lightest p-8 rounded-xl shadow-xl w-full max-w-2xl relative max-h-[90vh] overflow-y-auto">
             <button class="absolute top-4 right-4 text-text-secondary hover:text-text-dark text-xl close-modal"
                 aria-label="Cerrar modal de nueva devolución">
@@ -1237,8 +1723,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
-                        <label for="returnQuantity"
-                            class="block text-sm font-medium text-text-dark mb-1">Cantidad <span
+                        <label for="returnQuantity" class="block text-sm font-medium text-text-dark mb-1">Cantidad <span
                                 class="text-red-500">*</span></label>
                         <input type="number" id="returnQuantity" min="1" value="1" required
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
@@ -1290,58 +1775,27 @@
         <div class="spinner"></div>
     </div>
 
-    <nav id="mobileBottomNav"
-        class="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-r from-primary-accent to-secondary-accent text-white shadow-2xl rounded-t-xl flex justify-around items-center h-16 md:hidden">
-        <a href="#" data-module="inventario"
-            class="flex flex-col items-center p-2 rounded-lg text-sm hover:bg-opacity-20 transition-colors duration-200 active-link">
-            <i class="fas fa-box text-lg" aria-hidden="true"></i>
-            <span>Inventario</span>
-        </a>
-        <a href="#" data-module="compras"
-            class="flex flex-col items-center p-2 rounded-lg text-sm hover:bg-opacity-20 transition-colors duration-200">
-            <i class="fas fa-shopping-cart text-lg" aria-hidden="true"></i>
-            <span>Compras</span>
-        </a>
-        <a href="#" data-module="ventas"
-            class="flex flex-col items-center p-2 rounded-lg text-sm hover:bg-opacity-20 transition-colors duration-200">
-            <i class="fas fa-cash-register text-lg" aria-hidden="true"></i>
-            <span>Ventas</span>
-        </a>
-        <a href="#" data-module="dashboard"
-            class="flex flex-col items-center p-2 rounded-lg text-sm hover:bg-opacity-20 transition-colors duration-200">
-            <i class="fas fa-chart-line text-lg" aria-hidden="true"></i>
-            <span>Dashboard</span>
-        </a>
-        <a href="#" data-module="configuracion"
-            class="flex flex-col items-center p-2 rounded-lg text-sm hover:bg-opacity-20 transition-colors duration-200">
-            <i class="fas fa-cog text-lg" aria-hidden="true"></i>
-            <span>Config.</span>
-        </a>
-    </nav>
-
     <script type="module">
         // Importaciones de Firebase (ya están en el head, pero se repiten aquí para claridad del script principal)
-        import { collection, query, onSnapshot, doc, addDoc, setDoc, updateDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { collection, query, onSnapshot, doc, addDoc, setDoc, updateDoc, deleteDoc, getDocs, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global data arrays (will be populated by Firestore listeners)
+        // Arrays de datos globales (se poblarán mediante listeners de Firestore)
         let productsData = [];
         let purchasesData = [];
         let salesData = [];
-        let clientsData = []; // New array for clients
+        let clientsData = []; // Nuevo array para clientes
 
         // --- Elementos del DOM ---
-        const mainSidebar = document.getElementById('mainSidebar');
-        const toggleMainSidebarBtn = document.getElementById('toggleMainSidebar');
-        const mainNav = document.getElementById('mainNav');
-        const mobileBottomNav = document.getElementById('mobileBottomNav');
-        const navTextElements = document.querySelectorAll('#mainSidebar .nav-text');
+        const navContainer = document.querySelector('.nav-container');
+        const navbar = document.querySelector('.navbar');
+        const navItems = document.querySelectorAll('.nav-item');
+        const toggleButton = document.querySelector('.toggle-btn');
         const moduleContents = document.querySelectorAll('.module-content');
         const moduleTitle = document.getElementById('moduleTitle');
         const toggleSecondarySidebarBtn = document.getElementById('toggleSecondarySidebar');
         const secondarySidebar = document.getElementById('secondarySidebar');
         const closeSecondarySidebarBtn = document.getElementById('closeSecondarySidebar');
-        const companyNameDiv = document.getElementById('companyName');
-        const mainContentArea = document.getElementById('mainContentArea'); // Renamed for clarity
+        const mainContentArea = document.getElementById('mainContentArea'); // Renombrado para mayor claridad
 
         const newProductModal = document.getElementById('newProductModal');
         const openNewProductModalBtn = document.getElementById('openNewProductModal');
@@ -1528,10 +1982,8 @@
         function switchModule(moduleName) {
             const targetModuleId = moduleName + '-module';
 
-            // Remover 'active-link' de todos los enlaces de ambas barras de navegación
-            document.querySelectorAll('#mainSidebar nav ul li a').forEach(navLink => navLink.classList.remove('active-link'));
-            document.querySelectorAll('#mobileBottomNav a').forEach(navLink => navLink.classList.remove('active-link'));
-
+            // Remover 'active' de todos los nav-items
+            navItems.forEach(navItem => navItem.classList.remove('active'));
 
             // Remover 'active' de todos los módulos de contenido
             moduleContents.forEach(moduleContent => moduleContent.classList.remove('active'));
@@ -1540,16 +1992,10 @@
             document.getElementById(targetModuleId).classList.add('active');
             moduleTitle.textContent = moduleName.charAt(0).toUpperCase() + moduleName.slice(1); // Capitalizar el nombre del módulo
 
-            // Resaltar el enlace activo en la barra lateral principal (PC)
-            const mainSidebarLink = document.querySelector(`#mainSidebar a[data-module="${moduleName}"]`);
-            if (mainSidebarLink) {
-                mainSidebarLink.classList.add('active-link');
-            }
-
-            // Resaltar el enlace activo en la barra inferior móvil
-            const mobileBottomNavLink = document.querySelector(`#mobileBottomNav a[data-module="${moduleName}"]`);
-            if (mobileBottomNavLink) {
-                mobileBottomNavLink.classList.add('active-link');
+            // Resaltar el nav-item activo
+            const activeNavItem = document.querySelector(`.nav-item[data-section="${moduleName}"]`);
+            if (activeNavItem) {
+                activeNavItem.classList.add('active');
             }
 
             // Cargar datos y actualizar UI para el módulo activo
@@ -1575,93 +2021,135 @@
         }
 
 
-        // Delegación de eventos para la navegación principal (PC)
-        mainNav.addEventListener('click', (e) => {
-            const link = e.target.closest('a');
-            if (!link) return;
+        // Delegación de eventos para la navegación principal (PC y Móvil)
+        navContainer.addEventListener('click', (e) => {
+            const item = e.target.closest('.nav-item');
+            if (!item) return;
             e.preventDefault();
-            switchModule(link.dataset.module);
-        });
 
-        // Delegación de eventos para la navegación inferior (Móvil)
-        mobileBottomNav.addEventListener('click', (e) => {
-            const link = e.target.closest('a');
-            if (!link) return;
-            e.preventDefault();
-            switchModule(link.dataset.module);
+            if (item.classList.contains('toggle-btn')) {
+                // Manejado por la clase NavigationBar
+            } else {
+                switchModule(item.dataset.section);
+            }
         });
 
 
         // --- Lógica de Barra Lateral Principal (Colapsar/Expandir en PC) ---
 
-        let isMainSidebarCollapsed = false;
-
         /**
-         * Actualiza el estado visual de la barra lateral principal (ancho, texto).
-         * Solo aplica para la vista de escritorio.
+         * Clase para gestionar la funcionalidad de la barra de navegación.
+         * Incluye manejo de estado activo y responsividad.
          */
-        function updateMainSidebarState() {
-            const navLinks = document.querySelectorAll('#mainSidebar nav ul li a');
-            const vertexTitle = mainSidebar.querySelector('.text-2xl.font-bold');
+        class NavigationBar {
+            constructor() {
+                this.items = document.querySelectorAll('.nav-item');
+                this.navbar = document.querySelector('.navbar');
+                this.toggleButton = document.querySelector('.toggle-btn');
+                this.mainContentArea = document.getElementById('mainContentArea');
+                this.isExpanded = document.body.classList.contains('sidebar-expanded');
 
-            if (isMainSidebarCollapsed) {
-                document.body.classList.remove('sidebar-expanded');
-                document.body.classList.add('sidebar-collapsed');
-                vertexTitle.classList.add('hidden'); // Oculta "VERTEX"
-                companyNameDiv.classList.add('hidden'); // Oculta el nombre de la empresa
-
-                navLinks.forEach(link => {
-                    link.classList.remove('justify-start');
-                    link.classList.add('justify-center'); // Centra el icono
-                    link.querySelector('.nav-text').classList.add('hidden'); // Oculta el texto
-                    link.querySelector('i').classList.remove('mr-3'); // Quita el margen del icono
-                });
-            } else {
-                document.body.classList.remove('sidebar-collapsed');
-                document.body.classList.add('sidebar-expanded');
-                vertexTitle.classList.remove('hidden'); // Muestra "VERTEX"
-                companyNameDiv.classList.remove('hidden'); // Muestra el nombre de la empresa
-
-                navLinks.forEach(link => {
-                    link.classList.remove('justify-center');
-                    link.classList.add('justify-start'); // Alinea el texto al inicio
-                    link.querySelector('.nav-text').classList.remove('hidden'); // Muestra el texto
-                    link.querySelector('i').classList.add('mr-3'); // Vuelve a poner el margen al icono
-                });
+                this.init();
             }
-        }
 
-        /**
-         * Maneja la responsividad de las barras de navegación en carga y redimensionamiento.
-         */
-        function handleNavigationResponsiveness() {
-            if (window.innerWidth < 768) { // Móviles
-                mainSidebar.classList.add('hidden'); // Ocultar barra lateral principal en móvil
-                mobileBottomNav.classList.remove('hidden'); // Mostrar barra inferior móvil
-                document.body.classList.remove('sidebar-expanded', 'sidebar-collapsed'); // Remove desktop classes
-                mainContentArea.style.marginLeft = '0'; // Asegurar que el contenido no tenga margen
-                mainContentArea.style.marginBottom = '4rem'; // Espacio para la barra inferior (h-16 = 4rem)
+            init() {
+                this.items.forEach((item) => {
+                    item.addEventListener('click', (e) => this.handleClick(e, item));
+                });
 
-            } else { // Tablets y PCs
-                mainSidebar.classList.remove('hidden'); // Mostrar barra lateral principal en desktop
-                mobileBottomNav.classList.add('hidden'); // Ocultar barra inferior móvil
-                mainContentArea.style.marginBottom = '0'; // Eliminar margen inferior
-                // Reapply desktop state
-                if (isMainSidebarCollapsed) {
-                    document.body.classList.add('sidebar-collapsed');
-                    document.body.classList.remove('sidebar-expanded');
-                } else {
-                    document.body.classList.add('sidebar-expanded');
-                    document.body.classList.remove('sidebar-collapsed');
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => this.handleResize(), 200);
+                });
+                window.addEventListener('orientationchange', () => this.handleResize());
+
+                this.updateLayout();
+            }
+
+            handleClick(e, item) {
+                e.preventDefault();
+
+                if (item.classList.contains('toggle-btn')) {
+                    this.toggleNavbar();
+                    return;
                 }
-                updateMainSidebarState(); // Ensure visual state is correct
+
+                // La función `switchModule` ya maneja el establecimiento de la clase `active`.
+                // No es necesario eliminar/añadir 'active' manualmente aquí.
+                // `switchModule` se llama desde el listener de eventos global en `navContainer`.
+
+                if (navigator.vibrate) {
+                    navigator.vibrate(15);
+                }
+            }
+
+            toggleNavbar() {
+                if (window.innerWidth > 768) {
+                    this.isExpanded = !this.isExpanded;
+                    document.body.classList.toggle('sidebar-expanded', this.isExpanded);
+                    document.body.classList.toggle('sidebar-collapsed', !this.isExpanded);
+                    this.updateLayout();
+                }
+            }
+
+            handleResize() {
+                if (window.innerWidth < 768) { // Móvil
+                    document.body.classList.remove('sidebar-expanded', 'sidebar-collapsed');
+                    this.mainContentArea.style.marginLeft = '0';
+                    this.mainContentArea.style.marginBottom = '5rem'; // Espacio para la barra inferior móvil
+                    // Asegurar que navContainer y navbar se adapten correctamente en móvil
+                    navContainer.style.width = '100%';
+                    navContainer.style.height = 'auto';
+                    navContainer.style.top = 'auto';
+                    navContainer.style.bottom = '0';
+                    navContainer.style.left = '0';
+                    navContainer.style.right = '0';
+
+                    navbar.style.width = 'auto';
+                    navbar.style.height = 'auto';
+                    navbar.style.borderRadius = '0';
+                    navbar.style.padding = '0';
+                    navbar.style.background = 'transparent';
+                    navbar.style.backdropFilter = 'none';
+                    navbar.style.border = 'none';
+                    navbar.style.boxShadow = 'none';
+                } else { // Escritorio
+                    this.mainContentArea.style.marginBottom = '0'; // Eliminar margen inferior
+                    // Volver a aplicar el estado de escritorio basado en `isExpanded`
+                    document.body.classList.toggle('sidebar-expanded', this.isExpanded);
+                    document.body.classList.toggle('sidebar-collapsed', !this.isExpanded);
+                    this.updateLayout();
+                    navContainer.style.width = this.isExpanded ? '20rem' : '5rem';
+                    navContainer.style.height = '100vh';
+                    navContainer.style.top = '0';
+                    navContainer.style.bottom = 'auto';
+                    navContainer.style.left = '0';
+                    navContainer.style.right = 'auto';
+
+                    // Restablecer estilos de navbar para escritorio
+                    navbar.style.background = 'var(--glass)';
+                    navbar.style.backdropFilter = 'blur(30px) saturate(200%)';
+                    navbar.style.border = '1px solid var(--glass-border)';
+                    navbar.style.boxShadow = 'var(--shadow-lg)';
+                    navbar.style.borderRadius = '40px';
+                    navbar.style.padding = '1.5rem 0.5rem';
+                    navbar.style.flexDirection = 'column';
+                }
+            }
+
+            updateLayout() {
+                if (window.innerWidth > 768) {
+                    this.mainContentArea.style.marginLeft = this.isExpanded ? '20rem' : '5rem';
+                } else {
+                    this.mainContentArea.style.marginLeft = '';
+                }
             }
         }
 
-        // Listeners para el botón de toggle de la barra principal (PC)
-        toggleMainSidebarBtn.addEventListener('click', () => {
-            isMainSidebarCollapsed = !isMainSidebarCollapsed;
-            updateMainSidebarState();
+        // Inicializar la nueva clase NavigationBar
+        document.addEventListener('DOMContentLoaded', () => {
+            new NavigationBar();
         });
 
 
@@ -1718,105 +2206,105 @@
             });
         });
 
-        // --- Firebase Firestore Functions ---
+        // --- Funciones de Firebase Firestore ---
 
         /**
-         * Gets the Firestore collection path for a given collection name.
-         * Uses the global appId and userId.
-         * @param {string} collectionName - The name of the collection (e.g., 'products').
-         * @returns {string} The full Firestore collection path.
+         * Obtiene la ruta de la colección de Firestore para un nombre de colección dado.
+         * Utiliza el appId y userId globales.
+         * @param {string} collectionName - El nombre de la colección (ej. 'products').
+         * @returns {string} La ruta completa de la colección de Firestore.
          */
         function getCollectionPath(collectionName) {
             if (!window.userId) {
-                console.error("User ID is not available for Firestore operations.");
-                // Fallback for local storage if userId is not set (e.g. Firebase init failed)
+                console.error("El ID de usuario no está disponible para operaciones de Firestore.");
+                // Fallback para almacenamiento local si userId no está configurado (ej. la inicialización de Firebase falló)
                 return `local-${collectionName}`;
             }
-            // Using /artifacts/{appId}/users/{userId}/{your_collection_name} for private data
+            // Usando /artifacts/{appId}/users/{userId}/{your_collection_name} para datos privados
             return `artifacts/${window.appId}/users/${window.userId}/${collectionName}`;
         }
 
         /**
-         * Sets up real-time listeners for all main data collections.
-         * This function is called once Firebase authentication is ready.
+         * Configura los listeners en tiempo real para todas las colecciones de datos principales.
+         * Esta función se llama una vez que la autenticación de Firebase está lista.
          */
         function setupFirestoreListeners() {
             if (!window.db || !window.userId) {
-                console.warn("Firestore or User ID not ready, skipping listeners setup.");
+                console.warn("Firestore o el ID de usuario no están listos, se omite la configuración de listeners.");
                 return;
             }
 
-            // Products Listener
+            // Listener de Productos
             onSnapshot(collection(window.db, getCollectionPath('products')), (snapshot) => {
                 productsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                console.log("Products updated:", productsData);
+                console.log("Productos actualizados:", productsData);
                 applyProductFiltersAndRenderTable();
                 populateCategoryFilter();
                 updateDashboardMetrics();
                 updateLowStockProducts();
                 updateLowStockWidget();
             }, (error) => {
-                console.error("Error listening to products:", error);
+                console.error("Error al escuchar productos:", error);
                 showMessageBox('Error de Sincronización', 'No se pudieron cargar los productos en tiempo real. Intente recargar la página.', 'error');
             });
 
-            // Purchases Listener
+            // Listener de Compras
             onSnapshot(collection(window.db, getCollectionPath('purchases')), (snapshot) => {
                 purchasesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                console.log("Purchases updated:", purchasesData);
+                console.log("Compras actualizadas:", purchasesData);
                 applyPurchaseFiltersAndRenderTable();
                 updateDashboardMetrics();
                 updateRecentPurchasesWidget();
             }, (error) => {
-                console.error("Error listening to purchases:", error);
+                console.error("Error al escuchar compras:", error);
                 showMessageBox('Error de Sincronización', 'No se pudieron cargar las compras en tiempo real. Intente recargar la página.', 'error');
             });
 
-            // Sales Listener
+            // Listener de Ventas
             onSnapshot(collection(window.db, getCollectionPath('sales')), (snapshot) => {
                 salesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                console.log("Sales updated:", salesData);
+                console.log("Ventas actualizadas:", salesData);
                 applySaleFiltersAndRenderTable();
                 updateDashboardMetrics();
                 updateRecentSalesWidget();
-                populateFrequentProductsSuggestions(); // Sales data affects frequent products
+                populateFrequentProductsSuggestions(); // Los datos de ventas afectan los productos frecuentes
             }, (error) => {
-                console.error("Error listening to sales:", error);
+                console.error("Error al escuchar ventas:", error);
                 showMessageBox('Error de Sincronización', 'No se pudieron cargar las ventas en tiempo real. Intente recargar la página.', 'error');
             });
 
-            // Clients Listener (for datalist)
+            // Listener de Clientes (para datalist)
             onSnapshot(collection(window.db, getCollectionPath('clients')), (snapshot) => {
-                clientsData = snapshot.docs.map(doc => doc.data().name); // Assuming client documents just store { name: "Client Name" }
-                console.log("Clients updated:", clientsData);
+                clientsData = snapshot.docs.map(doc => doc.data().name); // Asumiendo que los documentos de cliente solo almacenan { name: "Nombre del Cliente" }
+                console.log("Clientes actualizados:", clientsData);
                 loadClientsFromFirestore();
             }, (error) => {
-                console.error("Error listening to clients:", error);
+                console.error("Error al escuchar clientes:", error);
             });
 
-            // Reminders Listener
+            // Listener de Recordatorios
             onSnapshot(collection(window.db, getCollectionPath('reminders')), (snapshot) => {
                 const reminders = snapshot.docs.map(doc => ({ id: doc.id, text: doc.data().text }));
-                console.log("Reminders updated:", reminders);
+                console.log("Recordatorios actualizados:", reminders);
                 loadReminders(reminders);
             }, (error) => {
-                console.error("Error listening to reminders:", error);
+                console.error("Error al escuchar recordatorios:", error);
             });
 
-            // Notepad Listener (single document)
+            // Listener de Bloc de Notas (documento único)
             onSnapshot(doc(window.db, getCollectionPath('settings'), 'notepad'), (docSnapshot) => {
                 if (docSnapshot.exists()) {
                     notepad.value = docSnapshot.data().note || '';
-                    console.log("Notepad loaded from Firestore.");
+                    console.log("Bloc de notas cargado desde Firestore.");
                 } else {
                     notepad.value = '';
-                    console.log("No notepad note found in Firestore.");
+                    console.log("No se encontró ninguna nota de bloc de notas en Firestore.");
                 }
             }, (error) => {
-                console.error("Error listening to notepad:", error);
+                console.error("Error al escuchar bloc de notas:", error);
             });
 
-            // Settings Listener (for minStockThreshold and defaultProfitMargin)
+            // Listener de Configuración (para minStockThreshold y defaultProfitMargin)
             onSnapshot(doc(window.db, getCollectionPath('settings'), 'appConfig'), (docSnapshot) => {
                 if (docSnapshot.exists()) {
                     const config = docSnapshot.data();
@@ -1824,18 +2312,18 @@
                     defaultProfitMargin = config.defaultProfitMargin || 50;
                     minStockThresholdInput.value = minStockThreshold;
                     defaultMarginInput.value = defaultProfitMargin;
-                    console.log("App config loaded from Firestore:", config);
-                    applyStockAlerts(); // Reapply alerts with new threshold
+                    console.log("Configuración de la aplicación cargada desde Firestore:", config);
+                    applyStockAlerts(); // Volver a aplicar alertas con el nuevo umbral
                 } else {
-                    console.log("No app config found in Firestore, using defaults.");
-                    // Save defaults to Firestore if they don't exist
+                    console.log("No se encontró ninguna configuración de la aplicación en Firestore, usando valores por defecto.");
+                    // Guardar valores por defecto en Firestore si no existen
                     setDoc(doc(window.db, getCollectionPath('settings'), 'appConfig'), {
                         minStockThreshold: minStockThreshold,
                         defaultProfitMargin: defaultProfitMargin
                     }, { merge: true });
                 }
             }, (error) => {
-                console.error("Error listening to app config:", error);
+                console.error("Error al escuchar la configuración de la aplicación:", error);
             });
         }
 
@@ -1866,13 +2354,13 @@
             };
 
             try {
-                // Add a new document with a generated ID
+                // Añadir un nuevo documento con un ID generado
                 const docRef = await addDoc(collection(window.db, getCollectionPath('products')), newProduct);
                 console.log("Producto guardado con ID: ", docRef.id);
                 showMessageBox('Producto Guardado', 'El producto ha sido guardado exitosamente.', 'success');
                 newProductModal.classList.add('hidden');
             } catch (e) {
-                console.error("Error adding document: ", e);
+                console.error("Error al añadir documento: ", e);
                 showMessageBox('Error', `No se pudo guardar el producto: ${e.message}`, 'error');
             } finally {
                 hideLoading();
@@ -1919,7 +2407,7 @@
                 const docRef = await addDoc(collection(window.db, getCollectionPath('purchases')), newPurchase);
                 console.log("Compra guardada con ID: ", docRef.id);
 
-                // Update stock of products
+                // Actualizar stock de productos
                 for (const item of newPurchase.items) {
                     const productRef = doc(window.db, getCollectionPath('products'), item.productId);
                     const productSnap = await getDoc(productRef);
@@ -1933,7 +2421,7 @@
                 showMessageBox('Compra Registrada', 'La compra ha sido registrada exitosamente y el stock actualizado.', 'success');
                 newPurchaseModal.classList.add('hidden');
             } catch (e) {
-                console.error("Error adding purchase or updating stock: ", e);
+                console.error("Error al añadir compra o actualizar stock: ", e);
                 showMessageBox('Error', `No se pudo registrar la compra: ${e.message}`, 'error');
             } finally {
                 hideLoading();
@@ -1982,7 +2470,7 @@
                 const docRef = await addDoc(collection(window.db, getCollectionPath('sales')), newSale);
                 console.log("Venta guardada con ID: ", docRef.id);
 
-                // Update stock of products
+                // Actualizar stock de productos
                 for (const item of newSale.items) {
                     const productRef = doc(window.db, getCollectionPath('products'), item.productId);
                     const productSnap = await getDoc(productRef);
@@ -1995,7 +2483,7 @@
                 }
 
                 if (saleClient) {
-                    // Save client to Firestore if it's a new client
+                    // Guardar cliente en Firestore si es un cliente nuevo
                     const clientsCollection = collection(window.db, getCollectionPath('clients'));
                     const clientQuery = query(clientsCollection, where("name", "==", saleClient));
                     const clientSnap = await getDocs(clientQuery);
@@ -2007,7 +2495,7 @@
                 showMessageBox('Venta Registrada', 'La venta ha sido registrada exitosamente y el stock actualizado.', 'success');
                 newSaleModal.classList.add('hidden');
             } catch (e) {
-                console.error("Error adding sale or updating stock: ", e);
+                console.error("Error al añadir venta o actualizar stock: ", e);
                 showMessageBox('Error', `No se pudo registrar la venta: ${e.message}`, 'error');
             } finally {
                 hideLoading();
@@ -2030,7 +2518,7 @@
             }
 
             try {
-                // Find the product by name (consider using product ID for robustness)
+                // Encontrar el producto por nombre (considerar usar el ID del producto para mayor robustez)
                 const productQuery = query(collection(window.db, getCollectionPath('products')), where("name", "==", returnProductName));
                 const productSnap = await getDocs(productQuery);
 
@@ -2041,7 +2529,7 @@
 
                     await updateDoc(productRef, { stock: currentStock + returnQuantity });
 
-                    // Optionally, record the return in a 'returns' collection
+                    // Opcionalmente, registrar la devolución en una colección 'returns'
                     await addDoc(collection(window.db, getCollectionPath('returns')), {
                         productId: productDoc.id,
                         productName: returnProductName,
@@ -2056,7 +2544,7 @@
                     showMessageBox('Producto No Encontrado', `El producto "${returnProductName}" no se encontró en el inventario.`, 'error');
                 }
             } catch (e) {
-                console.error("Error processing return: ", e);
+                console.error("Error al procesar la devolución: ", e);
                 showMessageBox('Error', `No se pudo registrar la devolución: ${e.message}`, 'error');
             } finally {
                 hideLoading();
@@ -2065,8 +2553,8 @@
         });
 
 
-        // --- Generación de Código de Producto (Firestore uses its own IDs) ---
-        // This function is now mostly for display/placeholder, as Firestore assigns unique IDs.
+        // --- Generación de Código de Producto (Firestore usa sus propios IDs) ---
+        // Esta función es ahora principalmente para visualización/marcador de posición, ya que Firestore asigna IDs únicos.
         function generateProductCode() {
             const now = new Date();
             const year = String(now.getFullYear()).slice(-2);
@@ -2118,7 +2606,7 @@
                 await setDoc(doc(window.db, getCollectionPath('settings'), 'notepad'), { note: notepad.value });
                 showMessageBox('Nota Guardada', 'Tu nota ha sido guardada en la nube.', 'success');
             } catch (e) {
-                console.error("Error saving note:", e);
+                console.error("Error al guardar nota:", e);
                 showMessageBox('Error', 'No se pudo guardar la nota en la nube.', 'error');
             }
         });
@@ -2134,7 +2622,7 @@
                 }
                 return;
             }
-            // Data is automatically loaded via onSnapshot in setupFirestoreListeners
+            // Los datos se cargan automáticamente a través de onSnapshot en setupFirestoreListeners
             showMessageBox('Nota Sincronizada', 'La nota se carga automáticamente desde la nube.', 'info');
         });
 
@@ -2183,7 +2671,7 @@
                 newReminderInput.value = '';
                 showMessageBox('Recordatorio Añadido', 'Recordatorio guardado exitosamente en la nube.', 'success');
             } catch (e) {
-                console.error("Error adding reminder:", e);
+                console.error("Error al añadir recordatorio:", e);
                 showMessageBox('Error', 'No se pudo añadir el recordatorio en la nube.', 'error');
             }
         }
@@ -2197,7 +2685,7 @@
                 await deleteDoc(doc(window.db, getCollectionPath('reminders'), id));
                 showMessageBox('Recordatorio Eliminado', 'Recordatorio eliminado exitosamente de la nube.', 'info');
             } catch (e) {
-                console.error("Error deleting reminder:", e);
+                console.error("Error al eliminar recordatorio:", e);
                 showMessageBox('Error', 'No se pudo eliminar el recordatorio de la nube.', 'error');
             }
         }
@@ -2331,7 +2819,7 @@
             currentMonthYearSpan.textContent = currentDateCalendar.toLocaleDateString('es-ES', options);
 
             // Limpiar días anteriores
-            // Keep the first 7 divs for day names (Lun, Mar, etc.)
+            // Mantener los primeros 7 divs para los nombres de los días (Lun, Mar, etc.)
             const existingDayElements = calendarDaysContainer.querySelectorAll('.py-1:not(.text-gray-400)');
             existingDayElements.forEach(day => day.remove());
 
@@ -2607,7 +3095,7 @@
             if (!window.db || !window.userId) {
                 localStorage.setItem('minStockThreshold', newThreshold);
                 showMessageBox('Configuración Guardada Localmente', `Umbral de stock mínimo actualizado a ${newThreshold} (sin conexión a la nube).`, 'info');
-                minStockThreshold = newThreshold; // Update local variable immediately
+                minStockThreshold = newThreshold; // Actualizar variable local inmediatamente
                 applyStockAlerts();
                 return;
             }
@@ -2615,7 +3103,7 @@
                 await setDoc(doc(window.db, getCollectionPath('settings'), 'appConfig'), { minStockThreshold: newThreshold }, { merge: true });
                 showMessageBox('Configuración Guardada', `Umbral de stock mínimo actualizado a ${newThreshold} en la nube.`, 'success');
             } catch (e) {
-                console.error("Error saving min stock threshold:", e);
+                console.error("Error al guardar umbral de stock mínimo:", e);
                 showMessageBox('Error', 'No se pudo guardar el umbral de stock en la nube.', 'error');
             }
         });
@@ -2630,14 +3118,14 @@
             if (!window.db || !window.userId) {
                 localStorage.setItem('defaultProfitMargin', newMargin);
                 showMessageBox('Configuración Guardada Localmente', `Margen de ganancia por defecto actualizado a ${newMargin}% (sin conexión a la nube).`, 'info');
-                defaultProfitMargin = newMargin; // Update local variable immediately
+                defaultProfitMargin = newMargin; // Actualizar variable local inmediatamente
                 return;
             }
             try {
                 await setDoc(doc(window.db, getCollectionPath('settings'), 'appConfig'), { defaultProfitMargin: newMargin }, { merge: true });
                 showMessageBox('Configuración Guardada', `Margen de ganancia por defecto actualizado a ${newMargin}% en la nube.`, 'success');
             } catch (e) {
-                console.error("Error saving default margin:", e);
+                console.error("Error al guardar margen por defecto:", e);
                 showMessageBox('Error', 'No se pudo guardar el margen de ganancia en la nube.', 'error');
             }
         });
@@ -2947,7 +3435,7 @@
             if (e.ctrlKey && e.key === 'i') {
                 e.preventDefault(); // Prevenir el comportamiento por defecto del navegador
                 // Simular clic en el enlace del módulo de inventario
-                const inventarioLink = document.querySelector('#mainSidebar a[data-module="inventario"]') || document.querySelector('#mobileBottomNav a[data-module="inventario"]');
+                const inventarioLink = document.querySelector('.nav-item[data-section="inventario"]');
                 if (inventarioLink) {
                     inventarioLink.click();
                 }
@@ -3031,8 +3519,8 @@
                     showMessageBox(
                         'Confirmar Eliminación',
                         `¿Estás seguro de que quieres eliminar el producto con ID: ${productId}?`,
-                        'error', // Use 'error' type for delete confirmation
-                        async () => { // This function runs when 'Aceptar' is clicked
+                        'error', // Usar tipo 'error' para confirmación de eliminación
+                        async () => { // Esta función se ejecuta cuando se hace clic en 'Aceptar'
                             if (!window.db || !window.userId) {
                                 showMessageBox('Error de Conexión', 'No se pudo eliminar el producto. Firebase no está conectado.', 'error');
                                 return;
@@ -3041,7 +3529,7 @@
                                 await deleteDoc(doc(window.db, getCollectionPath('products'), productId));
                                 showMessageBox('Producto Eliminado', `Producto con ID: ${productId} eliminado exitosamente de la nube.`, 'success');
                             } catch (error) {
-                                console.error("Error deleting product:", error);
+                                console.error("Error al eliminar producto:", error);
                                 showMessageBox('Error', `No se pudo eliminar el producto: ${error.message}`, 'error');
                             }
                         }
@@ -3387,13 +3875,10 @@
             defaultMarginInput.value = defaultProfitMargin; // Cargar el valor guardado en el input
             minStockThresholdInput.value = minStockThreshold; // Cargar el valor guardado en el input
             switchModule('inventario'); // Asegurarse de que Inventario sea el módulo activo al cargar
-            handleNavigationResponsiveness(); // Call on init to set initial state
-            window.addEventListener('resize', handleNavigationResponsiveness); // Add resize listener
-            // The rest of the updates are handled by Firestore listeners
+            // El resto de las actualizaciones son manejadas por los listeners de Firestore
         }
 
-        // DOMContentLoaded listener is now handled by the Firebase script block in the head
-        // The initApp() function is called once Firebase is initialized and authenticated.
+        // La función initApp() se llama una vez que Firebase se inicializa y autentica.
     </script>
 </body>
 

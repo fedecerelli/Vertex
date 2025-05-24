@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barra de Navegación Premium 2025 - Iconos Alineados y Onda Eliminada</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Reset de estilos para asegurar consistencia en todos los navegadores */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Definición de variables CSS para colores, sombras, transiciones y efectos */
+        :root {
+            --primary: #1a1a1a;
+            /* Color principal oscuro */
+            --surface: rgba(255, 255, 255, 0.08);
+            /* Superficie translúcida */
+            --surface-hover: rgba(255, 255, 255, 0.12);
+            /* Superficie translúcida al pasar el ratón */
+            --glass: rgba(255, 255, 255, 0.1);
+            /* Color base para el efecto glassmorphism */
+            --glass-border: rgba(255, 255, 255, 0.2);
+            /* Borde translúcido para el efecto glassmorphism */
+            --text: #1a1a1a;
+            /* Color de texto oscuro (usado para elementos específicos) */
+            --text-light: #ffffff;
+            /* Color de texto claro */
+            --text-secondary: #6b7280;
+            /* Color de texto secundario */
+            --accent: #3b82f6;
+            /* Color de acento (azul) */
+            --success: #10b981;
+            /* Color para éxito (verde) */
+            --warning: #f59e0b;
+            /* Color para advertencia (naranja) */
+            --danger: #ef4444;
+            /* Color para peligro (rojo) */
+            --purple: #8b5cf6;
+            /* Color púrpura */
+            --pink: #ec4899;
+            /* Color rosa */
+            --teal: #14b8a6;
+            /* Color teal */
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
+            /* Sombra estándar */
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08);
+            /* Sombra grande */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Transición suave estándar */
+            --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Curva de transición elástica */
+        }
+
+        /* Estilos generales del cuerpo de la página */
+        body {
+            min-height: 100vh;
+            /* Altura mínima del 100% de la ventana */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /* Fondo con degradado de color */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            /* Fuente principal, con fallbacks */
+            color: var(--text-light);
+            /* Color de texto por defecto para el cuerpo */
+            overflow-x: hidden;
+            /* Evita el desplazamiento horizontal */
+            display: flex;
+            /* Habilita Flexbox para el layout */
+            justify-content: center;
+            /* Centra el contenido horizontalmente */
+            align-items: flex-start;
+            /* Alinea el contenido al inicio verticalmente (para permitir scroll) */
+            position: relative;
+            /* Necesario para el pseudo-elemento ::before */
+        }
+
+        /* Pseudo-elemento para un efecto de "ruido" o "partículas" en el fondo, fijo */
+        body::before {
+            content: '';
+            position: fixed;
+            /* Fijo en la ventana */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            /* Permite interacciones con elementos debajo */
+            z-index: -1;
+            /* Coloca el elemento detrás del contenido */
+        }
+
+        /* Contenedor principal de la barra de navegación */
+        .nav-container {
+            position: fixed;
+            /* Fijo en la pantalla */
+            z-index: 1000;
+            /* Asegura que esté por encima de otros elementos */
+            transition: var(--transition);
+            /* Transición suave para cambios de posición */
+        }
+
+        /* Media query para dispositivos móviles (hasta 768px de ancho) */
+        @media (max-width: 768px) {
+            .nav-container {
+                bottom: 2rem;
+                /* Posición en la parte inferior */
+                left: 50%;
+                /* Centrado horizontal */
+                transform: translateX(-50%);
+                /* Ajuste para centrado perfecto */
+            }
+
+            .navbar {
+                display: flex;
+                flex-direction: row;
+                /* Elementos en fila */
+                align-items: center;
+                /* Centra verticalmente los elementos */
+                justify-content: center;
+                /* Centra horizontalmente los elementos */
+                gap: 0.5rem;
+                /* Espacio entre elementos */
+                width: auto;
+                /* Ancho automático */
+                min-width: 350px;
+                /* Ancho mínimo */
+                max-width: calc(100vw - 4rem);
+                /* Ancho máximo, dejando margen */
+                height: 80px;
+                /* Altura fija */
+                padding: 1rem 1.5rem;
+                /* Relleno interno */
+                border-radius: 40px;
+                /* Bordes muy redondeados */
+            }
+        }
+
+        /* Media query para escritorio (más de 769px de ancho) */
+        @media (min-width: 769px) {
+            .nav-container {
+                left: 2rem;
+                /* Posición en la parte izquierda */
+                top: 50%;
+                /* Centrado vertical */
+                transform: translateY(-50%);
+                /* Ajuste para centrado perfecto */
+            }
+
+            .navbar {
+                display: flex;
+                flex-direction: column;
+                /* Elementos en columna */
+                align-items: center;
+                /* Centra horizontalmente los elementos (cuando colapsado) */
+                justify-content: flex-start;
+                /* Alinea los elementos al inicio verticalmente */
+                gap: 0.5rem;
+                width: 80px;
+                /* Ancho inicial colapsado */
+                height: auto;
+                /* Altura automática según el contenido */
+                min-height: 400px;
+                /* Altura mínima */
+                padding: 1.5rem 0.5rem;
+                border-radius: 40px;
+                transition: width 0.3s ease-out, padding 0.3s ease-out;
+                /* Transición para la expansión */
+            }
+
+            /* Estilos de la barra de navegación cuando está expandida en escritorio */
+            .navbar.expanded {
+                width: 220px;
+                /* Ancho expandido */
+                align-items: stretch;
+                /* Estira los elementos para ocupar el ancho */
+                padding: 1.5rem 1rem;
+            }
+
+            /* El botón de alternancia (hamburguesa) solo es visible en escritorio */
+            .toggle-btn {
+                display: flex;
+                /* Muestra el botón */
+                margin-bottom: 1rem;
+                /* Espacio debajo del botón */
+            }
+        }
+
+        /* Estilos base de la barra de navegación (aplicados en ambos tamaños) */
+        .navbar {
+            background: var(--glass);
+            /* Fondo translúcido */
+            backdrop-filter: blur(30px) saturate(200%);
+            /* Efecto glassmorphism con desenfoque y saturación */
+            border: 1px solid var(--glass-border);
+            /* Borde translúcido */
+            box-shadow: var(--shadow-lg);
+            /* Sombra grande */
+            position: relative;
+            overflow: hidden;
+            /* Oculta cualquier contenido que se desborde */
+        }
+
+        /* Pseudo-elemento para un brillo interno en la barra de navegación */
+        .navbar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            /* Cubre todo el elemento */
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.15) 0%,
+                    rgba(255, 255, 255, 0.05) 50%,
+                    rgba(255, 255, 255, 0.02) 100%);
+            /* Degradado de blanco translúcido */
+            pointer-events: none;
+            /* Permite interacciones con elementos debajo */
+        }
+
+        /* Estilos base de cada elemento de navegación (botón) */
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            /* Centra verticalmente el contenido */
+            justify-content: center;
+            /* Centra horizontalmente el contenido */
+            width: 60px;
+            /* Ancho fijo */
+            height: 60px;
+            /* Altura fija */
+            border: none;
+            /* Sin borde */
+            border-radius: 50%;
+            /* Forma circular */
+            background: transparent;
+            /* Fondo transparente */
+            cursor: pointer;
+            /* Cursor de puntero */
+            transition: var(--transition);
+            /* Transición suave para todos los cambios */
+            overflow: visible;
+            /* Permite que el contenido se desborde si es necesario */
+            isolation: isolate;
+            /* Crea un nuevo contexto de apilamiento para los pseudo-elementos */
+            flex-shrink: 0;
+            /* Evita que el elemento se encoja en un contenedor flex */
+        }
+
+        /* Oculta el botón de alternancia en dispositivos móviles */
+        @media (max-width: 768px) {
+            .toggle-btn {
+                display: none;
+            }
+        }
+
+        /* Estilos de los elementos de navegación cuando la barra está expandida en escritorio */
+        @media (min-width: 769px) {
+            .navbar.expanded .nav-item {
+                width: 100%;
+                /* Ocupa todo el ancho disponible */
+                justify-content: flex-start;
+                /* Alinea el contenido a la izquierda */
+                padding: 0 1rem;
+                /* Relleno horizontal para el texto */
+                border-radius: 16px;
+                /* Esquinas redondeadas para el rectángulo */
+            }
+        }
+
+        /* Pseudo-elemento para el fondo base (hover y estado normal) */
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* Centrado perfecto */
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            /* Forma circular por defecto */
+            background: var(--surface);
+            /* Color de superficie translúcido */
+            opacity: 0;
+            /* Invisible por defecto */
+            transition: var(--transition);
+            /* Transición suave */
+            z-index: -1;
+            /* Detrás del contenido */
+        }
+
+        /* Ajuste del fondo para hover/normal cuando la barra está expandida (escritorio) */
+        @media (min-width: 769px) {
+            .navbar.expanded .nav-item::before {
+                width: calc(100% - 6px);
+                /* Ocupa casi todo el ancho del elemento */
+                height: 48px;
+                border-radius: 13px;
+                /* Rectángulo redondeado */
+            }
+        }
+
+        /* Pseudo-elemento para el fondo del elemento activo */
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            /* Empieza más pequeño para efecto de "salto" */
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            /* Forma circular por defecto */
+            background: var(--item-color);
+            /* Color definido por cada elemento */
+            opacity: 0;
+            /* Invisible por defecto */
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Transición elástica */
+            z-index: -2;
+            /* Detrás del contenido y del pseudo-elemento ::before */
+        }
+
+        /* Ajuste del fondo para el elemento activo cuando la barra está expandida (escritorio) */
+        @media (min-width: 769px) {
+            .navbar.expanded .nav-item::after {
+                width: calc(100% - 6px);
+                height: 48px;
+                border-radius: 13px;
+            }
+        }
+
+        /* Estilos de los iconos de Font Awesome */
+        .nav-item i {
+            font-size: 1.2rem;
+            /* Tamaño del icono ajustado para mejor alineación visual */
+            color: var(--text-light);
+            /* Color blanco por defecto */
+            transition: var(--transition);
+            /* Transición suave */
+            position: relative;
+            z-index: 1;
+            /* Asegura que el icono esté por encima de los fondos */
+            /* line-height: 1; -- Eliminado, ya que flexbox maneja la alineación vertical */
+        }
+
+        /* Estilos del texto de navegación */
+        .nav-item .nav-text {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-left: 12px;
+            /* Espacio entre icono y texto */
+            white-space: nowrap;
+            /* Evita que el texto se rompa en varias líneas */
+            opacity: 0;
+            /* Invisible por defecto */
+            transform: translateX(-10px);
+            /* Desplazado a la izquierda */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Transición suave */
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        /* Muestra el texto cuando la barra está expandida (escritorio) */
+        @media (min-width: 769px) {
+            .navbar.expanded .nav-item .nav-text {
+                opacity: 1;
+                /* Visible */
+                transform: translateX(0);
+                /* Vuelve a su posición original */
+            }
+        }
+
+        /* Colores únicos para cada elemento de navegación (usando variables CSS) */
+        .nav-item:nth-child(1) {
+            --item-color: var(--primary);
+        }
+
+        /* Botón de alternancia */
+        .nav-item:nth-child(2) {
+            --item-color: var(--accent);
+        }
+
+        /* Inicio */
+        .nav-item:nth-child(3) {
+            --item-color: var(--danger);
+        }
+
+        /* Explorar */
+        .nav-item:nth-child(4) {
+            --item-color: var(--success);
+        }
+
+        /* Favoritos */
+        .nav-item:nth-child(5) {
+            --item-color: var(--warning);
+        }
+
+        /* Mensajes */
+        .nav-item:nth-child(6) {
+            --item-color: var(--purple);
+        }
+
+        /* Notificaciones */
+        .nav-item:nth-child(7) {
+            --item-color: var(--pink);
+        }
+
+        /* Perfil */
+        .nav-item:nth-child(8) {
+            --item-color: var(--teal);
+        }
+
+        /* Configuración */
+
+        /* Efectos al pasar el ratón (hover) */
+        .nav-item:hover {
+            transform: scale(1.05);
+            /* Ligeramente más grande */
+        }
+
+        .nav-item:hover::before {
+            opacity: 1;
+            /* Muestra el fondo de hover */
+        }
+
+        .nav-item:hover i,
+        .nav-item:hover .nav-text {
+            color: var(--item-color);
+            /* Cambia el color del icono y texto al color del elemento */
+            transform: scale(1.05);
+            /* Ligeramente más grande */
+        }
+
+        /* Estado activo - fondo elegante con gradiente sutil y sombra */
+        .nav-item.active::after {
+            opacity: 1;
+            /* Muestra el fondo activo */
+            transform: translate(-50%, -50%) scale(1);
+            /* Vuelve a su tamaño normal con efecto de "salto" */
+            background: linear-gradient(135deg, var(--item-color), color-mix(in srgb, var(--item-color) 80%, white 20%));
+            /* Degradado del color del elemento */
+            box-shadow: 0 4px 12px color-mix(in srgb, var(--item-color) 40%, transparent);
+            /* Sombra de color */
+        }
+
+        .nav-item.active i,
+        .nav-item.active .nav-text {
+            color: var(--text-light);
+            /* Color blanco para el texto activo */
+            transform: scale(1.05);
+            /* Ligeramente más grande */
+            font-weight: 600;
+            /* Texto más negrita */
+        }
+
+        .nav-item.active::before {
+            opacity: 0;
+            /* Oculta el fondo de hover cuando el elemento está activo */
+        }
+
+        /* Efecto al hacer click/tocar */
+        .nav-item:active {
+            transform: scale(0.95);
+            /* Ligeramente más pequeño al hacer click */
+        }
+
+        /* Ajustes de hover/active para móvil */
+        @media (max-width: 768px) {
+            .nav-item:hover {
+                transform: translateY(-5px) scale(1.05);
+                /* Sube ligeramente y se agranda */
+            }
+
+            .nav-item.active {
+                transform: translateY(-3px) scale(1.02);
+                /* Sube ligeramente y se agranda */
+            }
+        }
+
+        /* Animación de pulso sutil en el fondo de hover */
+        .nav-item:hover::before {
+            animation: subtle-pulse 3s ease-in-out infinite;
+            /* Animación infinita */
+        }
+
+        @keyframes subtle-pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+
+            /* Pulso de opacidad */
+        }
+
+        /* Animaciones de entrada iniciales */
+        .navbar {
+            animation: navbar-enter 1.2s ease-out forwards;
+            /* 'forwards' mantiene el estado final de la animación */
+        }
+
+        .nav-item {
+            animation: item-enter 1s ease-out both;
+            /* 'both' aplica los estilos de inicio y fin */
+        }
+
+        /* Retrasos para animaciones escalonadas de los elementos de navegación */
+        .nav-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .nav-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .nav-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .nav-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .nav-item:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .nav-item:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .nav-item:nth-child(7) {
+            animation-delay: 0.7s;
+        }
+
+        .nav-item:nth-child(8) {
+            animation-delay: 0.8s;
+        }
+
+        /* Keyframes para la animación de entrada de la barra de navegación */
+        @keyframes navbar-enter {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Keyframes para la animación de entrada de los elementos de navegación */
+        @keyframes item-enter {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Estilos del contenido principal de la página */
+        .content {
+            padding: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            /* Centra el contenido horizontalmente */
+            position: relative;
+            z-index: 1;
+            color: var(--text-light);
+            /* Asegura que el texto del contenido sea claro */
+        }
+
+        /* Estilos de las secciones de demostración */
+        .demo-section {
+            background: rgba(255, 255, 255, 0.15);
+            /* Fondo translúcido */
+            backdrop-filter: blur(20px);
+            /* Desenfoque para efecto glassmorphism */
+            border-radius: 24px;
+            /* Bordes redondeados */
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            /* Borde translúcido */
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Pseudo-elemento para un brillo interno en las secciones de demostración */
+        .demo-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    rgba(255, 255, 255, 0.05) 100%);
+            pointer-events: none;
+        }
+
+        /* Estilos de los títulos H1 */
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            /* Color de texto claro por defecto */
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            /* Sombra de texto */
+            /* Efecto de texto con degradado */
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            /* Recorta el fondo al texto para navegadores WebKit */
+            -webkit-text-fill-color: transparent;
+            /* Hace el texto transparente para mostrar el fondo */
+            background-clip: text;
+            /* Estándar para recortar el fondo al texto */
+        }
+
+        /* Estilos de los títulos H2 */
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            /* Color de texto claro */
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Estilos de los párrafos */
+        p {
+            color: rgba(255, 255, 255, 0.9);
+            /* Color de texto blanco con opacidad */
+            line-height: 1.8;
+            /* Altura de línea para mejor legibilidad */
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Lista de características */
+        .feature-list {
+            list-style: none;
+            /* Elimina los puntos de la lista */
+            padding: 0;
+        }
+
+        .feature-list li {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 0.75rem 0;
+            font-size: 1.1rem;
+            position: relative;
+            padding-left: 2rem;
+            /* Espacio para el icono personalizado */
+        }
+
+        /* Icono personalizado para la lista de características */
+        .feature-list li::before {
+            content: '✨';
+            /* Emoji como icono */
+            position: absolute;
+            left: 0;
+            top: 0.75rem;
+        }
+
+        /* Estilo para el estado de "corregido" */
+        .status {
+            background: rgba(34, 197, 94, 0.2);
+            /* Fondo verde translúcido */
+            color: #22c55e;
+            /* Color de texto verde */
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        /* Media queries para el contenido principal */
+        @media (max-width: 768px) {
+            .content {
+                padding: 2rem 1.5rem;
+                padding-bottom: 140px;
+                /* Espacio adicional en la parte inferior para la barra de navegación */
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .demo-section {
+                padding: 2rem;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .content {
+                margin-left: 120px;
+                /* Margen para la barra de navegación lateral colapsada */
+                transition: margin-left 0.3s ease-out;
+                /* Transición para el margen */
+            }
+
+            .navbar.expanded~.content {
+                margin-left: 260px;
+                /* Margen para la barra de navegación lateral expandida */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <div class="demo-section">
+            <div class="status">✅ PROBLEMAS CORREGIDOS</div>
+            <h1>Navegación Premium 2025</h1>
+            <p><strong>Correcciones implementadas:</strong></p>
+            <ul class="feature-list">
+                <li><strong>Transición suave:</strong> Eliminé el efecto de "tildado" al expandir la barra.</li>
+                <li><strong>Rectángulo redondeado:</strong> Cambié el óvalo por rectángulos con esquinas redondeadas en
+                    modo expandido.</li>
+                <li><strong>Estado activo elegante:</strong> Reemplacé el círculo horrible por un gradiente sutil con
+                    sombra.</li>
+                <li><strong>Iconos perfectamente alineados:</strong> Ajustes finos para un centrado visual impecable.
+                </li>
+                <li><strong>Rendimiento mejorado:</strong> Optimización del manejo de eventos de redimensionamiento.
+                </li>
+                <li><strong>Accesibilidad:</strong> Añadidos atributos ARIA para una mejor experiencia de usuario.</li>
+                <li><strong>Efecto Ripple Eliminado:</strong> Se ha quitado el efecto de onda al hacer clic.</li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <h2>Características Premium</h2>
+            <ul class="feature-list">
+                <li>Glassmorphism avanzado con múltiples capas de desenfoque.</li>
+                <li>Transiciones fluidas sin tirones o saltos.</li>
+                <li>Efectos hover rectangulares en modo expandido.</li>
+                <li>Estado activo con gradiente y sombra elegante.</li>
+                <li>Alineación perfecta de todos los elementos.</li>
+                <li>Micro-interacciones hápticas (vibración).</li>
+                <li>Animaciones de entrada escalonadas.</li>
+                <li>Centrado preciso de iconos en todas las situaciones.</li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <h2>Instrucciones de Uso</h2>
+            <p><strong>En Móvil:</strong> La barra se posiciona automáticamente en la parte inferior con todos los
+                elementos perfectamente centrados.</p>
+            <p><strong>En Escritorio:</strong> Usa el primer botón (☰) para expandir la barra lateral. Notarás que la
+                transición es completamente suave y los efectos hover son rectangulares cuando está expandida.</p>
+            <p>El elemento activo ahora tiene un diseño mucho más elegante con gradiente sutil y sombra de color,
+                eliminando el círculo antiestético del centro.</p>
+        </div>
+    </div>
+
+    <div class="nav-container">
+        <nav class="navbar">
+            <button class="nav-item toggle-btn" data-section="toggle" aria-label="Alternar menú de navegación">
+                <i class="fas fa-bars"></i>
+                <span class="nav-text">Menú</span>
+            </button>
+            <button class="nav-item active" data-section="home" aria-label="Ir a Inicio">
+                <i class="fas fa-home"></i>
+                <span class="nav-text">Inicio</span>
+            </button>
+            <button class="nav-item" data-section="search" aria-label="Ir a Explorar">
+                <i class="fas fa-compass"></i>
+                <span class="nav-text">Explorar</span>
+            </button>
+            <button class="nav-item" data-section="favorites" aria-label="Ir a Favoritos">
+                <i class="fas fa-heart"></i>
+                <span class="nav-text">Favoritos</span>
+            </button>
+            <button class="nav-item" data-section="messages" aria-label="Ir a Mensajes">
+                <i class="fas fa-message"></i>
+                <span class="nav-text">Mensajes</span>
+            </button>
+            <button class="nav-item" data-section="notifications" aria-label="Ir a Alertas">
+                <i class="fas fa-bell"></i>
+                <span class="nav-text">Alertas</span>
+            </button>
+            <button class="nav-item" data-section="profile" aria-label="Ir a Perfil">
+                <i class="fas fa-user"></i>
+                <span class="nav-text">Perfil</span>
+            </button>
+            <button class="nav-item" data-section="settings" aria-label="Ir a Configuración">
+                <i class="fas fa-cog"></i>
+                <span class="nav-text">Configuración</span>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        /**
+         * Clase para gestionar la funcionalidad de la barra de navegación.
+         * Incluye manejo de estado activo, efecto magnético, y responsividad.
+         */
+        class NavigationBar {
+            constructor() {
+                // Selecciona todos los elementos de navegación (botones)
+                this.items = document.querySelectorAll('.nav-item');
+                // Selecciona la barra de navegación principal
+                this.navbar = document.querySelector('.navbar');
+                // Selecciona el botón de alternancia (hamburguesa)
+                this.toggleButton = document.querySelector('.toggle-btn');
+                // Selecciona el contenedor del contenido principal para ajustar su margen
+                this.content = document.querySelector('.content');
+                // Almacena el elemento de navegación actualmente activo
+                this.activeItem = document.querySelector('.nav-item.active');
+
+                // Inicializa la barra de navegación al crear la instancia
+                this.init();
+            }
+
+            /**
+             * Inicializa los event listeners y el estado inicial de la barra de navegación.
+             */
+            init() {
+                // Añade event listeners para click y mouseenter a cada elemento de navegación
+                this.items.forEach((item) => {
+                    item.addEventListener('click', (e) => this.handleClick(e, item));
+                    item.addEventListener('mouseenter', (e) => this.handleHover(e, item));
+                });
+
+                // Configura los listeners para el efecto magnético (solo en escritorio)
+                this.setupMagneticEffectListeners();
+
+                // Añade event listeners para el redimensionamiento de la ventana y cambios de orientación.
+                // Se usa un debounce para 'resize' para mejorar el rendimiento al evitar llamadas excesivas.
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => this.handleResize(), 200); // Debounce de 200ms
+                });
+                // Para cambios de orientación, se llama directamente a handleResize
+                window.addEventListener('orientationchange', () => this.handleResize());
+
+                // Actualiza el layout inicial al cargar la página
+                this.updateLayout();
+            }
+
+            /**
+             * Configura o remueve los listeners del efecto magnético según el tamaño de la ventana.
+             * Esto asegura que el efecto solo esté activo en escritorio y evita duplicados.
+             */
+            setupMagneticEffectListeners() {
+                this.items.forEach(item => {
+                    // Solo aplica el efecto magnético en escritorio y si no es el botón de alternancia
+                    if (window.innerWidth > 768 && !item.classList.contains('toggle-btn')) {
+                        // Si los listeners no están ya adjuntos, los añadimos
+                        if (!item._magneticHandler) {
+                            // Almacenamos las funciones en el propio elemento para poder removerlas más tarde
+                            item._magneticHandler = (e) => this.magneticEffect(e, item);
+                            item._resetHandler = () => this.resetMagnetic(item);
+
+                            item.addEventListener('mousemove', item._magneticHandler);
+                            item.addEventListener('mouseleave', item._resetHandler);
+                        }
+                    } else {
+                        // Si no es escritorio o es el botón de alternancia, aseguramos que no haya transformaciones residuales
+                        this.resetMagnetic(item);
+                        // Removemos los listeners si existen (importante al cambiar de tamaño de ventana)
+                        if (item._magneticHandler) {
+                            item.removeEventListener('mousemove', item._magneticHandler);
+                            item.removeEventListener('mouseleave', item._resetHandler);
+                            // Limpiamos las referencias para indicar que los listeners ya no están adjuntos
+                            item._magneticHandler = null;
+                            item._resetHandler = null;
+                        }
+                    }
+                });
+            }
+
+            /**
+             * Maneja el evento de click en un elemento de navegación.
+             * @param {Event} e - El objeto de evento del click.
+             * @param {HTMLElement} item - El elemento de navegación clickeado.
+             */
+            handleClick(e, item) {
+                e.preventDefault(); // Previene el comportamiento por defecto del botón (ej. envío de formulario)
+
+                // Si el elemento clickeado es el botón de alternancia, expande/colapsa la barra
+                if (item.classList.contains('toggle-btn')) {
+                    this.toggleNavbar();
+                    return;
+                }
+
+                // Remueve la clase 'active' de todos los elementos de navegación (excepto el botón de alternancia)
+                this.items.forEach(i => {
+                    if (!i.classList.contains('toggle-btn')) {
+                        i.classList.remove('active');
+                    }
+                });
+
+                // Añade la clase 'active' al elemento clickeado
+                item.classList.add('active');
+                this.activeItem = item; // Actualiza la referencia al elemento activo
+
+                // Proporciona retroalimentación háptica (vibración) si el dispositivo lo soporta
+                if (navigator.vibrate) {
+                    navigator.vibrate(15); // Vibra por 15 milisegundos
+                }
+            }
+
+            /**
+             * Maneja el evento hover (actualmente la mayoría de los efectos hover se manejan con CSS).
+             * @param {Event} e - El objeto de evento del hover.
+             * @param {HTMLElement} item - El elemento de navegación sobre el que se pasa el ratón.
+             */
+            handleHover(e, item) {
+                // La lógica principal del hover se maneja en CSS para un mejor rendimiento.
+                // Esta función está aquí como un placeholder si se necesita lógica JS compleja en el futuro.
+            }
+
+            /**
+             * Aplica el efecto magnético al elemento de navegación.
+             * El elemento se mueve ligeramente en la dirección del cursor.
+             * @param {Event} e - El objeto de evento del movimiento del ratón.
+             * @param {HTMLElement} item - El elemento de navegación afectado.
+             */
+            magneticEffect(e, item) {
+                const rect = item.getBoundingClientRect(); // Obtiene el tamaño y posición del elemento
+                const centerX = rect.left + rect.width / 2; // Centro X del elemento
+                const centerY = rect.top + rect.height / 2; // Centro Y del elemento
+                // Calcula el desplazamiento basado en la posición del ratón y un factor de sensibilidad
+                const deltaX = (e.clientX - centerX) * 0.08;
+                const deltaY = (e.clientY - centerY) * 0.08;
+
+                // Aplica la transformación de traslación y escala
+                item.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(1.05)`;
+            }
+
+            /**
+             * Resetea el efecto magnético, devolviendo el elemento a su posición original.
+             * @param {HTMLElement} item - El elemento de navegación a resetear.
+             */
+            resetMagnetic(item) {
+                item.style.transform = ''; // Elimina cualquier transformación aplicada por JavaScript
+            }
+
+            /**
+             * Alterna el estado expandido/colapsado de la barra de navegación.
+             * Solo funciona en pantallas de escritorio.
+             */
+            toggleNavbar() {
+                // Solo permite la expansión/colapso en pantallas de escritorio (ancho > 768px)
+                if (window.innerWidth > 768) {
+                    this.navbar.classList.toggle('expanded'); // Alterna la clase 'expanded'
+                    this.updateLayout(); // Actualiza el layout del contenido para ajustar el margen
+                }
+            }
+
+            /**
+             * Maneja el redimensionamiento de la ventana y los cambios de orientación.
+             * Ajusta el estado de la barra de navegación y los listeners del efecto magnético.
+             */
+            handleResize() {
+                // Si el ancho de la ventana es móvil, asegura que la barra no esté expandida
+                if (window.innerWidth <= 768) {
+                    this.navbar.classList.remove('expanded'); // Colapsa la barra en móvil
+                    this.content.style.marginLeft = ''; // Reinicia el margen del contenido
+                } else {
+                    // Si es escritorio, actualiza el layout según el estado actual de la barra
+                    this.updateLayout();
+                }
+                // Re-evalúa y re-configura los listeners del efecto magnético
+                this.setupMagneticEffectListeners();
+            }
+
+            /**
+             * Actualiza el margen izquierdo del contenido principal
+             * basado en el estado expandido/colapsado de la barra de navegación en escritorio.
+             */
+            updateLayout() {
+                if (window.innerWidth > 768) {
+                    const isExpanded = this.navbar.classList.contains('expanded');
+                    // Ajusta el margen izquierdo del contenido para evitar que la barra lo cubra
+                    this.content.style.marginLeft = isExpanded ? '260px' : '120px';
+                } else {
+                    // Asegura que el margen se resetee en móvil
+                    this.content.style.marginLeft = '';
+                }
+            }
+        }
+
+        // Inicializa la NavigationBar cuando el DOM esté completamente cargado.
+        // Esto asegura que todos los elementos HTML estén disponibles antes de que el JavaScript intente acceder a ellos.
+        document.addEventListener('DOMContentLoaded', () => {
+            new NavigationBar();
+        });
+    </script>
+</body>
+
+</html>
