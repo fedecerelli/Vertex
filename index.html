@@ -66,7 +66,7 @@
         });
     </script>
     <script>
-        // Configuración de Tailwind CSS para colores personalizados (Paleta "Deep Ocean & Aqua")
+        // Configuración de Tailwind CSS para colores personalizados (Paleta "Deep Ocean & Aqua" con nuevos colores)
         tailwind.config = {
             theme: {
                 extend: {
@@ -74,17 +74,27 @@
                         inter: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        // Nueva Paleta: Deep Ocean & Aqua (Minimalista, Profesional, Tendencias 2025)
-                        'primary-accent': '#4A47A3', // Un azul-púrpura profundo y rico
-                        'secondary-accent': '#00C4B4', // Un aqua brillante y vibrante
-                        'bg-lightest': '#F5F7FA', // Off-white muy claro
-                        'bg-light': '#E0E6EF', // Gris-azul claro para tarjetas
-                        'border-gray': '#C0C7D1', // Gris-azul sutil para bordes
-                        'text-dark': '#2C3E50', // Carbón azul oscuro para texto principal
-                        'text-secondary': '#7F8C8D', // Gris medio para texto secundario
+                        // Nueva Paleta: Colores base proporcionados
+                        'primary-base': '#1c2143', // Azul/Índigo oscuro
+                        'secondary-base': '#f3cd74', // Dorado/Amarillo
+                        'bg-main': '#f5fbf9', // Blanco muy claro
+                        'text-strong': '#000d16', // Azul-negro muy oscuro
+
+                        // Colores derivados para la interfaz (más vibrantes)
+                        'primary-accent': '#2a316b', // Un poco más vibrante que primary-base
+                        'primary-dark': '#0f1228', // Para fondos oscuros
+                        'secondary-accent': '#ffda82', // Un poco más vibrante que secondary-base
+                        'secondary-dark': '#ccaa5d', // Para sombras o acentos oscuros
+                        'bg-lightest': '#f5fbf9', // Fondo más claro
+                        'bg-light': '#ebf2f0', // Gris-azul muy sutil para tarjetas/secciones (más claro)
+                        'border-gray': '#d4e0db', // Gris-azul sutil para bordes (más claro)
+                        'text-dark': '#000d16', // Carbón azul oscuro para texto principal
+                        'text-secondary': '#4a5b6c', // Gris medio para texto secundario
+                        'text-light': '#ffffff', // Blanco puro para texto sobre fondos oscuros
+
                         // Colores para estados (hover/active)
-                        'primary-hover': '#3B388E', // Tono más oscuro de primary-accent
-                        'secondary-hover': '#00A59B', // Tono más oscuro de secondary-accent
+                        'primary-hover': '#3b458c', // Tono más oscuro de primary-accent
+                        'secondary-hover': '#ffedb2', // Tono más claro de secondary-accent
                         'success-green': '#28A745', // Verde para mensajes de éxito
                         'error-red': '#DC3545', // Rojo para mensajes de error
                         'info-blue': '#17A2B8', // Azul para mensajes de información
@@ -103,41 +113,46 @@
 
         /* Definición de variables CSS para colores, sombras, transiciones y efectos */
         :root {
-            /* Colores adaptados de la paleta "Deep Ocean & Aqua" */
-            --primary: #4A47A3;
-            /* primary-accent */
-            --surface: rgba(255, 255, 255, 0.08);
-            /* Superficie translúcida */
-            --surface-hover: rgba(255, 255, 255, 0.12);
-            /* Superficie translúcida al pasar el ratón */
-            --glass: rgba(74, 71, 163, 0.6);
-            /* primary-accent con opacidad para glassmorphism */
-            --glass-border: rgba(255, 255, 255, 0.2);
-            /* Borde translúcido para el efecto glassmorphism */
-            --text: #2C3E50;
-            /* text-dark */
+            /* Colores base de la nueva paleta */
+            --primary-base: #1c2143;
+            --secondary-base: #f3cd74;
+            --bg-main: #f5fbf9;
+            --text-strong: #000d16;
+
+            /* Colores derivados para la interfaz (más vibrantes) */
+            --primary-accent: #2a316b;
+            --primary-dark: #0f1228;
+            --secondary-accent: #ffda82;
+            --secondary-dark: #ccaa5d;
+            --bg-lightest: #f5fbf9;
+            --bg-light: #ebf2f0;
+            --border-gray: #d4e0db;
+            --text-dark: #000d16;
+            --text-secondary: #4a5b6c;
             --text-light: #ffffff;
-            /* Color de texto claro */
-            --text-secondary: #7F8C8D;
-            /* text-secondary */
-            --accent: #00C4B4;
-            /* secondary-accent */
-            --success: #28A745;
-            /* success-green */
-            --warning: #F59E0B;
-            /* Tailwind orange-500 */
-            --danger: #DC3545;
-            /* error-red */
-            --purple: #8B5CF6;
-            /* Tailwind purple-500 */
-            --pink: #EC4899;
-            /* Tailwind pink-500 */
-            --teal: #14B8A6;
-            /* Tailwind teal-500 */
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
-            /* Sombra estándar */
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08);
-            /* Sombra grande */
+
+            /* Colores para estados (hover/active) */
+            --primary-hover: #3b458c;
+            --secondary-hover: #ffedb2;
+            --success-green: #28A745;
+            --error-red: #DC3545;
+            --info-blue: #17A2B8;
+
+            /* Glassmorphism y superficies */
+            --glass: rgba(28, 33, 67, 0.7);
+            /* primary-base con opacidad para glassmorphism (más opaco) */
+            --glass-border: rgba(245, 251, 249, 0.3);
+            /* bg-main con opacidad para borde de glassmorphism (más visible) */
+            --surface: rgba(245, 251, 249, 0.15);
+            /* bg-main con opacidad para superficie (más visible) */
+            --surface-hover: rgba(245, 251, 249, 0.25);
+            /* bg-main con más opacidad para hover (más visible) */
+
+            /* Sombras y transiciones */
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+            /* Sombra estándar más pronunciada */
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0, 0, 0, 0.12);
+            /* Sombra grande más pronunciada */
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             /* Transición suave estándar */
             --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -174,15 +189,15 @@
 
         /* Pista de la barra de desplazamiento */
         .main-content-area::-webkit-scrollbar-track {
-            background: #F3F4F6;
-            /* Color de fondo de la pista (bg-light) */
+            background: var(--bg-light);
+            /* Color de fondo de la pista */
             border-radius: 10px;
             /* Bordes redondeados para la pista */
         }
 
         /* Pulgar (el arrastrador) de la barra de desplazamiento */
         .main-content-area::-webkit-scrollbar-thumb {
-            background: #9CA3AF;
+            background: var(--border-gray);
             /* Un gris medio */
             border-radius: 10px;
             /* Bordes redondeados para el pulgar */
@@ -190,7 +205,7 @@
 
         /* Color del pulgar al pasar el ratón por encima */
         .main-content-area::-webkit-scrollbar-thumb:hover {
-            background: #6B7280;
+            background: var(--text-secondary);
             /* Un tono más oscuro */
         }
 
@@ -302,7 +317,7 @@
             }
 
             #inventario-module tr {
-                border: 1px solid #C0C7D1;
+                border: 1px solid var(--border-gray);
                 /* border-gray */
                 margin-bottom: 1rem;
                 /* Adds space between "cards" */
@@ -312,22 +327,6 @@
                 /* Ensures rounded corners apply */
                 box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
                 /* shadow-sm */
-            }
-
-            #inventario-module td {
-                border: none;
-                position: relative;
-                padding-left: 50%;
-                /* Make space for the label */
-                text-align: right;
-                padding-top: 0.75rem;
-                /* py-3 */
-                padding-bottom: 0.75rem;
-                /* py-3 */
-                padding-right: 1rem;
-                /* px-4 */
-                font-size: 0.875rem;
-                /* text-sm */
             }
 
             #inventario-module td:before {
@@ -341,7 +340,7 @@
                 text-align: left;
                 font-weight: 600;
                 /* font-semibold */
-                color: #7F8C8D;
+                color: var(--text-secondary);
                 /* text-secondary */
                 content: attr(data-label);
                 /* Use data-label attribute for content */
@@ -402,7 +401,7 @@
 
         .spinner {
             border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #4A47A3;
+            border-top: 4px solid var(--primary-accent);
             /* primary-accent */
             border-radius: 50%;
             width: 40px;
@@ -477,9 +476,11 @@
 
         @media (max-width: 768px) {
             .nav-container {
-                bottom: 0;
-                left: 0;
-                right: 0;
+                bottom: 1rem;
+                /* Flotante, 1rem desde abajo */
+                left: 50%;
+                transform: translateX(-50%);
+                /* Centrar horizontalmente */
                 top: auto;
                 /* Restablecer arriba para móvil */
                 height: auto;
@@ -487,12 +488,13 @@
                 flex-direction: row;
                 justify-content: space-around;
                 align-items: center;
-                width: 100%;
-                padding: 1rem 0.5rem;
-                border-radius: 0;
-                /* Sin bordes redondeados en la barra inferior móvil */
+                width: calc(100% - 2rem);
+                /* Ancho completo menos 1rem a cada lado */
+                padding: 0.75rem 0.5rem;
+                /* Relleno más compacto */
+                border-radius: 9999px;
+                /* Totalmente redondeado */
                 box-shadow: var(--shadow-lg);
-                /* Aplicar glassmorphism directamente al nav-container en móvil */
                 background: var(--glass);
                 backdrop-filter: blur(30px) saturate(200%);
                 border: 1px solid var(--glass-border);
@@ -513,6 +515,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
+            /* Alineación superior para iconos */
             gap: 0.5rem;
             width: 100%;
             /* Ocupar todo el ancho de nav-container */
@@ -529,6 +532,7 @@
                 width: auto;
                 height: auto;
                 border-radius: 0;
+                /* Ya se maneja en nav-container */
                 padding: 0;
                 background: transparent;
                 /* El fondo lo maneja nav-container en móvil */
@@ -712,7 +716,7 @@
         /* Colores únicos para cada elemento de navegación (usando variables CSS) */
         /* Estos están mapeados a los colores de tu módulo */
         .nav-item[data-section="toggle"] {
-            --item-color: var(--primary);
+            --item-color: var(--primary-accent);
         }
 
         .nav-item[data-section="inventario"] {
@@ -724,18 +728,18 @@
         }
 
         .nav-item[data-section="ventas"] {
-            --item-color: #FF7F50;
-            /* Color complementario */
+            --item-color: color-mix(in srgb, var(--primary-accent) 50%, var(--secondary-accent) 50%);
+            /* Mezcla */
         }
 
         .nav-item[data-section="dashboard"] {
-            --item-color: #A34A47;
-            /* Otro color complementario */
+            --item-color: color-mix(in srgb, var(--primary-accent) 70%, var(--secondary-accent) 30%);
+            /* Mezcla */
         }
 
         .nav-item[data-section="configuracion"] {
-            --item-color: #6A5ACD;
-            /* Púrpura medio */
+            --item-color: color-mix(in srgb, var(--secondary-accent) 70%, var(--primary-accent) 30%);
+            /* Mezcla */
         }
 
         /* Efectos al pasar el ratón (hover) */
@@ -883,34 +887,117 @@
             /* Usar sombra grande para consistencia */
         }
 
-        /* Estilo para la barra lateral secundaria */
+        /* Estilo para la barra lateral secundaria (Widget) */
         #secondarySidebar {
-            background: linear-gradient(to bottom, var(--primary-accent), color-mix(in srgb, var(--primary-accent) 80%, black 20%));
-            /* Gradiente consistente */
+            background: var(--glass);
+            /* Usar la misma variable glass para consistencia */
+            backdrop-filter: blur(30px) saturate(200%);
+            /* Mismo filtro que la barra principal */
             box-shadow: var(--shadow-lg);
             /* Usar sombra grande para consistencia */
+            border-left: 1px solid var(--glass-border);
+            /* Borde para el efecto glassmorphism */
         }
 
         /* Estilo para los elementos internos de la barra lateral secundaria */
         #secondarySidebar .bg-gray-800 {
-            background-color: color-mix(in srgb, var(--primary-accent) 15%, #2C3E50 85%);
-            /* Un gris oscuro con un toque de primary-accent */
+            background-color: var(--primary-dark);
+            /* Color más oscuro de la paleta */
             box-shadow: var(--shadow);
             /* Sombra estándar para elementos internos */
         }
 
         #secondarySidebar .calc-btn.bg-gray-700 {
-            background-color: color-mix(in srgb, var(--primary-accent) 10%, #2C3E50 90%);
+            background-color: color-mix(in srgb, var(--primary-dark) 90%, black 10%);
             /* Un gris más oscuro para botones de calculadora */
         }
 
         #secondarySidebar .calc-btn.bg-gray-700:hover {
-            background-color: color-mix(in srgb, var(--primary-accent) 20%, #2C3E50 80%);
+            background-color: color-mix(in srgb, var(--primary-dark) 80%, black 20%);
         }
 
         #secondarySidebar .bg-gray-900 {
-            background-color: color-mix(in srgb, var(--primary-accent) 5%, #2C3E50 95%);
+            background-color: color-mix(in srgb, var(--primary-dark) 95%, black 5%);
             /* Fondo muy oscuro para inputs en sidebar */
+        }
+
+        /* Estilos para el logo y nombre del programa */
+        .program-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1rem;
+            /* Reducir margen */
+            padding: 0.5rem;
+            color: var(--text-light);
+            text-align: center;
+            opacity: 0;
+            /* Oculto por defecto */
+            transform: translateY(-20px);
+            transition: var(--transition);
+        }
+
+        body.sidebar-expanded .program-info {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .program-info .logo-placeholder {
+            font-size: 2rem;
+            /* Tamaño de fuente más pequeño para el logo */
+            margin-bottom: 0.25rem;
+            /* Reducir margen */
+            color: var(--secondary-accent);
+            filter: drop-shadow(0 0 6px rgba(255, 218, 130, 0.6));
+            /* Sombra sutil para el logo */
+        }
+
+        .program-info .program-name {
+            font-size: 1rem;
+            /* Tamaño de fuente más pequeño */
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* Leyenda de desarrollo */
+        .plexcel-legend {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            color: var(--text-light);
+            opacity: 0.3;
+            /* Sutil y casi imperceptible */
+            white-space: nowrap;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none;
+            /* No interactuable */
+        }
+
+        @media (max-width: 768px) {
+            .program-info {
+                display: none;
+                /* Ocultar en móvil */
+            }
+
+            .plexcel-legend {
+                display: none !important;
+                /* Ocultar en móvil para no saturar la barra inferior */
+            }
+        }
+
+        /* Ajuste de alineación para iconos cuando la barra está contraída */
+        body.sidebar-collapsed .navbar {
+            justify-content: flex-start;
+            /* Alinear elementos al inicio */
+            padding-top: 1rem;
+            /* Ajustar padding superior */
+        }
+
+        body.sidebar-collapsed .nav-item {
+            margin-bottom: 0.5rem;
+            /* Espacio entre iconos */
         }
     </style>
 </head>
@@ -919,6 +1006,14 @@
 
     <div class="nav-container">
         <nav class="navbar">
+            <div class="program-info">
+                <div class="logo-placeholder">
+                    <i class="fas fa-cube"></i>
+                </div>
+                <span class="program-name">Vertex</span>
+                <span class="program-name text-xs font-normal opacity-70">Sistema Integral de Gestión</span>
+            </div>
+
             <button class="nav-item toggle-btn" data-section="toggle" aria-label="Alternar menú de navegación">
                 <i class="fas fa-bars"></i>
                 <span class="nav-text">Menú</span>
@@ -943,6 +1038,8 @@
                 <i class="fas fa-cog"></i>
                 <span class="nav-text">Configuración</span>
             </button>
+
+            <span class="plexcel-legend">desarrollado por plexcel.py evolution</span>
         </nav>
     </div>
 
@@ -1166,7 +1263,7 @@
                     <div class="bg-bg-lightest p-4 rounded-xl shadow-md border border-border-gray">
                         <h3 class="text-lg font-medium text-text-dark">Compras del Mes</h3>
                         <p class="text-3xl font-bold text-secondary-accent" id="monthlyPurchases">$0.00</p>
-                        <div class="flex items-center text-sm text-red-500">
+                        <div class="flex items-center text-sm text-error-red">
                             <i class="fas fa-arrow-down mr-1" aria-hidden="true"></i> 2% vs mes anterior
                         </div>
                     </div>
@@ -1213,17 +1310,17 @@
                     <h3 class="text-xl font-semibold mb-4 text-text-dark">Análisis y Reportes</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <button
-                            class="bg-blue-500 text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-colors duration-200 shadow-md"
+                            class="bg-info-blue text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-colors duration-200 shadow-md"
                             onclick="showMessageBox('Análisis de Rentabilidad', 'Esta sección mostraría un análisis detallado de la rentabilidad por producto y categoría.', 'info')">
                             <i class="fas fa-chart-pie mr-2" aria-hidden="true"></i> Análisis de Rentabilidad
                         </button>
                         <button
-                            class="bg-blue-500 text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-colors duration-200 shadow-md"
+                            class="bg-info-blue text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-colors duration-200 shadow-md"
                             onclick="showMessageBox('Alertas de Stock', 'Aquí se mostraría una lista detallada de todos los productos con stock bajo o sobrestock.', 'info')">
                             <i class="fas fa-exclamation-triangle mr-2" aria-hidden="true"></i> Alertas de Stock
                         </button>
                         <button
-                            class="bg-blue-500 text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-colors duration-200 shadow-md"
+                            class="bg-info-blue text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-colors duration-200 shadow-md"
                             onclick="showMessageBox('Previsión', 'Esta sección mostraría proyecciones de ventas y necesidades de inventario basadas en datos históricos.', 'info')">
                             <i class="fas fa-chart-line mr-2" aria-hidden="true"></i> Previsión
                         </button>
@@ -1411,7 +1508,7 @@
                     </div>
                     <div>
                         <label for="productName" class="block text-sm font-medium text-text-dark mb-1">Nombre de
-                            Producto <span class="text-red-500">*</span></label>
+                            Producto <span class="text-error-red">*</span></label>
                         <input type="text" id="productName" required
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             placeholder="Ej: Laptop Gamer X1" aria-required="true">
@@ -1428,14 +1525,14 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div>
                         <label for="unitCost" class="block text-sm font-medium text-text-dark mb-1">Costo
-                            Unitario <span class="text-red-500">*</span></label>
+                            Unitario <span class="text-error-red">*</span></label>
                         <input type="number" id="unitCost" required min="0" step="0.01"
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             placeholder="0.00" aria-required="true" aria-label="Costo unitario del producto">
                     </div>
                     <div>
                         <label for="profitMargin" class="block text-sm font-medium text-text-dark mb-1">Margen de
-                            Ganancia (%) <span class="text-red-500">*</span></label>
+                            Ganancia (%) <span class="text-error-red">*</span></label>
                         <input type="number" id="profitMargin" required min="0" step="0.01"
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             value="50" aria-required="true" aria-label="Margen de ganancia en porcentaje">
@@ -1444,21 +1541,21 @@
                         <label for="suggestedPrice" class="block text-sm font-medium text-text-dark mb-1">Precio de
                             Venta Sugerido</label>
                         <input type="text" id="suggestedPrice"
-                            class="p-3 border border-border-border-gray rounded-xl w-full bg-bg-light text-text-dark"
-                            readonly value="$0.00" aria-label="Precio de venta sugerido (calculado)">
+                            class="p-3 border border-border-gray rounded-xl w-full bg-bg-light text-text-dark" readonly
+                            value="$0.00" aria-label="Precio de venta sugerido (calculado)">
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div>
                         <label for="initialStock" class="block text-sm font-medium text-text-dark mb-1">Stock
-                            Inicial <span class="text-red-500">*</span></label>
+                            Inicial <span class="text-error-red">*</span></label>
                         <input type="number" id="initialStock" required min="0"
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             placeholder="0" aria-required="true" aria-label="Stock inicial del producto">
                     </div>
                     <div>
                         <label for="category" class="block text-sm font-medium text-text-dark mb-1">Categoría <span
-                                class="text-red-500">*</span></label>
+                                class="text-error-red">*</span></label>
                         <select id="category" required
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             aria-required="true" aria-label="Categoría del producto">
@@ -1518,14 +1615,14 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                         <label for="purchaseDate" class="block text-sm font-medium text-text-dark mb-1">Fecha de
-                            Compra <span class="text-red-500">*</span></label>
+                            Compra <span class="text-error-red">*</span></label>
                         <input type="date" id="purchaseDate" required
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             aria-required="true" aria-label="Fecha de la compra">
                     </div>
                     <div>
                         <label for="purchaseSupplier" class="block text-sm font-medium text-text-dark mb-1">Proveedor
-                            <span class="text-red-500">*</span></label>
+                            <span class="text-error-red">*</span></label>
                         <select id="purchaseSupplier" required
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             aria-required="true" aria-label="Proveedor de la compra">
@@ -1604,7 +1701,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                         <label for="saleDate" class="block text-sm font-medium text-text-dark mb-1">Fecha de
-                            Venta <span class="text-red-500">*</span></label>
+                            Venta <span class="text-error-red">*</span></label>
                         <input type="date" id="saleDate" required
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             aria-required="true" aria-label="Fecha de la venta">
@@ -1621,7 +1718,7 @@
 
                 <div class="mb-4">
                     <label for="paymentMethod" class="block text-sm font-medium text-text-dark mb-1">Método de
-                        Pago <span class="text-red-500">*</span></label>
+                        Pago <span class="text-error-red">*</span></label>
                     <div class="flex items-center space-x-2">
                         <select id="paymentMethod" required
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
@@ -1715,7 +1812,7 @@
                 </div>
                 <div class="mb-4">
                     <label for="returnProductName" class="block text-sm font-medium text-text-dark mb-1">Producto a
-                        Devolver <span class="text-red-500">*</span></label>
+                        Devolver <span class="text-error-red">*</span></label>
                     <input type="text" id="returnProductName" required
                         class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                         placeholder="Nombre del producto" aria-required="true"
@@ -1724,14 +1821,14 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                         <label for="returnQuantity" class="block text-sm font-medium text-text-dark mb-1">Cantidad <span
-                                class="text-red-500">*</span></label>
+                                class="text-error-red">*</span></label>
                         <input type="number" id="returnQuantity" min="1" value="1" required
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             aria-required="true" aria-label="Cantidad a devolver">
                     </div>
                     <div>
                         <label for="returnRefundAmount" class="block text-sm font-medium text-text-dark mb-1">Monto a
-                            Reembolsar <span class="text-red-500">*</span></label>
+                            Reembolsar <span class="text-error-red">*</span></label>
                         <input type="number" id="returnRefundAmount" placeholder="0.00" required min="0" step="0.01"
                             class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                             aria-required="true" aria-label="Monto a reembolsar">
@@ -1739,7 +1836,7 @@
                 </div>
                 <div class="mb-6">
                     <label for="returnReason" class="block text-sm font-medium text-text-dark mb-1">Motivo de la
-                        Devolución <span class="text-red-500">*</span></label>
+                        Devolución <span class="text-error-red">*</span></label>
                     <select id="returnReason" required
                         class="p-3 border border-border-gray rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary-accent"
                         aria-required="true" aria-label="Motivo de la devolución">
@@ -2085,6 +2182,7 @@
             }
 
             toggleNavbar() {
+                // En móvil, la barra no se expande/contrae
                 if (window.innerWidth > 768) {
                     this.isExpanded = !this.isExpanded;
                     document.body.classList.toggle('sidebar-expanded', this.isExpanded);
@@ -2099,21 +2197,30 @@
                     this.mainContentArea.style.marginLeft = '0';
                     this.mainContentArea.style.marginBottom = '5rem'; // Espacio para la barra inferior móvil
                     // Asegurar que navContainer y navbar se adapten correctamente en móvil
-                    navContainer.style.width = '100%';
+                    navContainer.style.width = 'calc(100% - 2rem)';
                     navContainer.style.height = 'auto';
                     navContainer.style.top = 'auto';
-                    navContainer.style.bottom = '0';
-                    navContainer.style.left = '0';
-                    navContainer.style.right = '0';
+                    navContainer.style.bottom = '1rem';
+                    navContainer.style.left = '50%';
+                    navContainer.style.transform = 'translateX(-50%)';
+                    navContainer.style.borderRadius = '9999px'; // Totalmente redondeado
+                    navContainer.style.padding = '0.75rem 0.5rem'; // Relleno más compacto
 
                     navbar.style.width = 'auto';
                     navbar.style.height = 'auto';
                     navbar.style.borderRadius = '0';
                     navbar.style.padding = '0';
+                    navbar.style.flexDirection = 'row'; // Horizontal en móvil
+                    navbar.style.justifyContent = 'space-around'; // Distribuir iconos
                     navbar.style.background = 'transparent';
                     navbar.style.backdropFilter = 'none';
                     navbar.style.border = 'none';
                     navbar.style.boxShadow = 'none';
+
+                    // Ocultar información del programa y leyenda en móvil
+                    document.querySelector('.program-info').style.display = 'none';
+                    document.querySelector('.plexcel-legend').style.display = 'none';
+
                 } else { // Escritorio
                     this.mainContentArea.style.marginBottom = '0'; // Eliminar margen inferior
                     // Volver a aplicar el estado de escritorio basado en `isExpanded`
@@ -2126,6 +2233,8 @@
                     navContainer.style.bottom = 'auto';
                     navContainer.style.left = '0';
                     navContainer.style.right = 'auto';
+                    navContainer.style.borderRadius = '0'; // Restablecer para escritorio
+                    navContainer.style.padding = '1.5rem 0.5rem';
 
                     // Restablecer estilos de navbar para escritorio
                     navbar.style.background = 'var(--glass)';
@@ -2135,6 +2244,11 @@
                     navbar.style.borderRadius = '40px';
                     navbar.style.padding = '1.5rem 0.5rem';
                     navbar.style.flexDirection = 'column';
+                    navbar.style.justifyContent = 'flex-start'; // Alinear arriba en escritorio
+
+                    // Mostrar información del programa y leyenda en escritorio
+                    document.querySelector('.program-info').style.display = 'flex';
+                    document.querySelector('.plexcel-legend').style.display = 'block';
                 }
             }
 
@@ -3213,8 +3327,8 @@
                     datasets: [{
                         label: 'Ventas Mensuales ($)',
                         data: data,
-                        backgroundColor: 'rgba(74, 71, 163, 0.8)', // primary-accent con opacidad
-                        borderColor: '#4A47A3', // primary-accent
+                        backgroundColor: 'var(--primary-accent)', /* Usar variable CSS */
+                        borderColor: 'var(--primary-accent)', /* Usar variable CSS */
                         borderWidth: 1,
                         borderRadius: 8,
                     }]
@@ -3226,7 +3340,7 @@
                         legend: {
                             display: true,
                             labels: {
-                                color: '#2C3E50' // text-dark
+                                color: 'var(--text-dark)' /* Usar variable CSS */
                             }
                         },
                         title: {
@@ -3238,15 +3352,15 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                color: '#7F8C8D' // text-secondary
+                                color: 'var(--text-secondary)' /* Usar variable CSS */
                             },
                             grid: {
-                                color: '#C0C7D1' // border-gray
+                                color: 'var(--border-gray)' /* Usar variable CSS */
                             }
                         },
                         x: {
                             ticks: {
-                                color: '#7F8C8D' // text-secondary
+                                color: 'var(--text-secondary)' /* Usar variable CSS */
                             },
                             grid: {
                                 display: false
@@ -3274,13 +3388,14 @@
 
             const labels = Object.keys(categorySales);
             const data = Object.values(categorySales);
+            // Usar colores de la nueva paleta para el gráfico de categorías
             const backgroundColors = [
-                '#4A47A3', // primary-accent
-                '#00C4B4', // secondary-accent
-                '#FF7F50', // un color complementario
-                '#A34A47', // otro color
-                '#6A5ACD', // púrpura medio
-                '#20B2AA' // verde azulado
+                'var(--primary-accent)',
+                'var(--secondary-accent)',
+                'color-mix(in srgb, var(--primary-accent) 50%, var(--secondary-accent) 50%)',
+                'color-mix(in srgb, var(--primary-accent) 70%, var(--secondary-accent) 30%)',
+                'color-mix(in srgb, var(--secondary-accent) 70%, var(--primary-accent) 30%)',
+                'var(--info-blue)' // Un color adicional si se necesitan más categorías
             ];
 
             categorySalesChartInstance = new Chart(categorySalesChartCanvas.getContext('2d'), {
@@ -3300,7 +3415,7 @@
                         legend: {
                             position: 'right',
                             labels: {
-                                color: '#2C3E50' // text-dark
+                                color: 'var(--text-dark)' /* Usar variable CSS */
                             }
                         },
                         title: {
